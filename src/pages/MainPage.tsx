@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import MaterialCard from "../components/MaterialCard";
 import { useEffect, useState } from "react";
 import { ButtonStyle, CardStyle, InputStyle, Material } from "../type";
-import Input from "../components/Input";
+import Input from "../components/Input/Input";
 import axios from "axios";
 import Magnifier from "../components/Magnifier";
 import DropDownMenu from "../components/DropDownMenu";

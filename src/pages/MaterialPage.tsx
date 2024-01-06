@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import Magnifier from "../components/Magnifier";
-import { InputStyle } from "../type";
+import { ButtonStyle, InputStyle } from "../type";
 import {
   Categories,
   InputIcon,
@@ -8,7 +8,7 @@ import {
   SearchContainer,
   VerticalDivider,
 } from "./MainPage";
-import Input from "../components/Input";
+import Input from "../components/Input/Input";
 import styled from "styled-components";
 import SupplierCard from "../components/SupplierCard";
 import { data } from "../const/data";
@@ -16,6 +16,8 @@ import CustomDrawer from "../components/CustomDrawer";
 import { useState } from "react";
 
 import SamplesForm from "./DrawerPages/SamplesForm";
+import Button from "../components/Button";
+import QuoteForm from "./DrawerPages/QuoteForm";
 
 const MaterialPage = () => {
   const [searchState, setSearchState] = useState("");
@@ -38,19 +40,16 @@ const MaterialPage = () => {
     setOpenSampleRequest(false);
   };
 
-  // form Samples States
-  const [formStage, setFormStage] = useState(1);
-  const [numberOfsamples, setSamples] = useState("1");
-  const [market, setMarket] = useState("");
-  const [comment, setComment] = useState("");
-  const [deliveryAddress, setDeliveryAddress] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [commentsOnDelivery, setCommentsOnDelivery] = useState("");
-  const [itn, setItn] = useState("");
-  const [contactPerson, setContactPerson] = useState("");
+  const [samplesFormStage, setSamplesFormStage] = useState(1);
 
-  const onSubmit = () => {
-    setFormStage(2);
+  const submitSamples = () => {
+    setSamplesFormStage(2);
+  };
+
+  const [quoteFormStage, setQuoteFormStage] = useState(1);
+
+  const submitQuote = () => {
+    setQuoteFormStage(2);
   };
 
   return (
@@ -58,11 +57,22 @@ const MaterialPage = () => {
       <CustomDrawer
         open={openQuoteRequest}
         onClose={onCloseQuoteRequest}
-        size="large"
+        size="default"
         placement="right"
         title="QuoteRequest"
       >
-        <></>
+        {quoteFormStage == 1 ? (
+          <QuoteForm onSubmit={submitQuote} />
+        ) : (
+          <div>
+            <p>Your request has been sent to the supplier</p>
+            <Button
+              onClick={() => location.reload()}
+              styleType={ButtonStyle.BLUE}
+              text="Continue"
+            />
+          </div>
+        )}
       </CustomDrawer>
       <CustomDrawer
         open={openSampleRequest}
@@ -71,28 +81,17 @@ const MaterialPage = () => {
         placement="right"
         title="SampleRequest"
       >
-        {formStage == 1 ? (
-          <SamplesForm
-            setSamples={() => setSamples}
-            numberOfsamples={numberOfsamples}
-            market={market}
-            setMarket={() => setMarket}
-            comment={comment}
-            setComment={() => setComment}
-            onSubmit={() => onSubmit()}
-            deliveryAddress={deliveryAddress}
-            setDeliveryAddress={() => setDeliveryAddress}
-            phoneNumber={phoneNumber}
-            setPhoneNumber={() => setPhoneNumber}
-            contactPerson={contactPerson}
-            setContactPerson={() => setContactPerson}
-            commentsOnDelivery={commentsOnDelivery}
-            setCommentsOnDelivery={() => setCommentsOnDelivery}
-            itn={itn}
-            setItn={() => setItn}
-          />
+        {samplesFormStage == 1 ? (
+          <SamplesForm onSubmit={submitSamples} />
         ) : (
-          <p>Your request has been sent to the supplier</p>
+          <div>
+            <p>Your request has been sent to the supplier</p>
+            <Button
+              onClick={() => location.reload()}
+              styleType={ButtonStyle.BLUE}
+              text="Continue"
+            />
+          </div>
         )}
       </CustomDrawer>
 

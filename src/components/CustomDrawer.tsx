@@ -1,5 +1,6 @@
 import React from "react";
 import { Drawer } from "antd";
+import styled from "styled-components";
 
 interface DivederProps {
   open: boolean;
@@ -19,7 +20,7 @@ const CustomDrawer: React.FC<DivederProps> = ({
   title,
 }) => {
   return (
-    <Drawer
+    <StyledDrawer
       title={title}
       placement={placement}
       size={size}
@@ -27,8 +28,10 @@ const CustomDrawer: React.FC<DivederProps> = ({
       open={open}
     >
       {children}
-    </Drawer>
+    </StyledDrawer>
   );
 };
+
+const StyledDrawer = styled(Drawer)``;
 
 export default CustomDrawer;

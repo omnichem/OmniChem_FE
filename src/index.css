@@ -11,3 +11,12 @@ body {
   font-style: normal;
   
 }
+
+.ant-drawer .ant-drawer-body::-webkit-scrollbar {
+  
+}
+
+.ant-drawer .ant-drawer-title {
+  font-size: 20px;
+}
+

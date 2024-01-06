@@ -16,5 +16,5 @@ export const DrowerFormWrapper = styled.div`
   gap: 15px;
   justify-content: space-between;
 
-  height: 100%;
+  height: auto;
 `;

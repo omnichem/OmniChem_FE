@@ -8,35 +8,25 @@ import Input from "../../components/Input/Input";
 import styled from "styled-components";
 import isInn from "is-inn-js";
 
-interface SamplesFormProps {
+interface QuoteFormProps {
   onSubmit: () => void;
 }
 
-const SamplesForm: React.FC<SamplesFormProps> = ({ onSubmit }) => {
-  const [numOfSamples, setNumOfSamples] = useState("");
+const QuoteForm: React.FC<QuoteFormProps> = ({ onSubmit }) => {
   const [market, setMarket] = useState("");
-  const [requestComments, setRequestComments] = useState("");
-  const [contactPerson, setContactPerson] = useState("");
+
   const [deliveryAddress, setDeliveryAddress] = useState("");
 
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const [commentsOnDelivery, setCommentsOnDelivery] = useState("");
   const [individualTaxpayerNumber, setIndividualTaxpayerNumber] = useState("");
+  const [annualVolume, setAnnualVolume] = useState("");
 
   return (
     <DrowerFormWrapper>
       <FormsContainer>
         <h2>Request details</h2>
-        <p>Number of samples requested</p>
-        <InputFormWrapper>
-          <Input
-            styleType={InputStyle.BORDERED}
-            placeholder=""
-            onChange={setNumOfSamples}
-            value={numOfSamples}
-          />
-        </InputFormWrapper>
         <p>Input your market</p>
         <InputFormWrapper>
           <Input
@@ -46,25 +36,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSubmit }) => {
             value={market}
           />
         </InputFormWrapper>
-        <p>Request comments</p>
-        <InputFormWrapper>
-          <Input
-            styleType={InputStyle.BORDERED}
-            placeholder=""
-            onChange={setRequestComments}
-            value={requestComments}
-          />
-        </InputFormWrapper>
-        <h2>Delivery info</h2>
-        <p>Input contact person</p>
-        <InputFormWrapper>
-          <Input
-            styleType={InputStyle.BORDERED}
-            placeholder=""
-            onChange={setContactPerson}
-            value={contactPerson}
-          />
-        </InputFormWrapper>
+
         <p>Delivery address</p>
         <InputFormWrapper>
           <Input
@@ -93,15 +65,6 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSubmit }) => {
           )}
         </InputFormWrapper>
 
-        <p>Comments on delivery</p>
-        <InputFormWrapper>
-          <Input
-            styleType={InputStyle.BORDERED}
-            placeholder=""
-            onChange={setCommentsOnDelivery}
-            value={commentsOnDelivery}
-          />
-        </InputFormWrapper>
         <p>Input individual taxpayer number</p>
         <InputFormWrapper>
           <Input
@@ -115,6 +78,32 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSubmit }) => {
           ) : (
             <p>INN not valid</p>
           )}
+        </InputFormWrapper>
+        <p style={{ fontWeight: "600" }}>Expected Annual Volume</p>
+        <p> The quantity your business will require annually.</p>
+        <InputFormWrapper>
+          <Input
+            styleType={InputStyle.BORDERED}
+            placeholder=""
+            value={annualVolume}
+            onChange={setAnnualVolume}
+          />
+          <Input
+            styleType={InputStyle.BORDERED}
+            placeholder=""
+            value={"Kg"}
+            onChange={() => {}}
+            disabled={true}
+          />
+        </InputFormWrapper>
+        <p>Comments on the order</p>
+        <InputFormWrapper>
+          <Input
+            styleType={InputStyle.BORDERED}
+            placeholder=""
+            onChange={setCommentsOnDelivery}
+            value={commentsOnDelivery}
+          />
         </InputFormWrapper>
       </FormsContainer>
 
@@ -130,4 +119,4 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSubmit }) => {
 
 const FormsContainer = styled.div``;
 
-export default SamplesForm;
+export default QuoteForm;

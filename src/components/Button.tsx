@@ -8,6 +8,7 @@ interface ButtonProps {
   children?: React.ReactNode;
   text: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -15,9 +16,10 @@ const Button: React.FC<ButtonProps> = ({
   text,
   styleType = ButtonStyle.ROUND,
   onClick,
+  disabled,
 }) => {
   return (
-    <StyledButton $styleType={styleType} onClick={onClick}>
+    <StyledButton $styleType={styleType} onClick={onClick} disabled={disabled}>
       {children}
       {text}
     </StyledButton>
@@ -87,6 +89,9 @@ const StyledButton = styled.button<{
           }
           &:not(:hover) {
             transition: 500ms;
+          }
+          &:disabled {
+            background-color: #2f3f3e;
           }
         `;
     }
