@@ -108,31 +108,15 @@ const groupsFilters = [
 const quickFilters = [
   {
     key: "1",
-    label: <Button text="Filter 1" styleType={ButtonStyle.GRAY} />,
+    label: <p>Filter 1</p>,
   },
   {
     key: "2",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.aliyun.com"
-      >
-        2nd menu item
-      </a>
-    ),
+    label: <p>Filter 2</p>,
   },
   {
     key: "3",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.luohanacademy.com"
-      >
-        3rd menu item
-      </a>
-    ),
+    label: <p>Filter 3</p>,
   },
 ];
 
@@ -172,6 +156,9 @@ const MainPage = () => {
   const onClose = () => {
     setOpen(false);
   };
+
+  // useEffect(() => {});
+  // Решит ли проблему заедания кнопки развертывания карточки сырья?
 
   return (
     <>
@@ -229,17 +216,20 @@ const MainPage = () => {
             items={quickFilters}
             filterText="Ready to Use Product Type"
           />
-          <Button
-            styleType={ButtonStyle.BLUE}
-            text="All filters"
-            onClick={showDrawer}
-          />
+
+          <div>
+            <Button
+              styleType={ButtonStyle.BLUE}
+              text="All filters"
+              onClick={showDrawer}
+            />
+          </div>
         </FiltersContainer>
         <MaterialsList>
           {materials?.map((material: Material) => (
             <MaterialCard
               link={"/material"}
-              text={isOpen ? "More" : "Less"}
+              text={isOpen ? "Less" : "More"}
               key={material.id}
               manufacturerName={material.materialName}
               materialName={material.materialName}
@@ -263,16 +253,31 @@ const MainPage = () => {
 export default MainPage;
 
 export const PageWrapper = styled.div`
-  padding: 10px 120px 10px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 `;
 
 const MaterialsList = styled.div`
   max-width: 1440px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+
   display: grid;
   /* grid-auto-rows: minmax(min-content, max-content); */
-  gap: 20px;
+  grid-gap: 1rem;
   margin: 0 auto;
+
+  @media (min-width: 620px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 930px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 1240px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (min-width: 1550px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
 `;
 
 export const SearchContainer = styled.div`
@@ -329,7 +334,7 @@ export const InputWrapper = styled.div`
 `;
 
 const FiltersContainer = styled.div`
-  width: 100%;
+  max-width: 1440px;
   height: 60px;
 
   display: flex;
@@ -337,7 +342,7 @@ const FiltersContainer = styled.div`
   align-items: center;
   gap: 20px;
 
-  margin: 0 0 20px 0;
+  margin: 0 auto;
 `;
 
 const DrawerContainer = styled.div`

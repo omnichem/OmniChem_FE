@@ -76,9 +76,8 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
 };
 
 const StyledCard = styled.div`
-  width: 100%;
   height: auto;
-
+  max-width: 310px;
   background-color: #ffffff;
   box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -154,6 +153,7 @@ const MaterialName = styled.p`
 const CardFooter = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 20px;
   justify-content: space-between;
   align-items: center;
 
