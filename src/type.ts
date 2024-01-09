@@ -7,6 +7,7 @@ export enum ButtonStyle {
   ROUND,
   GRAY,
   BLUE,
+  DEFAULT,
 }
 
 // export interface CollapseItems {

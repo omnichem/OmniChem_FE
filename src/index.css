@@ -7,14 +7,10 @@
 body {
   -webkit-font-smoothing: antialiased;
   background-color: #ffffff;
-  font-family: Montserrat, sans-serif;
-  font-style: normal;
-  
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.ant-drawer .ant-drawer-body::-webkit-scrollbar {
-  
-}
+
 
 .ant-drawer .ant-drawer-title {
   font-size: 20px;

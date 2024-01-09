@@ -1,14 +1,6 @@
 import Header from "../components/Header";
-import Magnifier from "../components/Magnifier";
-import { ButtonStyle, InputStyle } from "../type";
-import {
-  Categories,
-  InputIcon,
-  InputWrapper,
-  SearchContainer,
-  VerticalDivider,
-} from "./MainPage";
-import Input from "../components/Input/Input";
+
+import Input from "../components/Input/CustomInput";
 import styled from "styled-components";
 import SupplierCard from "../components/SupplierCard";
 import { data } from "../const/data";
@@ -16,7 +8,7 @@ import CustomDrawer from "../components/CustomDrawer";
 import { useState } from "react";
 
 import SamplesForm from "./DrawerPages/SamplesForm";
-import Button from "../components/Button";
+import Button from "../components/CustomButton";
 import QuoteForm from "./DrawerPages/QuoteForm";
 
 const MaterialPage = () => {
@@ -46,6 +38,8 @@ const MaterialPage = () => {
     setSamplesFormStage(2);
   };
 
+  submitSamples();
+
   const [quoteFormStage, setQuoteFormStage] = useState(1);
 
   const submitQuote = () => {
@@ -62,13 +56,13 @@ const MaterialPage = () => {
         title="QuoteRequest"
       >
         {quoteFormStage == 1 ? (
-          <QuoteForm onSubmit={submitQuote} />
+          <QuoteForm onSubmit={() => submitQuote} />
         ) : (
           <div>
             <p>Your request has been sent to the supplier</p>
             <Button
+              type="default"
               onClick={() => location.reload()}
-              styleType={ButtonStyle.BLUE}
               text="Continue"
             />
           </div>
@@ -82,13 +76,13 @@ const MaterialPage = () => {
         title="SampleRequest"
       >
         {samplesFormStage == 1 ? (
-          <SamplesForm onSubmit={submitSamples} />
+          <SamplesForm />
         ) : (
           <div>
             <p>Your request has been sent to the supplier</p>
             <Button
+              type="default"
               onClick={() => location.reload()}
-              styleType={ButtonStyle.BLUE}
               text="Continue"
             />
           </div>
@@ -97,22 +91,13 @@ const MaterialPage = () => {
 
       <Header>
         <p>OmniChem</p>
-        <SearchContainer>
-          <Categories />
-          <VerticalDivider />
-          <InputWrapper>
-            <Input
-              styleType={InputStyle.DEFAULT}
-              placeholder="Enter what you want to find"
-              onChange={setSearchState}
-              value={searchState}
-            />
-          </InputWrapper>
 
-          <InputIcon>
-            <Magnifier />
-          </InputIcon>
-        </SearchContainer>
+        <Input
+          name=""
+          placeholder="Enter what you want to find"
+          onChange={setSearchState}
+          value={searchState}
+        />
       </Header>
       <MaterialPageWrapper>
         <h2>{data.name}</h2>

@@ -4,6 +4,8 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MaterialPage from "./pages/MaterialPage.tsx";
 import MainPage from "./pages/MainPage.tsx";
+import { ConfigProvider } from "antd";
+import { theme } from "./theme/theme.ts";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -16,5 +18,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />
+  <ConfigProvider theme={theme}>
+    <RouterProvider router={router} />
+  </ConfigProvider>
 );

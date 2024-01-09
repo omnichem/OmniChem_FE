@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "./Button";
-import { ButtonStyle, CardStyle } from "../type";
-import CardInfo from "./CardInfo";
+import CustomButton from "../CustomButton";
+import { CardStyle } from "../../type";
+import CardInfo from "../CardInfo";
 
 interface MaterialCardProps {
   manufacturerName: string;
@@ -16,6 +16,7 @@ interface MaterialCardProps {
   materialName: string;
   text: string;
   link: string;
+  onCardClick: () => void;
 
   onClick: () => void;
   styleType: CardStyle;
@@ -35,61 +36,71 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
   description,
   text,
   link,
+  onCardClick,
 }) => {
   return (
-    <StyledCard>
-      <CardHeader>
-        <ManufacturerImage>{manufacturerImage}</ManufacturerImage>
-        <ManufacturerIcon>{manufacturerIcon}</ManufacturerIcon>
-      </CardHeader>
-      <CardInfo styleType={styleType}>
-        <ManufactureName>{manufacturerName}</ManufactureName>
-        <MaterialName>{materialName}</MaterialName>
-        <div>
-          <MaterialDescription style={{ fontWeight: "700" }}>
-            Ready to Use Product Type:{readyToUseProductType}
-          </MaterialDescription>
-        </div>
-        <div>
-          <MaterialDescription style={{ fontWeight: "700" }}>
-            Compatible Substrates & Surfaces:{compatibleSubstratesAndSurfaces}
-          </MaterialDescription>
-        </div>
-        <div>
-          <MaterialDescription style={{ fontWeight: "700" }}>
-            Features: {features}
-          </MaterialDescription>
-        </div>
-        <div>
-          <MaterialDescription style={{ fontWeight: "700" }}>
-            Chemical Family: {chemicalFamily}
-          </MaterialDescription>
-        </div>
-        <MaterialDescription>{description}</MaterialDescription>
-      </CardInfo>
+    <CardWrapper>
+      <StyledCard onClick={onCardClick}>
+        <CardHeader>
+          <ManufacturerImage>{manufacturerImage}</ManufacturerImage>
+          <ManufacturerIcon>{manufacturerIcon}</ManufacturerIcon>
+        </CardHeader>
+        <CardInfo styleType={styleType}>
+          <ManufactureName>{manufacturerName}</ManufactureName>
+          <MaterialName>{materialName}</MaterialName>
+          <div>
+            <MaterialDescription style={{ fontWeight: "700" }}>
+              Ready to Use Product Type:{readyToUseProductType}
+            </MaterialDescription>
+          </div>
+          <div>
+            <MaterialDescription style={{ fontWeight: "700" }}>
+              Compatible Substrates & Surfaces:{compatibleSubstratesAndSurfaces}
+            </MaterialDescription>
+          </div>
+          <div>
+            <MaterialDescription style={{ fontWeight: "700" }}>
+              Features: {features}
+            </MaterialDescription>
+          </div>
+          <div>
+            <MaterialDescription style={{ fontWeight: "700" }}>
+              Chemical Family: {chemicalFamily}
+            </MaterialDescription>
+          </div>
+          <MaterialDescription>{description}</MaterialDescription>
+        </CardInfo>
+      </StyledCard>
       <CardFooter>
-        <Button text={text} onClick={onClick} styleType={ButtonStyle.GRAY} />
+        <CustomButton type="default" text={text} onClick={onClick} />
         <Link href={link}>View Product</Link>
       </CardFooter>
-    </StyledCard>
+    </CardWrapper>
   );
 };
+
+const CardWrapper = styled.div`
+  box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  overflow: hidden;
+
+  &:hover > div {
+    background-color: rgb(244, 244, 244);
+    transition: 1s;
+  }
+
+  &:not(:hover) > div {
+    background-color: rgb(255, 255, 255);
+    transition: 1s;
+  }
+`;
 
 const StyledCard = styled.div`
   height: auto;
   max-width: 310px;
   background-color: #ffffff;
-  box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
 
-  &:hover {
-    background-color: rgb(244, 244, 244);
-    transition: 1s;
-  }
-  &:not(:hover) {
-    background-color: rgb(255, 255, 255);
-    transition: 1s;
-  }
+  cursor: pointer;
 `;
 
 const CardHeader = styled.div`
@@ -158,6 +169,8 @@ const CardFooter = styled.div`
   align-items: center;
 
   padding: 20px;
+
+  background-color: #ffffff;
 `;
 
 const Link = styled.a`

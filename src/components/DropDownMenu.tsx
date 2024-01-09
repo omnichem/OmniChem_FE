@@ -1,8 +1,8 @@
 import React from "react";
 import type { MenuProps } from "antd";
 import { Dropdown, Space } from "antd";
-import Button from "./Button";
-import { ButtonStyle } from "../type";
+import CustomButton from "./CustomButton";
+
 import styled from "styled-components";
 
 interface DropDownMenuProps {
@@ -13,7 +13,7 @@ interface DropDownMenuProps {
 const DropDownMenu: React.FC<DropDownMenuProps> = ({ filterText, items }) => (
   <StyledDropDown menu={{ items }} placement="bottom" arrow>
     <Space>
-      <Button text={filterText} styleType={ButtonStyle.GRAY} />
+      <CustomButton type="default" text={filterText} />
     </Space>
   </StyledDropDown>
 );

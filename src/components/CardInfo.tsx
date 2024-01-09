@@ -30,6 +30,8 @@ const StyledButton = styled.div<{
           height: 150px;
 
           overflow: hidden;
+
+          transition: 1s;
         `;
       case CardStyle.ROLL_UP:
         return css`
@@ -39,6 +41,8 @@ const StyledButton = styled.div<{
 
           padding: 20px;
           height: auto;
+
+          transition: 1s;
         `;
     }
   }}

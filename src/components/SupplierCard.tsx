@@ -1,9 +1,11 @@
 import React from "react";
-import styled from "styled-components";
-import Button from "./Button";
-import { ButtonStyle } from "../type";
+
+import CustomButton from "./CustomButton";
+
 import CollapseBlock from "./CollapseBlock";
 import { CollapseProps } from "antd";
+import CustomCard from "./MaterialCard/CustomCard";
+import styled from "styled-components";
 
 interface MaterialCardProps {
   items: CollapseProps["items"];
@@ -19,8 +21,7 @@ const SupplierCard: React.FC<MaterialCardProps> = ({
   key,
 }) => {
   return (
-    <StyledCard key={key}>
-      <CardHeader>Create an Order</CardHeader>
+    <CustomCard title="Create an Order" key={key}>
       <CollapseBlock items={items} />
       <div>
         <p>Price</p>
@@ -29,35 +30,28 @@ const SupplierCard: React.FC<MaterialCardProps> = ({
         </p>
       </div>
 
-      <Button
-        styleType={ButtonStyle.GRAY}
-        text="Request a quote"
-        onClick={quoteRequest}
-      />
-      <Button
-        styleType={ButtonStyle.BLUE}
-        text="Request a Sample"
-        onClick={sampleRequest}
-      />
-    </StyledCard>
+      <RequestWrapper>
+        <CustomButton
+          type="default"
+          text="Request a quote"
+          onClick={quoteRequest}
+        />
+        <CustomButton
+          type="primary"
+          text="Request a Sample"
+          onClick={sampleRequest}
+        />
+      </RequestWrapper>
+    </CustomCard>
   );
 };
 
-const StyledCard = styled.div`
+const RequestWrapper = styled.div`
   display: flex;
+  gap: 10px;
   flex-direction: column;
 
-  gap: 10px;
-
-  min-height: 250px;
-  min-width: 300px;
-
-  background-color: #ffffff;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px 0px rgba(34, 60, 80, 0.2);
-  box-sizing: border-box;
-  padding: 15px;
+  width: 100%;
 `;
 
-const CardHeader = styled.h2``;
 export default SupplierCard;
