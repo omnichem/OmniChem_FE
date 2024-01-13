@@ -11,34 +11,32 @@ interface MaterialCardProps {
   items: CollapseProps["items"];
   sampleRequest: () => void;
   quoteRequest: () => void;
-  key: number;
 }
 
 const SupplierCard: React.FC<MaterialCardProps> = ({
   items,
   sampleRequest,
   quoteRequest,
-  key,
 }) => {
   return (
-    <CustomCard title="Create an Order" key={key}>
+    <CustomCard>
       <CollapseBlock items={items} />
       <div>
-        <p>Price</p>
+        <p>Цена</p>
         <p style={{ fontSize: "15px", color: "#505050" }}>
-          Available upon a quote
+          Доступна по ценовому предложению
         </p>
       </div>
 
       <RequestWrapper>
         <CustomButton
           type="default"
-          text="Request a quote"
+          text="Запросить ценовое предложение"
           onClick={quoteRequest}
         />
         <CustomButton
           type="primary"
-          text="Request a Sample"
+          text="Запросить образец"
           onClick={sampleRequest}
         />
       </RequestWrapper>

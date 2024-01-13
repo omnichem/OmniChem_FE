@@ -7,7 +7,7 @@ export const data = {
   },
   suppliers: [
     {
-      supplierName: "SupName",
+      supplierName: "SupName 1",
       city: "Moscow",
       legalEntity: "ООО “Ромашка",
       mainAdvantages: "fast delivery, .....",
@@ -23,27 +23,6 @@ export const data = {
     {
       supplierName: "SupName3",
       city: "Voronesh",
-      legalEntity: "ООО “Ромашка",
-      mainAdvantages: "fast delivery, .....",
-      briefDescription: ".....",
-    },
-    {
-      supplierName: "SupName4",
-      city: "Kirov",
-      legalEntity: "ООО “Ромашка",
-      mainAdvantages: "fast delivery, .....",
-      briefDescription: ".....",
-    },
-    {
-      supplierName: "SupName4",
-      city: "Kirov",
-      legalEntity: "ООО “Ромашка",
-      mainAdvantages: "fast delivery, .....",
-      briefDescription: ".....",
-    },
-    {
-      supplierName: "SupName4",
-      city: "Kirov",
       legalEntity: "ООО “Ромашка",
       mainAdvantages: "fast delivery, .....",
       briefDescription: ".....",

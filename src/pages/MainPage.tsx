@@ -9,7 +9,10 @@ import axios from "axios";
 import DropDownMenu from "../components/DropDownMenu";
 
 import { useNavigate } from "react-router";
-import { SearchOutlined } from "@ant-design/icons";
+import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
+
+import { Popover } from "antd";
+import CustomButton from "../components/CustomButton";
 
 const quickFilters = [
   {
@@ -58,15 +61,58 @@ const MainPage = () => {
 
   const navigate = useNavigate();
 
+  // Контент окна чата
+  // const messages = ["string"];
+  // console.log(messages);
+  const [chatMessage, setChatMessage] = useState("");
+  const chatWindow = (
+    <ChatBotWindow>
+      <MessagesWindow>
+        <BotMessage>Привет я Бот!</BotMessage>
+        <UserMessage>Скоко будет 2+2?</UserMessage>
+        <BotMessage>Я думаю...</BotMessage>
+        {/* {messages.map((message) => (
+          <UserMessage>{message}</UserMessage>
+        ))} */}
+      </MessagesWindow>
+      <ChatBotFooter>
+        <CustomInput
+          name="chatInput"
+          placeholder="Напишите свой вопрос"
+          onChange={setChatMessage}
+          value={chatMessage}
+        />
+        <CustomButton text="Отправить" type="primary" />
+      </ChatBotFooter>
+    </ChatBotWindow>
+  );
+
   return (
     <>
+      <FloatButtonContainer>
+        <Popover
+          style={{}}
+          content={chatWindow}
+          title="Задайте вопрос OmniChem"
+          trigger="click"
+        >
+          <CustomButton
+            style={{ height: "100%", width: "100%", fontSize: "25px" }}
+            icon={<MessageOutlined />}
+            type="primary"
+            shape="circle"
+          />
+        </Popover>
+      </FloatButtonContainer>
+
       <Header>
+        <h1>OmniChem</h1>
         <CustomInput
           name=""
           placeholder="Input what you want to find"
           onChange={() => {}}
           value={""}
-          prefix={<SearchOutlined />}
+          addonBefore={<SearchOutlined />}
         />
       </Header>
       <PageWrapper>
@@ -112,6 +158,64 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+const ChatBotWindow = styled.div`
+  height: 300px;
+  width: 300px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const MessagesWindow = styled.div`
+  background-color: #d7d7d7;
+  border-radius: 10px;
+  height: 100%;
+
+  box-sizing: border-box;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset;
+`;
+
+const ChatBotFooter = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  align-items: center;
+`;
+
+const BotMessage = styled.div`
+  padding: 5px 15px;
+  background-color: #00a99d;
+  color: #ffffff;
+
+  border-radius: 10px 10px 10px 0;
+`;
+
+const UserMessage = styled.div`
+  padding: 5px 15px;
+  background-color: #ffffff;
+
+  border-radius: 10px 10px 0 10px;
+`;
+
+const FloatButtonContainer = styled.div`
+  position: fixed;
+  top: 90%;
+  left: 95%;
+
+  width: 50px;
+  height: 50px;
+
+  z-index: 10;
+`;
 
 export const PageWrapper = styled.div`
   display: flex;

@@ -1,40 +1,49 @@
 import React, { useState } from "react";
 
-import { Button, Form, Select } from "antd";
+import { Form, Select } from "antd";
 import CustomInput from "../../components/Input/CustomInput";
 import isInn from "is-inn-js";
 import { customizeRequiredMark } from "../../const/const";
+import CustomButton from "../../components/CustomButton";
 
 interface QuoteFormProps {
-  onSubmit: () => void;
+  onQuoteSubmit: () => void;
 }
 
-const QuoteForm: React.FC<QuoteFormProps> = ({ onSubmit }) => {
-  const [form] = Form.useForm();
+const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [inn, setINN] = useState("");
   const [comments, setComments] = useState("");
   const [volume, setVolume] = useState("");
 
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }} defaultValue="8">
+        <Select.Option value="8">8</Select.Option>
+        <Select.Option value="+7">+7</Select.Option>
+      </Select>
+    </Form.Item>
+  );
+
   return (
-    <Form form={form} layout="vertical" requiredMark={customizeRequiredMark}>
+    <Form layout="vertical" requiredMark={customizeRequiredMark}>
       <Form.Item
         name="market"
-        label="Select your market"
-        rules={[{ required: true, message: "Choose a market!" }]}
+        label="Ваш маркет"
+        rules={[{ required: true, message: "Пожалуйста выберите маркет!" }]}
       >
         <Select>
           <Select.Option value="demo">Demo 1</Select.Option>
-          <Select.Option value="demo">Demo 2</Select.Option>
-          <Select.Option value="demo">Demo 3</Select.Option>
-          <Select.Option value="demo">Demo 4</Select.Option>
+          <Select.Option value="demo 2">Demo 2</Select.Option>
+          <Select.Option value="demo 3">Demo 3</Select.Option>
+          <Select.Option value="demo 4">Demo 4</Select.Option>
         </Select>
       </Form.Item>
       <Form.Item
-        label="Address"
+        label="Адрес"
         name="address"
-        rules={[{ required: true, message: "Please input your address!" }]}
+        rules={[{ required: true, message: "Пожалуйста введите адрес!" }]}
       >
         <CustomInput
           placeholder=""
@@ -44,53 +53,54 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSubmit }) => {
         />
       </Form.Item>
 
-      <Form.Item name="phone" label="Number phone" required>
+      <Form.Item name="phone" label="Номер телефона" required>
         <CustomInput
-          maxLength={12 || 11}
-          placeholder="+7/8 (999) 999 99 99"
+          addonBefore={prefixSelector}
+          maxLength={10}
+          placeholder="(999) 999 99 99"
+          name="phone"
           onChange={setPhone}
           value={phone}
-          name=""
         />
-        {(phone[0] === "+" && phone.length === 12 && phone[1] === "7") ||
-        (phone[0] === "8" && phone.length === 11) ? (
-          <p style={{ color: "#52c41a" }}>Number is valid!</p>
-        ) : (
-          <p style={{ color: "#ff4d4f" }}>Number is not valid!</p>
-        )}
-        {phone.length == 0 ? (
-          <p style={{ color: "#ff4d4f" }}>
-            The number field must contain 11 or 12 characters!
+        {phone.length < 10 ? (
+          <p style={{ color: "#ff8800" }}>
+            Поле номера телефона должно содержать 10 цифр!
           </p>
         ) : (
-          <></>
+          <p style={{ color: "#52c41a" }}>Телефон валиден!</p>
         )}
       </Form.Item>
-      <Form.Item required label="INN" name="inn">
-        <CustomInput placeholder="" onChange={setINN} value={inn} name="INN" />
-        {isInn(inn) ? (
-          <p style={{ color: "#52c41a" }}>INN valid!</p>
+      <Form.Item required label="ИНН" name="inn">
+        <CustomInput
+          maxLength={12}
+          placeholder=""
+          onChange={setINN}
+          value={inn}
+          name="INN"
+        />
+
+        {inn.length == 12 ? (
+          isInn(inn) ? (
+            <p style={{ color: "#52c41a" }}>ИНН валиден!</p>
+          ) : (
+            <p style={{ color: "#ff4d4f" }}>ИНН не валиден!</p>
+          )
         ) : (
-          <p style={{ color: "#ff4d4f" }}>INN not valid!</p>
+          <p style={{ color: "#ff8800" }}>Поле ИНН должно содержать 12 цифр!</p>
         )}
         {/* 772331755151 */}
-        {inn.length == 0 || inn.length < 12 ? (
-          <p style={{ color: "#ff4d4f" }}>
-            The INN field must contain 12 characters!
-          </p>
-        ) : (
-          <></>
-        )}
       </Form.Item>
       <Form.Item
         name="annual volume"
-        label="Annual volume"
-        rules={[{ required: true, message: "Please input annual volume!" }]}
+        label="Годовой объём"
+        rules={[
+          { required: true, message: "Пожалуйста, укажите годовой объем!" },
+        ]}
       >
         <div style={{ display: "flex", gap: "10px" }}>
           <CustomInput
             placeholder=""
-            onChange={() => setVolume}
+            onChange={setVolume}
             value={volume}
             name="volume"
           />
@@ -103,18 +113,16 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSubmit }) => {
           />
         </div>
       </Form.Item>
-      <Form.Item required={false} name="comments" label="Comments on the order">
+      <Form.Item required={false} name="comments" label="Комментарии к заказу">
         <CustomInput
-          placeholder="Write some comments"
+          placeholder="Напишите несколько пожеланий"
           onChange={setComments}
           value={comments}
           name="comments"
         />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" onClick={onSubmit}>
-          Submit
-        </Button>
+        <CustomButton text="Отправить" type="primary" onClick={onQuoteSubmit} />
       </Form.Item>
     </Form>
   );

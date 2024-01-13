@@ -6,9 +6,9 @@ export const customizeRequiredMark = (
 ) => (
   <>
     {required ? (
-      <Tag color="error">Required</Tag>
+      <Tag color="error">Обязательно</Tag>
     ) : (
-      <Tag color="warning">optional</Tag>
+      <Tag color="warning">По желанию</Tag>
     )}
     {label}
   </>

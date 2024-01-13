@@ -9,10 +9,10 @@ interface InputProps {
   placeholder: string;
   onChange: (value: string) => void;
   value: string;
-
+  addonBefore?: React.ReactNode;
   disabled?: boolean;
   maxLength?: number;
-  prefix?: React.ReactNode;
+
   status?: "error" | "warning" | "";
   name: string;
 }
@@ -22,10 +22,10 @@ const CustomInput: React.FC<InputProps> = ({
   placeholder,
   onChange,
   value,
-
+  addonBefore,
   disabled,
   maxLength,
-  prefix,
+
   status,
   name,
 }) => {
@@ -37,7 +37,7 @@ const CustomInput: React.FC<InputProps> = ({
       value={value}
       disabled={disabled}
       maxLength={maxLength}
-      prefix={prefix}
+      addonBefore={addonBefore}
       status={status}
       name={name}
     />

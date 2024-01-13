@@ -7,10 +7,12 @@
 body {
   -webkit-font-smoothing: antialiased;
   background-color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
-
+.ant-popover .ant-popover-inner {
+  margin-right: 20px;
+}
 
 .ant-drawer .ant-drawer-title {
   font-size: 20px;

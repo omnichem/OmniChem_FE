@@ -1,5 +1,4 @@
 import Header from "../components/Header";
-
 import Input from "../components/Input/CustomInput";
 import styled from "styled-components";
 import SupplierCard from "../components/SupplierCard";
@@ -10,10 +9,13 @@ import { useState } from "react";
 import SamplesForm from "./DrawerPages/SamplesForm";
 import Button from "../components/CustomButton";
 import QuoteForm from "./DrawerPages/QuoteForm";
+import CustomButton from "../components/CustomButton";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router";
 
 const MaterialPage = () => {
   const [searchState, setSearchState] = useState("");
-
+  const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
   const [openSampleRequest, setOpenSampleRequest] = useState(false);
   const showQuoteRequest = () => {
@@ -32,18 +34,15 @@ const MaterialPage = () => {
     setOpenSampleRequest(false);
   };
 
-  const [samplesFormStage, setSamplesFormStage] = useState(1);
-
-  const submitSamples = () => {
-    setSamplesFormStage(2);
-  };
-
-  submitSamples();
-
   const [quoteFormStage, setQuoteFormStage] = useState(1);
+  const [samplesFormStage, setSamplesFormStage] = useState(1);
 
   const submitQuote = () => {
     setQuoteFormStage(2);
+  };
+
+  const submitSamples = () => {
+    setSamplesFormStage(2);
   };
 
   return (
@@ -53,17 +52,17 @@ const MaterialPage = () => {
         onClose={onCloseQuoteRequest}
         size="default"
         placement="right"
-        title="QuoteRequest"
+        title="Запрос ценового предложения"
       >
         {quoteFormStage == 1 ? (
-          <QuoteForm onSubmit={() => submitQuote} />
+          <QuoteForm onQuoteSubmit={() => submitQuote()} />
         ) : (
           <div>
             <p>Your request has been sent to the supplier</p>
             <Button
               type="default"
               onClick={() => location.reload()}
-              text="Continue"
+              text="Продолжить"
             />
           </div>
         )}
@@ -76,14 +75,14 @@ const MaterialPage = () => {
         title="SampleRequest"
       >
         {samplesFormStage == 1 ? (
-          <SamplesForm />
+          <SamplesForm onSamplesSubmit={() => submitSamples()} />
         ) : (
           <div>
             <p>Your request has been sent to the supplier</p>
             <Button
               type="default"
               onClick={() => location.reload()}
-              text="Continue"
+              text="Продолжить"
             />
           </div>
         )}
@@ -100,7 +99,16 @@ const MaterialPage = () => {
         />
       </Header>
       <MaterialPageWrapper>
-        <h2>{data.name}</h2>
+        <MaterialHeader>
+          <CustomButton
+            type="primary"
+            shape="round"
+            icon={<ArrowLeftOutlined />}
+            onClick={() => navigate("/")}
+          />
+          <h2>{data.name}</h2>
+        </MaterialHeader>
+
         <DescriptionBlock>
           <Description>{data.descriptionHeader}</Description>
           <MaterialFeatures>
@@ -119,7 +127,7 @@ const MaterialPage = () => {
           {data.suppliers.map((supplier) => {
             const items = [
               {
-                key: "1",
+                key: supplier.supplierName,
                 label: supplier.supplierName,
                 children: (
                   <div>
@@ -161,7 +169,7 @@ const MaterialPage = () => {
         <Line />
         <h2>Features & Benefits</h2>
         {data.FeaturesAndBenefits.map(({ key, value }) => (
-          <FeatureLine key={key}>
+          <FeatureLine>
             <FeatureName>{key}: </FeatureName>
             {value}
           </FeatureLine>
@@ -171,16 +179,16 @@ const MaterialPage = () => {
         {data.ApplicationsAndUses.map(({ key, value }) => (
           <>
             {typeof value === "string" ? (
-              <FeatureLine key={key}>
+              <FeatureLine>
                 <FeatureName>{key}: </FeatureName>
                 {value}
               </FeatureLine>
             ) : (
               <ExtendedBlock>
                 <FeatureName>{key}: </FeatureName>
-                <FeatureLine key={key}>
+                <FeatureLine>
                   {value.map(({ key, value }) => (
-                    <Wrapper>
+                    <Wrapper key={key}>
                       <FeatureName>{key}</FeatureName>
                       <p>{value}</p>
                     </Wrapper>
@@ -201,6 +209,14 @@ const ExtendedBlock = styled.div`
   gap: 10px;
 `;
 
+const MaterialHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  align-items: center;
+`;
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -213,7 +229,7 @@ const MaterialPageWrapper = styled.div`
 `;
 
 const Line = styled.div`
-  border-bottom: 1px solid #2a2b2d;
+  border-bottom: 1px solid #d6d6d6;
 
   margin: 20px 0 20px 0;
 `;

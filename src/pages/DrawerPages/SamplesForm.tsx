@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 
-import { Button, Form, InputNumber, Select } from "antd";
+import { Form, InputNumber, Select } from "antd";
 import CustomInput from "../../components/Input/CustomInput";
 import isInn from "is-inn-js";
 import { customizeRequiredMark } from "../../const/const";
+import CustomButton from "../../components/CustomButton";
 
-const SamplesForm: React.FC = () => {
+interface SamplesFormProps {
+  onSamplesSubmit: () => void;
+}
+
+const SamplesForm: React.FC<SamplesFormProps> = ({ onSamplesSubmit }) => {
   const [form] = Form.useForm();
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -21,8 +26,8 @@ const SamplesForm: React.FC = () => {
     <Form form={form} layout="vertical" requiredMark={customizeRequiredMark}>
       <Form.Item
         name="market"
-        label="Select your market"
-        rules={[{ required: true, message: "Choose a market!" }]}
+        label="Маркет"
+        rules={[{ required: true, message: "Выберите маркет!" }]}
       >
         <Select>
           <Select.Option value="demo">Demo 1</Select.Option>
@@ -33,8 +38,8 @@ const SamplesForm: React.FC = () => {
       </Form.Item>
       <Form.Item
         name="number"
-        label="Number ofsamples requested"
-        rules={[{ required: true, message: "Input number of samples!" }]}
+        label="Количество образцов"
+        rules={[{ required: true, message: "Введите количество образцов!" }]}
       >
         <InputNumber
           style={{ width: "100%" }}
@@ -45,9 +50,11 @@ const SamplesForm: React.FC = () => {
         />
       </Form.Item>
       <Form.Item
-        label="Contact person"
+        label="Контактное лицо"
         name="contact person"
-        rules={[{ required: true, message: "Please input your contacts!" }]}
+        rules={[
+          { required: true, message: "Пожалуйста, введите контактное лицо!" },
+        ]}
       >
         <CustomInput
           placeholder=""
@@ -57,9 +64,9 @@ const SamplesForm: React.FC = () => {
         />
       </Form.Item>
       <Form.Item
-        label="Address"
+        label="Адрес"
         name="address"
-        rules={[{ required: true, message: "Please input your address!" }]}
+        rules={[{ required: true, message: "Пожалуйста, введите свой адрес!" }]}
       >
         <CustomInput
           placeholder=""
@@ -69,57 +76,55 @@ const SamplesForm: React.FC = () => {
         />
       </Form.Item>
 
-      <Form.Item name="phone" label="Number phone" required>
+      <Form.Item name="phone" label="Номер телефона" required>
         <CustomInput
-          maxLength={12 || 11}
+          maxLength={10}
           placeholder="+7/8 (999) 999 99 99"
           onChange={setPhone}
           value={phone}
           name=""
         />
-        {(phone[0] === "+" && phone.length === 12 && phone[1] === "7") ||
-        (phone[0] === "8" && phone.length === 11) ? (
-          <p style={{ color: "#52c41a" }}>Number is valid!</p>
-        ) : (
-          <p style={{ color: "#ff4d4f" }}>Number is not valid!</p>
-        )}
-        {phone.length == 0 ? (
-          <p style={{ color: "#ff4d4f" }}>
-            The number field must contain 11 or 12 characters!
+        {phone.length < 10 ? (
+          <p style={{ color: "#ff8800" }}>
+            Поле номера телефона должно содержать 10 цифр!
           </p>
         ) : (
-          <></>
+          <p style={{ color: "#52c41a" }}>Телефон валиден!</p>
         )}
       </Form.Item>
-      <Form.Item required label="INN" name="inn">
-        <CustomInput placeholder="" onChange={setINN} value={inn} name="INN" />
-        {isInn(inn) ? (
-          <p style={{ color: "#52c41a" }}>INN valid!</p>
+      <Form.Item required label="ИНН" name="inn">
+        <CustomInput
+          maxLength={12}
+          placeholder=""
+          onChange={setINN}
+          value={inn}
+          name="INN"
+        />
+        {inn.length == 12 ? (
+          isInn(inn) ? (
+            <p style={{ color: "#52c41a" }}>ИНН валиден!</p>
+          ) : (
+            <p style={{ color: "#ff4d4f" }}>ИНН не валиден!</p>
+          )
         ) : (
-          <p style={{ color: "#ff4d4f" }}>INN not valid!</p>
-        )}
-        {/* 772331755151 */}
-        {inn.length == 0 || inn.length < 12 ? (
-          <p style={{ color: "#ff4d4f" }}>
-            The INN field must contain 12 characters!
-          </p>
-        ) : (
-          <></>
+          <p style={{ color: "#ff8800" }}>Поле ИНН должно содержать 12 цифр!</p>
         )}
       </Form.Item>
 
-      <Form.Item required={false} name="comments" label="Comments on the order">
+      <Form.Item required={false} name="comments" label="Комментарии к заказу">
         <CustomInput
-          placeholder="Write some comments"
+          placeholder="Напиши несколько комментариев"
           onChange={setComments}
           value={comments}
           name="comments"
         />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
+        <CustomButton
+          type="primary"
+          text="Отправить"
+          onClick={onSamplesSubmit}
+        />
       </Form.Item>
     </Form>
   );
