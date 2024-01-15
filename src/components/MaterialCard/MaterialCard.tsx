@@ -3,6 +3,8 @@ import styled from "styled-components";
 import CustomButton from "../CustomButton";
 import { CardStyle } from "../../type";
 import CardInfo from "../CardInfo";
+import fireIcon from "./fire2.png";
+import { Popover } from "antd";
 
 interface MaterialCardProps {
   manufacturerName: string;
@@ -44,6 +46,11 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
         <CardHeader>
           <ManufacturerImage>{manufacturerImage}</ManufacturerImage>
           <ManufacturerIcon>{manufacturerIcon}</ManufacturerIcon>
+          <FireIcon>
+            <Popover content="У этого сырья есть поставщик!">
+              <img src={fireIcon} alt="" />
+            </Popover>
+          </FireIcon>
         </CardHeader>
         <CardInfo styleType={styleType}>
           <ManufactureName>{manufacturerName}</ManufactureName>
@@ -78,6 +85,19 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
     </CardWrapper>
   );
 };
+
+const FireIcon = styled.div`
+  height: 24px;
+  width: 24px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 100px;
+  left: 270px;
+`;
 
 const CardWrapper = styled.div`
   box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.2);
