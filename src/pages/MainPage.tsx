@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import MaterialCard from "../components/MaterialCard/MaterialCard";
 import { useEffect, useState } from "react";
-import { CardStyle, Material } from "../type";
+import { Material } from "../type";
 import CustomInput from "../components/Input/CustomInput";
 import axios from "axios";
 
@@ -31,7 +31,6 @@ const quickFilters = [
 
 const MainPage = () => {
   const [materials, setMaterials] = useState<Material[]>();
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,18 +42,6 @@ const MainPage = () => {
 
     fetchData();
   }, []);
-
-  const [styleType, setStyleType] = useState<CardStyle>(CardStyle.UN_WRAP);
-
-  const clickButton = () => {
-    if (styleType === CardStyle.ROLL_UP) {
-      setStyleType(CardStyle.UN_WRAP);
-      setIsOpen(true);
-    } else {
-      setStyleType(CardStyle.ROLL_UP);
-      setIsOpen(false);
-    }
-  };
 
   // useEffect(() => {});
   // Решит ли проблему заедания кнопки развертывания карточки сырья?
@@ -106,37 +93,51 @@ const MainPage = () => {
       </FloatButtonContainer>
 
       <Header>
-        <h1>OmniChem</h1>
-        <CustomInput
-          name=""
-          placeholder="Input what you want to find"
-          onChange={() => {}}
-          value={""}
-          addonBefore={<SearchOutlined />}
-        />
+        <HeaderContainer>
+          <h1>OmniChem</h1>
+          <CustomInput
+            name=""
+            placeholder="Input what you want to find"
+            onChange={() => {}}
+            value={""}
+            addonBefore={<SearchOutlined />}
+          />
+        </HeaderContainer>
       </Header>
       <PageWrapper>
         <FiltersContainer>
-          <DropDownMenu items={quickFilters} filterText="Features" />
-          <DropDownMenu items={quickFilters} filterText="Suppliers" />
-          <DropDownMenu items={quickFilters} filterText="End Uses" />
-          <DropDownMenu items={quickFilters} filterText="Chemical Family" />
+          <DropDownMenu items={quickFilters} filterText="Особенности" />
+          {/* <Cascader
+            options={options}
+            onChange={onChange}
+            placeholder="Please select"
+          /> */}
+
           <DropDownMenu
             items={quickFilters}
-            filterText="Compatible Substrates & Surfaces"
+            filterText="Конечное использование"
+          />
+          <DropDownMenu items={quickFilters} filterText="Поставщики" />
+          <DropDownMenu
+            items={quickFilters}
+            filterText="Химическое семейство"
+          />
+          <DropDownMenu
+            items={quickFilters}
+            filterText="Совместимые подложки и поверхности"
           />
 
           <DropDownMenu
             items={quickFilters}
-            filterText="Ready to Use Product Type"
+            filterText="Готовый к использованию тип продукта"
           />
         </FiltersContainer>
+
         <MaterialsList>
           {materials?.map((material: Material) => (
             <MaterialCard
               onCardClick={() => navigate("/material")}
               link={"/material"}
-              text={isOpen ? "More" : "Less"}
               key={material.id}
               manufacturerName={material.materialName}
               materialName={material.materialName}
@@ -147,8 +148,6 @@ const MainPage = () => {
               }
               features={material.features}
               description={material.description}
-              onClick={clickButton}
-              styleType={styleType}
             />
           ))}
         </MaterialsList>
@@ -158,6 +157,31 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+const HeaderContainer = styled.div`
+  margin: 0 auto;
+  max-width: 1440px;
+
+  @media (min-width: 320px) {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+
+    align-items: center;
+
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 992px) {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    padding: 20px 0 20px 0;
+
+    box-sizing: border-box;
+  }
+`;
 
 const ChatBotWindow = styled.div`
   height: 300px;
@@ -215,12 +239,21 @@ const FloatButtonContainer = styled.div`
   height: 50px;
 
   z-index: 10;
+
+  @media (max-width: 620px) {
+    top: 85%;
+    left: 80%;
+  }
 `;
 
 export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  align-items: center;
+
+  margin: 0 auto;
+  max-width: 1440px;
 `;
 
 const MaterialsList = styled.div`
@@ -230,6 +263,7 @@ const MaterialsList = styled.div`
   /* grid-auto-rows: minmax(min-content, max-content); */
   grid-gap: 1rem;
   margin: 0 auto;
+  padding-bottom: 30px;
 
   @media (min-width: 620px) {
     grid-template-columns: repeat(2, 1fr);
@@ -299,13 +333,35 @@ export const InputWrapper = styled.div`
 `;
 
 const FiltersContainer = styled.div`
-  max-width: 1440px;
-  height: 60px;
+  height: auto;
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 20px;
+  @media (min-width: 320px) and (max-width: 768px) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 
-  margin: 0 auto;
+    max-width: 310px;
+
+    /* .dropDown {
+      width: 100%;
+    } */
+  }
+
+  @media (min-width: 768px) and (max-width: 992px) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    max-width: 768px;
+
+    /* .dropDown {
+      width: 100%;
+    } */
+  }
+
+  @media (min-width: 992px) {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
 `;

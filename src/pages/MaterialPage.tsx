@@ -282,7 +282,7 @@ const FeatureName = styled.span`
   color: #505050;
 `;
 
-const ScrollableList = styled.div`
+export const ScrollableList = styled.div`
   width: 100%;
   margin: 30px 0;
   padding: 10px;

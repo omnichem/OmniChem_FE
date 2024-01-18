@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "../CustomButton";
 import { CardStyle } from "../../type";
@@ -16,17 +16,12 @@ interface MaterialCardProps {
   chemicalFamily: string;
   description: string;
   materialName: string;
-  text: string;
+
   link: string;
   onCardClick: () => void;
-
-  onClick: () => void;
-  styleType: CardStyle;
 }
 
 const MaterialCard: React.FC<MaterialCardProps> = ({
-  onClick,
-  styleType,
   manufacturerName,
   manufacturerImage,
   manufacturerIcon,
@@ -36,21 +31,29 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
   features,
   chemicalFamily,
   description,
-  text,
+
   link,
+
   onCardClick,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [styleType, setStyleType] = useState<CardStyle>(CardStyle.UN_WRAP);
+
+  function clickButton() {
+    if (styleType === CardStyle.ROLL_UP) {
+      setStyleType(CardStyle.UN_WRAP);
+      setIsOpen(!isOpen);
+    } else {
+      setStyleType(CardStyle.ROLL_UP);
+      setIsOpen(!isOpen);
+    }
+  }
   return (
     <CardWrapper>
       <StyledCard onClick={onCardClick}>
         <CardHeader>
           <ManufacturerImage>{manufacturerImage}</ManufacturerImage>
           <ManufacturerIcon>{manufacturerIcon}</ManufacturerIcon>
-          <FireIcon>
-            <Popover content="У этого сырья есть поставщик!">
-              <img src={fireIcon} alt="" />
-            </Popover>
-          </FireIcon>
         </CardHeader>
         <CardInfo styleType={styleType}>
           <ManufactureName>{manufacturerName}</ManufactureName>
@@ -79,12 +82,43 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
         </CardInfo>
       </StyledCard>
       <CardFooter>
-        <CustomButton type="default" text={text} onClick={onClick} />
-        <Link href={link}>View Product</Link>
+        <LinkContainer>
+          <Link href={link}>Посмотреть сырье </Link>
+          <FireIcon>
+            <Popover content="У этого сырья есть поставщик!">
+              <img src={fireIcon} alt="" />
+            </Popover>
+          </FireIcon>
+        </LinkContainer>
+
+        {isOpen ? (
+          <CustomButton
+            type="default"
+            text={"Закрыть описание"}
+            onClick={clickButton}
+            style={{ width: "100%" }}
+          />
+        ) : (
+          <CustomButton
+            type="default"
+            text={"Открыть описание"}
+            onClick={clickButton}
+            style={{ width: "100%" }}
+          />
+        )}
       </CardFooter>
     </CardWrapper>
   );
 };
+
+const LinkContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+`;
 
 const FireIcon = styled.div`
   height: 24px;
@@ -93,10 +127,6 @@ const FireIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  position: absolute;
-  top: 100px;
-  left: 270px;
 `;
 
 const CardWrapper = styled.div`
@@ -183,7 +213,7 @@ const MaterialName = styled.p`
 
 const CardFooter = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 20px;
   justify-content: space-between;
   align-items: center;
