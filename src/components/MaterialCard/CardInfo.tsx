@@ -1,7 +1,7 @@
 import React from "react";
 
 import styled, { css } from "styled-components";
-import { CardStyle } from "../type";
+import { CardStyle } from "../../type";
 
 interface CardInfoProps {
   styleType: CardStyle;
@@ -27,11 +27,9 @@ const StyledButton = styled.div<{
           gap: 5px;
 
           padding: 20px;
-          height: 150px;
+          max-height: 170px;
 
           overflow: hidden;
-
-          transition: 1s;
         `;
       case CardStyle.ROLL_UP:
         return css`
@@ -41,8 +39,12 @@ const StyledButton = styled.div<{
 
           padding: 20px;
           height: auto;
-
-          transition: 1s;
+          max-height: 250px;
+          transition: height 3s;
+          overflow: scroll;
+          &::-webkit-scrollbar {
+            display: none;
+          }
         `;
     }
   }}

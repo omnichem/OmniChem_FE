@@ -6,7 +6,11 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ children }) => {
-  return <StyledHeader>{children}</StyledHeader>;
+  return (
+    <StyledHeader>
+      <HeaderContainer>{children}</HeaderContainer>
+    </StyledHeader>
+  );
 };
 
 const StyledHeader = styled.div`
@@ -20,6 +24,32 @@ const StyledHeader = styled.div`
   border-bottom: 1px solid rgb(222, 222, 222);
 
   margin-bottom: 30px;
+`;
+
+export const HeaderContainer = styled.div`
+  margin: 0 auto;
+  max-width: 1440px;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+    max-width: 310px;
+    padding: 10px 0 10px 0;
+
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 992px) {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    padding: 20px 0 20px 0;
+
+    box-sizing: border-box;
+  }
 `;
 
 export default Header;

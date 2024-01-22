@@ -5,14 +5,24 @@ import styled from "styled-components";
 
 interface CollapseBlockProps {
   items: CollapseProps["items"];
+  ghost?: boolean;
+  children?: React.ReactNode;
 }
 
-const CollapseBlock: React.FC<CollapseBlockProps> = ({ items }) => {
+const CollapseBlock: React.FC<CollapseBlockProps> = ({
+  items,
+  ghost,
+  children,
+}) => {
   const onChange = (key: string | string[]) => {
     console.log(key);
   };
 
-  return <StyledCollapse items={items} onChange={onChange}></StyledCollapse>;
+  return (
+    <StyledCollapse items={items} ghost={ghost} onChange={onChange}>
+      {children}
+    </StyledCollapse>
+  );
 };
 
 const StyledCollapse = styled(Collapse)`
