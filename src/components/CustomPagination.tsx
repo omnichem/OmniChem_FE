@@ -1,5 +1,5 @@
 import React from "react";
-import { Pagination, type PaginationProps } from "antd";
+import { Pagination, PaginationProps } from "antd";
 
 import styled from "styled-components";
 
@@ -7,15 +7,23 @@ interface CustomPaginationProps {
   total: number;
   current: number;
   onChange: PaginationProps["onChange"];
+  defaultPage: number;
+  simple: boolean;
 }
 
 const CustomPagination: React.FC<CustomPaginationProps> = ({
-  current,
+  defaultPage,
+  simple,
   total,
   onChange,
 }) => {
   return (
-    <StyledPagination current={current} onChange={onChange} total={total} />
+    <StyledPagination
+      simple={simple}
+      defaultCurrent={defaultPage}
+      onChange={onChange}
+      total={total}
+    />
   );
 };
 

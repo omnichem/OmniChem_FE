@@ -4,17 +4,37 @@ import styled from "styled-components";
 import SupplierCard from "../components/SupplierCard";
 import { data } from "../const/data";
 import CustomDrawer from "../components/CustomDrawer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import SamplesForm from "./DrawerPages/SamplesForm";
 import Button from "../components/CustomButton";
 import QuoteForm from "./DrawerPages/QuoteForm";
 import CustomButton from "../components/CustomButton";
 import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { PageWrapper } from "./MainPage";
+import { http } from "../http";
+import {
+  MaterialPageAttributes,
+  MaterialPageAttributesValues,
+  MaterialPageType,
+} from "../type";
 
-const MaterialPage = () => {
+const MaterialPage: React.FC = () => {
+  const [material, setMaterial] = useState<MaterialPageType>();
+  const { id } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await http.get<MaterialPageType>(
+        `API/v1/wiki/materials/${id}/`
+      );
+      console.log(response.data);
+      setMaterial(response.data);
+    };
+    fetchData();
+  }, [id]);
+  console.log(material);
+
   const [searchState, setSearchState] = useState("");
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
@@ -108,18 +128,21 @@ const MaterialPage = () => {
             icon={<ArrowLeftOutlined />}
             onClick={() => navigate("/")}
           />
-          <h2>{data.name}</h2>
+          <h2>{material?.value}</h2>
         </MaterialHeader>
 
         <DescriptionBlock>
-          <Description>{data.descriptionHeader}</Description>
           <MaterialFeatures>
-            {data.description.map(({ key, value }) => (
-              <FeatureLine key={key}>
-                <FeatureName>{key}: </FeatureName>
-                {value}
-              </FeatureLine>
-            ))}
+            {material?.attributes
+              .slice(0, 5)
+              .map((attribute: MaterialPageAttributes) => (
+                <FeatureLine key={`description:${material.id}`}>
+                  <FeatureName>
+                    {attribute.translated_attribute_name}:{" "}
+                  </FeatureName>
+                  {attribute.values[0].translated_value}
+                </FeatureLine>
+              ))}
           </MaterialFeatures>
         </DescriptionBlock>
         <Line />
@@ -146,7 +169,7 @@ const MaterialPage = () => {
               ];
               return (
                 <SupplierCard
-                  key={data.id}
+                  key={`supplierCard:${data.id}`}
                   items={items}
                   sampleRequest={showSampleRequest}
                   quoteRequest={showQuoteRequest}
@@ -159,12 +182,16 @@ const MaterialPage = () => {
       <FullSpecsBG>
         <FullSpecsWrapper style={{ alignItems: "flex-start" }}>
           <h2>Идентификация и функциональность</h2>
-          {data.IdentificationAndFunctionality.map(({ key, value }) => (
-            <FeatureLine key={key}>
-              <FeatureName>{key}: </FeatureName>
-              {value}
-            </FeatureLine>
-          ))}
+          {material?.attributes
+            .slice(5, 10)
+            .map((attribute: MaterialPageAttributes) => (
+              <FeatureLine key={`featureLine:${material.id}`}>
+                <FeatureName>
+                  {attribute.translated_attribute_name}:{" "}
+                </FeatureName>
+                {attribute.values[0].translated_value}
+              </FeatureLine>
+            ))}
           {/* <Line /> */}
           {/* <MolecularStructureBlock>
           <FeatureName>{data.molucalarPicture.key}</FeatureName>
@@ -175,36 +202,61 @@ const MaterialPage = () => {
         </MolecularStructureBlock> */}
           <Line />
           <h2>Особенности и преимущества</h2>
-          {data.FeaturesAndBenefits.map(({ key, value }) => (
-            <FeatureLine>
-              <FeatureName>{key}: </FeatureName>
-              {value}
-            </FeatureLine>
-          ))}
+          {material?.attributes
+            .slice(11, 12)
+            .map((attribute: MaterialPageAttributes) => (
+              <FeatureLine>
+                <FeatureName key={`featuresAndBenefits:${material.id}`}>
+                  {attribute.translated_attribute_name}:{" "}
+                </FeatureName>
+                {attribute.values[0].translated_value}
+              </FeatureLine>
+            ))}
           <Line />
           <h2>Приложения и виды использования</h2>
-          {data.ApplicationsAndUses.map(({ key, value }) => (
-            <>
-              {typeof value === "string" ? (
-                <FeatureLine>
-                  <FeatureName>{key}: </FeatureName>
-                  {value}
-                </FeatureLine>
-              ) : (
-                <ExtendedBlock>
-                  <FeatureName>{key}: </FeatureName>
+          {material?.attributes
+            .slice(13, 23)
+            .map((attribute: MaterialPageAttributes) => (
+              <FeatureLine>
+                <FeatureName key={`featuresAndBenefits:${material.id}`}>
+                  {attribute.translated_attribute_name}:{" "}
+                </FeatureName>
+                {attribute.values[0].translated_value}
+              </FeatureLine>
+            ))}
+          {material?.attributes
+            .slice(13, 23)
+            .map((attribute: MaterialPageAttributes) => (
+              <>
+                {attribute.values.length == 1 ? (
                   <FeatureLine>
-                    {value.map(({ key, value }) => (
-                      <Wrapper key={key}>
-                        <FeatureName>{key}</FeatureName>
-                        <p>{value}</p>
-                      </Wrapper>
-                    ))}
+                    <FeatureName key={`ApplicationsAndUses:${material.id}`}>
+                      {attribute.translated_attribute_name}:{" "}
+                    </FeatureName>
+                    {attribute.values[0].translated_value}
                   </FeatureLine>
-                </ExtendedBlock>
-              )}
-            </>
-          ))}
+                ) : (
+                  <ExtendedBlock>
+                    <FeatureName key={`ApplicationsAndUses:${material.id}`}>
+                      {attribute.translated_attribute_name}:{" "}
+                    </FeatureName>
+                    <FeatureLine>
+                      {attribute.values.map(
+                        (attribute: MaterialPageAttributesValues) => (
+                          <Wrapper
+                            key={`ApplicationsAndUses:wrapper:${attribute.translated_value}`}
+                          >
+                            <FeatureLine>
+                              {attribute.translated_value}
+                            </FeatureLine>
+                          </Wrapper>
+                        )
+                      )}
+                    </FeatureLine>
+                  </ExtendedBlock>
+                )}
+              </>
+            ))}
           <Line />
         </FullSpecsWrapper>
       </FullSpecsBG>
@@ -272,13 +324,13 @@ const FullSpecsWrapper = styled.div`
   background-color: #fbfbfb;
 `;
 
-const Description = styled.p`
-  margin: 20px 0 20px 0;
+// const Description = styled.p`
+//   margin: 20px 0 20px 0;
 
-  font-weight: 200;
-  word-spacing: 1px;
-  color: #2a2b2d;
-`;
+//   font-weight: 200;
+//   word-spacing: 1px;
+//   color: #2a2b2d;
+// `;
 
 const DescriptionBlock = styled.p`
   display: flex;
@@ -286,6 +338,12 @@ const DescriptionBlock = styled.p`
   gap: 10px;
 
   max-width: 800px;
+
+  p:first-child {
+    margin-bottom: 30px;
+    font-size: 19px;
+  }
+  margin: none;
 `;
 
 const MaterialFeatures = styled.div`

@@ -1,0 +1,275 @@
+{
+  "count": 101784,
+  "next": "http://212.233.79.177:8000/API/v1/wiki/materials/?page=2",
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "value": "Archem PRs Grade XLD 35S Extra Low Dust Uncoated",
+      "is_supplier_available": false,
+      "first_filter": "Product Families",
+      "second_filter": "Inks & Pastes",
+      "third_filter": "Offset & Lithographic Inks",
+      "brand": null,
+      "company": "Archem PRs",
+      "values": [
+        {
+          "attribute_name": "Features:",
+          "translated_attribute_name": "Особенности:",
+          "values": [
+            {
+              "translated_value": "Высокоскоростная печать,",
+              "value": "High Speed Printing,"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Chemical Family:",
+          "translated_attribute_name": "Химическое семейство:",
+          "values": [
+            {
+              "translated_value": "Крахмалы",
+              "value": "Starches"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Chemical Family",
+          "translated_attribute_name": "Химическое семейство",
+          "values": [
+            {
+              "translated_value": "Крахмалы",
+              "value": "Starches"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Product Type",
+          "translated_attribute_name": "Тип продукта",
+          "values": [
+            {
+              "translated_value": "Офсетные чернила",
+              "value": "Offset Ink"
+            },
+            {
+              "translated_value": "Чернила на водной основе",
+              "value": "Waterborne Ink"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Technologies",
+          "translated_attribute_name": "Технологии",
+          "values": [
+            {
+              "translated_value": "Готовые к использованию продукты",
+              "value": "Ready-to-Use Products"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Product Families",
+          "translated_attribute_name": "Семейства продуктов",
+          "values": [
+            {
+              "translated_value": "Офсетные и литографские краски",
+              "value": "Offset & Lithographic Inks"
+            },
+            {
+              "translated_value": "Готовые к использованию продукты — Чернила и пасты",
+              "value": "Ready-to-Use Products — Inks & Pastes"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Applications",
+          "translated_attribute_name": "Приложения",
+          "values": [
+            {
+              "translated_value": "Печать и упаковка — Печать и чернила",
+              "value": "Printing & Packaging — Printing & Inks"
+            },
+            {
+              "translated_value": "Офсетная и литографская печать",
+              "value": "Offset & Lithographic Printing"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Compatible Substrates & Surfaces",
+          "translated_attribute_name": "Совместимые подложки и поверхности",
+          "values": [
+            {
+              "translated_value": "Бумага",
+              "value": "Paper"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Certifications & Compliance",
+          "translated_attribute_name": "Сертификаты и соответствие требованиям",
+          "values": [
+            {
+              "translated_value": "Сертифицированный BRC",
+              "value": "BRC Certified"
+            },
+            {
+              "translated_value": "ISO 9001",
+              "value": "ISO 9001"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Hydrophobic characteristics",
+          "translated_attribute_name": "Гидрофобные характеристики",
+          "values": [
+            {
+              "translated_value": "Отрицательный (негидрофобный)",
+              "value": "Negative (non-hydrophobic)"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Materials content",
+          "translated_attribute_name": "Содержание материалов",
+          "values": [
+            {
+              "translated_value": "Растительный крахмал",
+              "value": "Vegetable starch"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Spray and Flow rate",
+          "translated_attribute_name": "Распыление и скорость потока",
+          "values": [
+            {
+              "translated_value": "Отлично",
+              "value": "Excellent"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Description",
+          "translated_attribute_name": "Описание",
+          "values": [
+            {
+              "translated_value": "Archem PRs Grade XLD 35S со сверхнизким содержанием пыли без покрытия разработан для использования во всех типах аппликаторов. Archem PRS XLD-35S предназначен для предотвращения застывания чернил в пачке при печати на подложках плотностью от 250 до 450 г/см2. Указанный диапазон плотности для данного конкретного сорта предназначен только в качестве ориентира. Правильный размер в микронах для использования также будет зависеть от других факторов, таких как тип бумаги, вес чернильной пленки и т.д. Для непоглощающих подложек может потребоваться распыляемый порошок размером более микрона.",
+              "value": "Archem PRs Grade XLD 35S Extra Low Dust Uncoated is formulated for use in all applicator types. Archem PRS XLD-35S is designed to prevent Ink set off in the stack when printing on 250gsm to 450gsm substrates. The quoted stock gsm range for this specific grade is intended as a guide only. The correct micron size to use will also depend on other factors such as type of paper, weight of ink film etc. Non-absorbent substrates may require a larger micron spray powder."
+            }
+          ]
+        },
+        {
+          "attribute_name": "Application Method:",
+          "translated_attribute_name": "Способ нанесения:",
+          "values": [
+            {
+              "translated_value": "Спрей",
+              "value": "Spray"
+            }
+          ]
+        },
+        {
+          "attribute_name": "COMPANY",
+          "translated_attribute_name": "компания",
+          "values": [
+            {
+              "translated_value": "Archem PRs",
+              "value": "Archem PRs"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Physical Form",
+          "translated_attribute_name": "Физическая форма",
+          "values": [
+            {
+              "translated_value": "Порошок",
+              "value": "Powder"
+            },
+            {
+              "translated_value": "Твердый",
+              "value": "Solid"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Average granule diameter",
+          "translated_attribute_name": "Средний диаметр гранул",
+          "values": [
+            {
+              "translated_value": "35.0",
+              "value": "35.0"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Markets",
+          "translated_attribute_name": "Рынки",
+          "values": [
+            {
+              "translated_value": "Печать и упаковка",
+              "value": "Printing & Packaging"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Application Method",
+          "translated_attribute_name": "Способ нанесения",
+          "values": [
+            {
+              "translated_value": "Спрей",
+              "value": "Spray"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Compatible Substrates & Surfaces:",
+          "translated_attribute_name": "Совместимые подложки и поверхности:",
+          "values": [
+            {
+              "translated_value": "Бумага",
+              "value": "Paper"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Moisture",
+          "translated_attribute_name": "Влажность",
+          "values": [
+            {
+              "translated_value": "11 - 13",
+              "value": "11 - 13"
+            }
+          ]
+        },
+        {
+          "attribute_name": "Ready-to-Use Product Features",
+          "translated_attribute_name": "Характеристики готового к использованию продукта",
+          "values": [
+            {
+              "translated_value": "Биоразлагаемый",
+              "value": "Biodegradable"
+            },
+            {
+              "translated_value": "Высокая степень защиты от пыли",
+              "value": "High Dust Control"
+            },
+            {
+              "translated_value": "Низкий износ",
+              "value": "Low Wear"
+            },
+            {
+              "translated_value": "Высокоскоростная печать",
+              "value": "High Speed Printing"
+            },
+            {
+              "translated_value": "Отличные текучие свойства",
+              "value": "Excellent Flow Properties"
+            }
+          ]
+        }
+      ]
+      }
+  ]
+}

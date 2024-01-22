@@ -6,13 +6,14 @@ import MaterialPage from "./pages/MaterialPage.tsx";
 import MainPage from "./pages/MainPage.tsx";
 import { ConfigProvider } from "antd";
 import { theme } from "./theme/theme.ts";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainPage />,
   },
   {
-    path: "/materials",
+    path: `/material/:id`,
     element: <MaterialPage />,
   },
 ]);

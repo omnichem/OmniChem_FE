@@ -4,22 +4,25 @@ import MaterialCard from "../components/MaterialCard/MaterialCard";
 import { useEffect, useState } from "react";
 import { Material, MaterialResponse } from "../type";
 import CustomInput from "../components/Input/CustomInput";
-import axios from "axios";
 
 import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
-import json from "../data.json";
+import json from "../pages/data2.json";
 import { PaginationProps, Popover, Select } from "antd";
 import CustomButton from "../components/CustomButton";
 import { useNavigate } from "react-router";
 import CustomPagination from "../components/CustomPagination";
 import CollapseBlock from "../components/CollapseBlock";
+import useDebounce from "../hooks/useDebounce";
+import { http } from "../http";
 
 const MainPage = () => {
   const [materials, setMaterials] = useState<Material[]>(json.results);
   const [total, setTotal] = useState(50);
   const [page, setPage] = useState(1);
+  const debouncedMaterial = useDebounce(materials, 100000);
 
-  const onChange: PaginationProps["onChange"] = (page) => {
+  const onChangePage: PaginationProps["onChange"] = (page: number) => {
+    console.log(page);
     console.log(page);
     setPage(page);
   };
@@ -32,15 +35,15 @@ const MainPage = () => {
     //   setMaterials(response.data);
     // });
     const fetchData = async () => {
-      const response = await axios.get<MaterialResponse>(
-        `http://212.233.79.177:8000/wiki/API/v1/materials/?page=${page}`
+      const response = await http.get<MaterialResponse>(
+        `API/v1/wiki/materials/?page=${page}`
       );
       console.log(response);
+      setTotal(response.data.count);
       setMaterials(response.data.results);
-      setTotal(50);
     };
     fetchData();
-  }, [page]);
+  }, [page, debouncedMaterial]);
 
   // useEffect(() => {});
   // Решит ли проблему заедания кнопки развертывания карточки сырья?
@@ -184,6 +187,11 @@ const MainPage = () => {
       ),
     },
   ];
+
+  const onCardClick = (materialId: number) => {
+    console.log("clicked");
+    navigate(`/material/${materialId}`);
+  };
   return (
     <>
       <FloatButtonContainer>
@@ -236,31 +244,43 @@ const MainPage = () => {
         </FiltersContainer>
 
         <PaginationContainer style={{ marginBottom: "0" }}>
-          <CustomPagination onChange={onChange} total={total} current={page} />
+          <CustomPagination
+            current={page}
+            simple={true}
+            defaultPage={page}
+            onChange={onChangePage}
+            total={total}
+          />
         </PaginationContainer>
         <MaterialsList>
           {materials.map((material: Material) => (
             <MaterialCard
+              id={material.id}
               isHaveSupplier={material.is_supplier_available}
-              onCardClick={() => navigate(`/materials/${material.id}`)}
-              link={""}
-              id={material.id.toString()}
-              manufacturerName={material.attributes[1].values[0].value}
+              onCardClick={onCardClick}
+              key={material.id}
+              manufacturerName={material.values[1].values[0].value}
               materialName={material.value}
-              description={material.attributes[0].values[0].translated_value}
+              description={material.values[0].values[0].translated_value}
               readyToUseProductType={
-                material.attributes[8].values[0].translated_value
+                material.values[8].values[0].translated_value
               }
-              chemicalFamily={material.attributes[3].values[0].translated_value}
+              chemicalFamily={material.values[3].values[0].translated_value}
               compatibleSubstratesAndSurfaces={
-                material.attributes[4].values[0].translated_value
+                material.values[4].values[0].translated_value
               }
-              features={material.attributes[6].values[0].translated_value}
+              features={material.values[6].values[0].translated_value}
             />
           ))}
         </MaterialsList>
         <PaginationContainer>
-          <CustomPagination onChange={onChange} total={total} current={page} />
+          <CustomPagination
+            simple={true}
+            current={page}
+            defaultPage={page}
+            onChange={onChangePage}
+            total={total}
+          />
         </PaginationContainer>
       </PageWrapper>
     </>
