@@ -11,7 +11,7 @@ export default defineConfig({
       usePolling: true,
     },
     proxy: {
-      "/API": "http://212.233.79.177:8000",
+      "/API": "http://212.233.79.177:6688/",
     },
   },
 });
