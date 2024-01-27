@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import Input from "../components/Input/CustomInput";
 import styled from "styled-components";
 import SupplierCard from "../components/SupplierCard";
-import { data } from "../const/data";
+import { suppliersData } from "../const/data";
 import CustomDrawer from "../components/CustomDrawer";
 import { useEffect, useState } from "react";
 
@@ -28,12 +28,11 @@ const MaterialPage: React.FC = () => {
       const response = await http.get<MaterialPageType>(
         `API/v1/wiki/materials/${id}/`
       );
-      console.log(response.data);
+
       setMaterial(response.data);
     };
     fetchData();
   }, [id]);
-  console.log(material);
 
   const [searchState, setSearchState] = useState("");
   const navigate = useNavigate();
@@ -149,10 +148,10 @@ const MaterialPage: React.FC = () => {
         <h2>Поставщики:</h2>
 
         <ScrollableList>
-          {data.suppliers.length == 0 ? (
+          {suppliersData.length == 0 ? (
             <h2>В настоящее время у этого сырья нет поставщиков</h2>
           ) : (
-            data.suppliers.map((supplier) => {
+            suppliersData.map((supplier) => {
               const items = [
                 {
                   key: supplier.supplierName,
@@ -169,7 +168,7 @@ const MaterialPage: React.FC = () => {
               ];
               return (
                 <SupplierCard
-                  key={`supplierCard:${data.id}`}
+                  key={`supplierCard:${supplier.id}`}
                   items={items}
                   sampleRequest={showSampleRequest}
                   quoteRequest={showQuoteRequest}
