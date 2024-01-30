@@ -1,7 +1,7 @@
 import React from "react";
 
 import styled, { css } from "styled-components";
-import { CardStyle } from "../../type";
+import { CardStyle } from "../../types/componentsTypes";
 
 interface CardInfoProps {
   styleType: CardStyle;

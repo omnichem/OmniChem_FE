@@ -1,29 +1,6 @@
-export enum CardStyle {
-  ROLL_UP,
-  UN_WRAP,
-}
-
-export enum ButtonStyle {
-  ROUND,
-  GRAY,
-  BLUE,
-  DEFAULT,
-}
-
-// export interface CollapseItems {
-//   key: string;
-//   label: string;
-//   children: React.ReactNode;
-// }
-
 export interface Applications {
   key: string;
   value: string;
-}
-
-export enum InputStyle {
-  DEFAULT,
-  BORDERED,
 }
 
 interface AttributeValue {
@@ -64,8 +41,8 @@ export interface MaterialPageAttributesValues {
 export interface MaterialPageAttributes {
   attribute_name: string;
   translated_attribute_name: string;
-  units: unknown;
-  test_method_conditions: unknown;
+  units: string;
+  test_method_conditions: string;
   attribute_type: string;
   page_placement: string;
   values: MaterialPageAttributesValues[];

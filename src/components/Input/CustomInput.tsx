@@ -1,11 +1,7 @@
 import React from "react";
-
-import styled, { css } from "styled-components";
-import { InputStyle } from "../../type";
 import { Input } from "antd";
 
 interface InputProps {
-  styleType?: InputStyle;
   placeholder: string;
   onChange: (value: string) => void;
   value: string;
@@ -18,7 +14,6 @@ interface InputProps {
 }
 
 const CustomInput: React.FC<InputProps> = ({
-  styleType = InputStyle.DEFAULT,
   placeholder,
   onChange,
   value,
@@ -30,9 +25,8 @@ const CustomInput: React.FC<InputProps> = ({
   name,
 }) => {
   return (
-    <StyledInput
+    <Input
       placeholder={placeholder}
-      $styleType={styleType}
       onChange={(e) => onChange(e.target.value)}
       value={value}
       disabled={disabled}
@@ -43,15 +37,4 @@ const CustomInput: React.FC<InputProps> = ({
     />
   );
 };
-
-const StyledInput = styled(Input)<{
-  $styleType: InputStyle;
-}>`
-  ${({ $styleType }) => {
-    switch ($styleType) {
-      case InputStyle.DEFAULT:
-        return css``;
-    }
-  }}
-`;
 export default CustomInput;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import CustomButton from "../CustomButton";
-import { CardStyle } from "../../type";
+import { CardStyle } from "../../types/componentsTypes";
 import CardInfo from "./CardInfo";
 import fireIcon from "./fire2.png";
 import { Popover } from "antd";

@@ -1,19 +1,18 @@
-import styled from "styled-components";
-import Header from "../components/Header";
-import MaterialCard from "../components/MaterialCard/MaterialCard";
-import { useEffect, useState } from "react";
-import { Material, MaterialResponse } from "../type";
-import CustomInput from "../components/Input/CustomInput";
-
 import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
-import json from "../pages/data2.json";
-import { PaginationProps, Popover, Select } from "antd";
-import CustomButton from "../components/CustomButton";
+import { PaginationProps, Select, Popover } from "antd";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import CustomPagination from "../components/CustomPagination";
+import json from "../const/data2.json";
+import styled from "styled-components";
 import CollapseBlock from "../components/CollapseBlock";
+import CustomButton from "../components/CustomButton";
+import CustomPagination from "../components/CustomPagination";
+import Header from "../components/Header";
+import CustomInput from "../components/Input/CustomInput";
+import MaterialCard from "../components/MaterialCard/MaterialCard";
+import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
-import { http } from "../http";
+import { Material, MaterialResponse } from "../types/pagesTypes";
 
 const MainPage = () => {
   const [materials, setMaterials] = useState<Material[]>(json.results);

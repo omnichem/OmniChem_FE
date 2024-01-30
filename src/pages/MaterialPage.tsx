@@ -13,12 +13,12 @@ import CustomButton from "../components/CustomButton";
 import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
 import { PageWrapper } from "./MainPage";
-import { http } from "../http";
+import { http } from "../const/http";
 import {
   MaterialPageAttributes,
   MaterialPageAttributesValues,
   MaterialPageType,
-} from "../type";
+} from "../types/pagesTypes";
 
 const MaterialPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
@@ -34,6 +34,7 @@ const MaterialPage: React.FC = () => {
     fetchData();
   }, [id]);
 
+  console.log(material);
   const [searchState, setSearchState] = useState("");
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
@@ -64,6 +65,30 @@ const MaterialPage: React.FC = () => {
   const submitSamples = () => {
     setSamplesFormStage(2);
   };
+
+  // const columns = [
+  //   {
+  //     title: "Характеристика",
+  //     dataIndex: "characteristic",
+  //     key: "characteristic",
+  //     render: (text) => <a>{text}</a>,
+  //   },
+  //   {
+  //     title: "Значение",
+  //     dataIndex: "value",
+  //     key: "value",
+  //   },
+  //   {
+  //     title: "Единица измерения",
+  //     dataIndex: "units",
+  //     key: "units",
+  //   },
+  //   {
+  //     title: "Метод / Условия испытания",
+  //     dataIndex: "test_method_conditions",
+  //     key: "test_method_conditions",
+  //   },
+  // ];
 
   return (
     <>
@@ -257,11 +282,120 @@ const MaterialPage: React.FC = () => {
               </>
             ))}
           <Line />
+          <Table>
+            <TableColumn>
+              <TableColumnTittle>
+                <p style={{ color: "#ffffff" }}>Характеристика</p>
+              </TableColumnTittle>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Значение</p>
+              </TableColumnContent>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Единица измерения</p>
+              </TableColumnContent>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+            </TableColumn>
+            <TableColumn>
+              <TableColumnTittle>
+                <p style={{ color: "#ffffff" }}>Значение</p>
+              </TableColumnTittle>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+            </TableColumn>
+            <TableColumn>
+              <TableColumnTittle>
+                <p style={{ color: "#ffffff" }}>Единица измерения</p>
+              </TableColumnTittle>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+            </TableColumn>
+            <TableColumn>
+              <TableColumnTittle>
+                <p style={{ color: "#ffffff" }}>Метод / условия испытания</p>
+              </TableColumnTittle>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+              <TableColumnContent>
+                <p style={{ color: "#000000" }}>Content</p>
+              </TableColumnContent>
+            </TableColumn>
+
+            {/* {material?.attributes.map((attribute) => (
+                <TableContent>
+                  <TableContentItem>
+                    {attribute.attribute_name}
+                  </TableContentItem>
+                  <TableContentItem>
+                    {attribute.values[0].translated_value}
+                  </TableContentItem>
+                  <TableContentItem>{attribute.units}</TableContentItem>
+                  <TableContentItem>
+                    {attribute.test_method_conditions}
+                  </TableContentItem>
+                </TableContent>
+              ))} */}
+          </Table>
         </FullSpecsWrapper>
       </FullSpecsBG>
     </>
   );
 };
+
+const TableColumnContent = styled.div`
+  background-color: #cbcbcb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+`;
+
+const TableColumnTittle = styled.div`
+  background-color: #00a99d;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+`;
+
+const TableColumn = styled.div`
+  width: auto;
+
+  box-sizing: border-box;
+`;
+
+const Table = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  overflow: hidden;
+  border-radius: 5px 5px 0 0;
+
+  margin-bottom: 100px;
+`;
 
 const FullSpecsBG = styled.div`
   background-color: #fbfbfb;
