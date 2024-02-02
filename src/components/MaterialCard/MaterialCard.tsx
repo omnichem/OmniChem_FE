@@ -19,6 +19,7 @@ interface MaterialCardProps {
   isHaveSupplier: boolean;
   onCardClick: (id: number) => void;
   id: number;
+  link: string;
 }
 
 const MaterialCard: React.FC<MaterialCardProps> = ({
@@ -34,6 +35,7 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
   isHaveSupplier,
   id,
   onCardClick,
+  link
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [styleType, setStyleType] = useState<CardStyle>(CardStyle.UN_WRAP);
@@ -86,7 +88,7 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
       </StyledCard>
       <CardFooter>
         <LinkContainer>
-          <Link>Посмотреть сырье </Link>
+          <Link href={link}>Посмотреть сырье </Link>
           {isHaveSupplier ? (
             <FireIcon>
               <Popover content="У этого сырья есть поставщик!">

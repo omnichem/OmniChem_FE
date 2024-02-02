@@ -1,5 +1,5 @@
 import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
-import { PaginationProps, Select, Popover } from "antd";
+import { PaginationProps, Select, Popover, Spin } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import json from "../const/data2.json";
@@ -18,12 +18,19 @@ const MainPage = () => {
   const [materials, setMaterials] = useState<Material[]>(json.results);
   const [total, setTotal] = useState(50);
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(16)
   const debouncedMaterial = useDebounce(materials, 100000);
+  const [isLoading, setIsLoading] = useState(false)
 
   const onChangePage: PaginationProps["onChange"] = (page: number) => {
     console.log(page);
-    console.log(page);
+    
     setPage(page);
+  };
+
+  const onChangeSizePage: PaginationProps['onShowSizeChange'] = (current: number, size: number) => {
+    console.log(current, pageSize);
+    setPageSize(size)
   };
   useEffect(() => {
     // axios({
@@ -33,16 +40,21 @@ const MainPage = () => {
     // }).then(function (response) {
     //   setMaterials(response.data);
     // });
+    setIsLoading(true)
     const fetchData = async () => {
+      
       const response = await http.get<MaterialResponse>(
-        `API/v1/wiki/materials/?page=${page}`
+        // `API/v1/wiki/materials/?page=${page}`
+        `API/v1/wiki/materials/?page=${page}&page_size=${pageSize}`
       );
       console.log(response);
       setTotal(response.data.count);
       setMaterials(response.data.results);
+      setIsLoading(false)
     };
     fetchData();
-  }, [page, debouncedMaterial]);
+    
+  }, [page, debouncedMaterial, pageSize]);
 
   // useEffect(() => {});
   // Решит ли проблему заедания кнопки развертывания карточки сырья?
@@ -191,8 +203,13 @@ const MainPage = () => {
     console.log("clicked");
     navigate(`/material/${materialId}`);
   };
+
+  
   return (
     <>
+    {
+      isLoading ? <Spin fullscreen={true} size="large"/> : <></>
+    }
       <FloatButtonContainer>
         <Popover
           style={{}}
@@ -244,16 +261,22 @@ const MainPage = () => {
 
         <PaginationContainer style={{ marginBottom: "0" }}>
           <CustomPagination
+          defaultPageSize={16}
+          showQuickJumper={true}
+          pageSizeOptions={[8, 16, 24]}
+            onShowSizeChange={onChangeSizePage}
             current={page}
-            simple={true}
-            defaultPage={page}
+            simple={false}
+            
             onChange={onChangePage}
             total={total}
           />
+          
         </PaginationContainer>
         <MaterialsList>
           {materials.map((material: Material) => (
             <MaterialCard
+              link={`/material/${material.id}`}
               id={material.id}
               isHaveSupplier={material.is_supplier_available}
               onCardClick={onCardClick}
@@ -273,10 +296,14 @@ const MainPage = () => {
           ))}
         </MaterialsList>
         <PaginationContainer>
-          <CustomPagination
-            simple={true}
+        <CustomPagination
+          defaultPageSize={16}
+          showQuickJumper={true}
+          pageSizeOptions={[8, 16, 24]}
+            onShowSizeChange={onChangeSizePage}
             current={page}
-            defaultPage={page}
+            simple={false}
+            
             onChange={onChangePage}
             total={total}
           />

@@ -59,3 +59,7 @@ export interface MaterialPageType {
   company: string;
   attributes: MaterialPageAttributes[];
 }
+
+export interface PageSize {
+  pageSize: 8 | 16 | 24 
+  }

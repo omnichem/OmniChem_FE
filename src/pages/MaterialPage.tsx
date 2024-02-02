@@ -19,17 +19,21 @@ import {
   MaterialPageAttributesValues,
   MaterialPageType,
 } from "../types/pagesTypes";
+import { Spin } from "antd";
 
 const MaterialPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
+  const [isLoading, setIsLoading] = useState(false)
   const { id } = useParams();
   useEffect(() => {
+    setIsLoading(true)
     const fetchData = async () => {
       const response = await http.get<MaterialPageType>(
         `API/v1/wiki/materials/${id}/`
       );
 
       setMaterial(response.data);
+      setIsLoading(false)
     };
     fetchData();
   }, [id]);
@@ -90,8 +94,13 @@ const MaterialPage: React.FC = () => {
   //   },
   // ];
 
+
+
   return (
     <>
+    {
+      isLoading ? <Spin fullscreen={true} size="large"/> : <></>
+    }
       <CustomDrawer
         open={openQuoteRequest}
         onClose={onCloseQuoteRequest}
