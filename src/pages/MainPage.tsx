@@ -13,6 +13,7 @@ import MaterialCard from "../components/MaterialCard/MaterialCard";
 import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
 import { Material, MaterialResponse } from "../types/pagesTypes";
+import ErrorBoundary from "antd/es/alert/ErrorBoundary";
 
 const MainPage = () => {
   const [materials, setMaterials] = useState<Material[]>(json.results);
@@ -45,7 +46,7 @@ const MainPage = () => {
       
       const response = await http.get<MaterialResponse>(
         // `API/v1/wiki/materials/?page=${page}`
-        `API/v1/wiki/materials/?page=${page}&page_size=${pageSize}`
+        `http://localhost:8000/API/v1/wiki/materials/?page=${page}&page_size=${pageSize}`
       );
       console.log(response);
       setTotal(response.data.count);
@@ -207,6 +208,7 @@ const MainPage = () => {
   
   return (
     <>
+    <ErrorBoundary>
     {
       isLoading ? <Spin fullscreen={true} size="large"/> : <></>
     }
@@ -263,6 +265,7 @@ const MainPage = () => {
           <CustomPagination
           defaultPageSize={16}
           showQuickJumper={true}
+          pageSize={pageSize}
           pageSizeOptions={[8, 16, 24]}
             onShowSizeChange={onChangeSizePage}
             current={page}
@@ -303,12 +306,14 @@ const MainPage = () => {
             onShowSizeChange={onChangeSizePage}
             current={page}
             simple={false}
-            
+            pageSize={pageSize}
             onChange={onChangePage}
             total={total}
           />
         </PaginationContainer>
       </PageWrapper>
+    </ErrorBoundary>
+    
     </>
   );
 };

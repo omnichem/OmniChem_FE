@@ -26,6 +26,8 @@ export interface Material {
   values: Values[];
 }
 
+
+// карточки
 export interface MaterialResponse {
   count: number;
   next: string;
@@ -33,31 +35,37 @@ export interface MaterialResponse {
   results: Material[];
 }
 
-export interface MaterialPageAttributesValues {
-  translated_value: string;
-  value: string;
-}
+
+// описание сырья
+
 
 export interface MaterialPageAttributes {
-  attribute_name: string;
-  translated_attribute_name: string;
-  units: string;
-  test_method_conditions: string;
-  attribute_type: string;
-  page_placement: string;
-  values: MaterialPageAttributesValues[];
+  attribute_name: string,
+      attribute_values: string[]
+}
+
+export interface MaterialTableRows {
+      field_name: string;
+      field_value: string;
+      units: string;
+      test_method: null;
+    
+}
+
+export interface MaterialTable {
+      table_name: null,
+      table_rows: MaterialTableRows[]
 }
 
 export interface MaterialPageType {
   id: number;
-  value: string;
+  name: string;
+  translated_description: string;
   is_supplier_available: boolean;
-  irst_filter: string;
-  second_filter: string;
-  hird_filter: string;
-  brand: unknown;
   company: string;
-  attributes: MaterialPageAttributes[];
+  brand: string;
+  attributes: MaterialPageAttributes[]
+  tables: MaterialTable[]
 }
 
 export interface PageSize {

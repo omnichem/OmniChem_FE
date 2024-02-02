@@ -13,6 +13,7 @@ interface CustomPaginationProps {
   pageSizeOptions: number[];
   showQuickJumper: boolean;
   defaultPageSize: number;
+  pageSize: number;
 }
 
 const CustomPagination: React.FC<CustomPaginationProps> = ({
@@ -24,7 +25,8 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   onShowSizeChange,
   pageSizeOptions,
   showQuickJumper,
-  defaultPageSize
+  defaultPageSize,
+  pageSize
 }) => {
   return (
     <StyledPagination
@@ -39,6 +41,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
       onShowSizeChange={onShowSizeChange}
       showQuickJumper={showQuickJumper}
       responsive={true}
+      pageSize={pageSize}
     />
   );
 };

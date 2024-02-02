@@ -15,11 +15,11 @@ import { useNavigate, useParams } from "react-router";
 import { PageWrapper } from "./MainPage";
 import { http } from "../const/http";
 import {
-  MaterialPageAttributes,
-  MaterialPageAttributesValues,
   MaterialPageType,
 } from "../types/pagesTypes";
 import { Spin } from "antd";
+import CustomTable from "../components/CustomTable";
+import { columns, data } from "../const/tableData";
 
 const MaterialPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
@@ -29,7 +29,7 @@ const MaterialPage: React.FC = () => {
     setIsLoading(true)
     const fetchData = async () => {
       const response = await http.get<MaterialPageType>(
-        `API/v1/wiki/materials/${id}/`
+        `http://localhost:8000/API/v2/wiki/materials/${id}`
       );
 
       setMaterial(response.data);
@@ -161,22 +161,14 @@ const MaterialPage: React.FC = () => {
             icon={<ArrowLeftOutlined />}
             onClick={() => navigate("/")}
           />
-          <h2>{material?.value}</h2>
+          <h2>{material?.name}</h2>
         </MaterialHeader>
 
         <DescriptionBlock>
-          <MaterialFeatures>
-            {material?.attributes
-              .slice(0, 5)
-              .map((attribute: MaterialPageAttributes) => (
-                <FeatureLine key={`description:${material.id}`}>
-                  <FeatureName>
-                    {attribute.translated_attribute_name}:{" "}
-                  </FeatureName>
-                  {attribute.values[0].translated_value}
-                </FeatureLine>
-              ))}
-          </MaterialFeatures>
+          <FeatureLine>
+            {material?.translated_description}
+          </FeatureLine>
+          
         </DescriptionBlock>
         <Line />
         <h2>Поставщики:</h2>
@@ -213,207 +205,54 @@ const MaterialPage: React.FC = () => {
         </ScrollableList>
       </PageWrapper>
       <FullSpecsBG>
-        <FullSpecsWrapper style={{ alignItems: "flex-start" }}>
-          <h2>Идентификация и функциональность</h2>
-          {material?.attributes
-            .slice(5, 10)
-            .map((attribute: MaterialPageAttributes) => (
-              <FeatureLine key={`featureLine:${material.id}`}>
-                <FeatureName>
-                  {attribute.translated_attribute_name}:{" "}
-                </FeatureName>
-                {attribute.values[0].translated_value}
-              </FeatureLine>
-            ))}
-          {/* <Line /> */}
-          {/* <MolecularStructureBlock>
-          <FeatureName>{data.molucalarPicture.key}</FeatureName>
-          <img
-            src={data.molucalarPicture.value}
-            alt="Molecular Structure picture"
-          ></img>
-        </MolecularStructureBlock> */}
-          <Line />
-          <h2>Особенности и преимущества</h2>
-          {material?.attributes
-            .slice(11, 12)
-            .map((attribute: MaterialPageAttributes) => (
-              <FeatureLine>
-                <FeatureName key={`featuresAndBenefits:${material.id}`}>
-                  {attribute.translated_attribute_name}:{" "}
-                </FeatureName>
-                {attribute.values[0].translated_value}
-              </FeatureLine>
-            ))}
-          <Line />
-          <h2>Приложения и виды использования</h2>
-          {material?.attributes
-            .slice(13, 23)
-            .map((attribute: MaterialPageAttributes) => (
-              <FeatureLine>
-                <FeatureName key={`featuresAndBenefits:${material.id}`}>
-                  {attribute.translated_attribute_name}:{" "}
-                </FeatureName>
-                {attribute.values[0].translated_value}
-              </FeatureLine>
-            ))}
-          {material?.attributes
-            .slice(13, 23)
-            .map((attribute: MaterialPageAttributes) => (
-              <>
-                {attribute.values.length == 1 ? (
-                  <FeatureLine>
-                    <FeatureName key={`ApplicationsAndUses:${material.id}`}>
-                      {attribute.translated_attribute_name}:{" "}
-                    </FeatureName>
-                    {attribute.values[0].translated_value}
-                  </FeatureLine>
-                ) : (
-                  <ExtendedBlock>
-                    <FeatureName key={`ApplicationsAndUses:${material.id}`}>
-                      {attribute.translated_attribute_name}:{" "}
-                    </FeatureName>
-                    <FeatureLine>
-                      {attribute.values.map(
-                        (attribute: MaterialPageAttributesValues) => (
-                          <Wrapper
-                            key={`ApplicationsAndUses:wrapper:${attribute.translated_value}`}
-                          >
-                            <FeatureLine>
-                              {attribute.translated_value}
-                            </FeatureLine>
-                          </Wrapper>
-                        )
-                      )}
-                    </FeatureLine>
-                  </ExtendedBlock>
-                )}
-              </>
-            ))}
-          <Line />
-          <Table>
-            <TableColumn>
-              <TableColumnTittle>
-                <p style={{ color: "#ffffff" }}>Характеристика</p>
-              </TableColumnTittle>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Значение</p>
-              </TableColumnContent>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Единица измерения</p>
-              </TableColumnContent>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-            </TableColumn>
-            <TableColumn>
-              <TableColumnTittle>
-                <p style={{ color: "#ffffff" }}>Значение</p>
-              </TableColumnTittle>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-            </TableColumn>
-            <TableColumn>
-              <TableColumnTittle>
-                <p style={{ color: "#ffffff" }}>Единица измерения</p>
-              </TableColumnTittle>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-            </TableColumn>
-            <TableColumn>
-              <TableColumnTittle>
-                <p style={{ color: "#ffffff" }}>Метод / условия испытания</p>
-              </TableColumnTittle>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-              <TableColumnContent>
-                <p style={{ color: "#000000" }}>Content</p>
-              </TableColumnContent>
-            </TableColumn>
-
-            {/* {material?.attributes.map((attribute) => (
-                <TableContent>
-                  <TableContentItem>
-                    {attribute.attribute_name}
-                  </TableContentItem>
-                  <TableContentItem>
-                    {attribute.values[0].translated_value}
-                  </TableContentItem>
-                  <TableContentItem>{attribute.units}</TableContentItem>
-                  <TableContentItem>
-                    {attribute.test_method_conditions}
-                  </TableContentItem>
-                </TableContent>
-              ))} */}
-          </Table>
+        <FullSpecsWrapper >
+              {material?.attributes.map((attribute)=> (
+                <>
+                <FeatureWrapper>
+                  <FeatureNameContainer>
+                  <FeatureName>
+                    {attribute.attribute_name}: 
+                  </FeatureName>
+                  </FeatureNameContainer>
+                  
+                  <FeatureLineContainer>
+                  {
+                    attribute.attribute_values.map((attributeValues) => (
+                      <FeatureLine>{attributeValues}</FeatureLine>
+                    ))
+                  }
+                  </FeatureLineContainer>
+                  
+                </FeatureWrapper>
+                <Line/>
+                </>
+              ))}
+          <CustomTable size="large" columns={columns} data={data}/>
+          <Line/>
         </FullSpecsWrapper>
       </FullSpecsBG>
     </>
   );
 };
 
-const TableColumnContent = styled.div`
-  background-color: #cbcbcb;
-
+const FeatureNameContainer = styled.div`
+width: 360px
+`
+const FeatureLineContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
 
-  padding: 20px;
-`;
-
-const TableColumnTittle = styled.div`
-  background-color: #00a99d;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 20px;
-`;
-
-const TableColumn = styled.div`
-  width: auto;
-
-  box-sizing: border-box;
-`;
-
-const Table = styled.div`
+`
+const FeatureWrapper = styled.div`
   display: flex;
   flex-direction: row;
-
-  overflow: hidden;
-  border-radius: 5px 5px 0 0;
-
-  margin-bottom: 100px;
-`;
+  gap: 10px;
+`
 
 const FullSpecsBG = styled.div`
   background-color: #fbfbfb;
   width: 100%;
-`;
-
-const ExtendedBlock = styled.div`
-  display: flex;
-  gap: 10px;
 `;
 
 const MaterialHeader = styled.div`
@@ -422,11 +261,6 @@ const MaterialHeader = styled.div`
   gap: 20px;
 
   align-items: center;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 const Line = styled.div`
@@ -444,12 +278,13 @@ const FullSpecsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  align-items: center;
 
   margin: 0 auto;
   max-width: 1440px;
 
   padding-top: 30px;
+
+  overflow-wrap: break-word;
 
   @media (min-width: 320px) and (max-width: 768px) {
     display: flex;
@@ -479,7 +314,7 @@ const DescriptionBlock = styled.p`
   flex-direction: column;
   gap: 10px;
 
-  max-width: 800px;
+  max-width: 1440px;
 
   p:first-child {
     margin-bottom: 30px;
@@ -488,19 +323,16 @@ const DescriptionBlock = styled.p`
   margin: none;
 `;
 
-const MaterialFeatures = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`;
-
 const FeatureLine = styled.p`
   color: #505050;
+  /* white-space: nowrap; */
 `;
 
 const FeatureName = styled.span`
+font-size: 20px;
   font-weight: 700;
   color: #505050;
+  
 `;
 
 export const ScrollableList = styled.div`
