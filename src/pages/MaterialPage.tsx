@@ -15,30 +15,41 @@ import { useNavigate, useParams } from "react-router";
 import { PageWrapper } from "./MainPage";
 import { http } from "../const/http";
 import {
-  MaterialPageType,
+  MaterialPageType, MaterialTableRows,
 } from "../types/pagesTypes";
-import { Spin } from "antd";
+import {Spin } from "antd";
 import CustomTable from "../components/CustomTable";
-import { columns, data } from "../const/tableData";
+import { columns } from "../const/tableData";
+import { DataType } from "../types/componentsTypes";
+import CustomCarousel from "../components/CustomCarousel";
+
+
 
 const MaterialPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false)
+  const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([{
+    field_name: "",
+      field_value: "",
+      units: "",
+      test_method: null
+  }])
   const { id } = useParams();
   useEffect(() => {
     setIsLoading(true)
     const fetchData = async () => {
       const response = await http.get<MaterialPageType>(
-        `http://localhost:8000/API/v2/wiki/materials/${id}`
+        `API/v2/wiki/materials/${id}/`
       );
 
       setMaterial(response.data);
+      setMaterialTable(response.data.tables[0].table_rows)
       setIsLoading(false)
     };
     fetchData();
   }, [id]);
 
-  console.log(material);
+  
   const [searchState, setSearchState] = useState("");
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
@@ -70,34 +81,8 @@ const MaterialPage: React.FC = () => {
     setSamplesFormStage(2);
   };
 
-  // const columns = [
-  //   {
-  //     title: "Характеристика",
-  //     dataIndex: "characteristic",
-  //     key: "characteristic",
-  //     render: (text) => <a>{text}</a>,
-  //   },
-  //   {
-  //     title: "Значение",
-  //     dataIndex: "value",
-  //     key: "value",
-  //   },
-  //   {
-  //     title: "Единица измерения",
-  //     dataIndex: "units",
-  //     key: "units",
-  //   },
-  //   {
-  //     title: "Метод / Условия испытания",
-  //     dataIndex: "test_method_conditions",
-  //     key: "test_method_conditions",
-  //   },
-  // ];
-
-
-
   return (
-    <>
+    <div>
     {
       isLoading ? <Spin fullscreen={true} size="large"/> : <></>
     }
@@ -153,8 +138,10 @@ const MaterialPage: React.FC = () => {
           addonBefore={<SearchOutlined />}
         />
       </Header>
+      
       <PageWrapper style={{ alignItems: "flex-start" }}>
-        <MaterialHeader>
+        
+      <MaterialHeader>
           <CustomButton
             type="primary"
             shape="round"
@@ -163,7 +150,6 @@ const MaterialPage: React.FC = () => {
           />
           <h2>{material?.name}</h2>
         </MaterialHeader>
-
         <DescriptionBlock>
           <FeatureLine>
             {material?.translated_description}
@@ -172,9 +158,9 @@ const MaterialPage: React.FC = () => {
         </DescriptionBlock>
         <Line />
         <h2>Поставщики:</h2>
-
-        <ScrollableList>
-          {suppliersData.length == 0 ? (
+        <CarouselWrapper>
+        <CustomCarousel slidesToShow={4}>
+        {suppliersData.length == 0 ? (
             <h2>В настоящее время у этого сырья нет поставщиков</h2>
           ) : (
             suppliersData.map((supplier) => {
@@ -202,7 +188,10 @@ const MaterialPage: React.FC = () => {
               );
             })
           )}
-        </ScrollableList>
+        </CustomCarousel>
+        </CarouselWrapper>
+        
+        
       </PageWrapper>
       <FullSpecsBG>
         <FullSpecsWrapper >
@@ -215,7 +204,7 @@ const MaterialPage: React.FC = () => {
                   </FeatureName>
                   </FeatureNameContainer>
                   
-                  <FeatureLineContainer>
+                  <FeatureLineContainer key={`featureLineContainer:${attribute.attribute_name}`}>
                   {
                     attribute.attribute_values.map((attributeValues) => (
                       <FeatureLine>{attributeValues}</FeatureLine>
@@ -227,13 +216,30 @@ const MaterialPage: React.FC = () => {
                 <Line/>
                 </>
               ))}
-          <CustomTable size="large" columns={columns} data={data}/>
+          <CustomTable size="large" columns={columns} data={materialTable?.map((tableRow) => {
+              const data: DataType =
+                {
+                  key: tableRow.field_name,
+                  name: tableRow.field_name,
+                  value: tableRow.field_value,
+                  unit: tableRow.units,
+                  method: tableRow.test_method,
+                }
+              return data
+            })}/>
           <Line/>
         </FullSpecsWrapper>
       </FullSpecsBG>
-    </>
+      
+    </div>
   );
 };
+
+const CarouselWrapper = styled.div`
+  width:100%;
+  margin-bottom: 30px;
+  
+`
 
 const FeatureNameContainer = styled.div`
 width: 360px
@@ -248,6 +254,13 @@ const FeatureWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    max-width: 310px;
 `
 
 const FullSpecsBG = styled.div`
@@ -260,19 +273,16 @@ const MaterialHeader = styled.div`
   flex-direction: row;
   gap: 20px;
 
+  max-width: 1440px;
+
   align-items: center;
+
 `;
 
 const Line = styled.div`
   border-bottom: 1px solid #d6d6d6;
   width: 100%;
 `;
-
-// const MolecularStructureBlock = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   gap: 30px;
-// `;
 
 const FullSpecsWrapper = styled.div`
   display: flex;
@@ -288,7 +298,6 @@ const FullSpecsWrapper = styled.div`
 
   @media (min-width: 320px) and (max-width: 768px) {
     display: flex;
-
     gap: 20px;
 
     max-width: 310px;
@@ -300,14 +309,6 @@ const FullSpecsWrapper = styled.div`
 
   background-color: #fbfbfb;
 `;
-
-// const Description = styled.p`
-//   margin: 20px 0 20px 0;
-
-//   font-weight: 200;
-//   word-spacing: 1px;
-//   color: #2a2b2d;
-// `;
 
 const DescriptionBlock = styled.p`
   display: flex;
@@ -344,7 +345,10 @@ export const ScrollableList = styled.div`
   flex-direction: row;
   gap: 20px;
 
+  box-sizing: border-box;
   overflow-x: scroll;
+
+
 
   &::-webkit-scrollbar {
     display: none;

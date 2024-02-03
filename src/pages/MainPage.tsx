@@ -24,13 +24,12 @@ const MainPage = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const onChangePage: PaginationProps["onChange"] = (page: number) => {
-    console.log(page);
     
     setPage(page);
   };
 
   const onChangeSizePage: PaginationProps['onShowSizeChange'] = (current: number, size: number) => {
-    console.log(current, pageSize);
+    
     setPageSize(size)
   };
   useEffect(() => {
@@ -45,10 +44,8 @@ const MainPage = () => {
     const fetchData = async () => {
       
       const response = await http.get<MaterialResponse>(
-        // `API/v1/wiki/materials/?page=${page}`
-        `http://localhost:8000/API/v1/wiki/materials/?page=${page}&page_size=${pageSize}`
+        `API/v1/wiki/materials/?page=${page}&page_size=${pageSize}`
       );
-      console.log(response);
       setTotal(response.data.count);
       setMaterials(response.data.results);
       setIsLoading(false)
@@ -201,7 +198,6 @@ const MainPage = () => {
   ];
 
   const onCardClick = (materialId: number) => {
-    console.log("clicked");
     navigate(`/material/${materialId}`);
   };
 
@@ -239,22 +235,6 @@ const MainPage = () => {
         />
       </Header>
       <PageWrapper>
-        {/* {data.suppliers.length == 0 ? (
-            <h2>В настоящее время у этого сырья нет поставщиков</h2>
-          ) : (
-            data.suppliers.map((supplier) => {
-              
-              return (
-                <SupplierCard
-                  key={data.id}
-                  items={items}
-                  sampleRequest={showSampleRequest}
-                  quoteRequest={showQuoteRequest}
-                />
-              );
-            })
-          )} */}
-
         <FiltersContainer>
           <CollapseBlock items={filtersItems}>
             <CustomButton text="Фильтры" type="primary" />
