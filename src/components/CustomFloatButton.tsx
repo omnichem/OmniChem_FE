@@ -7,9 +7,8 @@ interface CustomFloatButtonProps {
   onClick?: () => void;
 }
 
-const CustomFloatButton: React.FC<CustomFloatButtonProps> = ({
+export const CustomFloatButton: React.FC<CustomFloatButtonProps> = ({
   icon,
   toolTip,
 }) => <FloatButton icon={icon} tooltip={<div>{toolTip}</div>} />;
 
-export default CustomFloatButton;

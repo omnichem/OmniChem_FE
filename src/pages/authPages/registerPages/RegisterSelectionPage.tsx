@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { useNavigate } from 'react-router';
-import CustomButton from '../../../components/CustomButton';
+import { CustomButton } from '../../../components';
 
 const RegisterSelectionPage = () => {
   const navigate = useNavigate();

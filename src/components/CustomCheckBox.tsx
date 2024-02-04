@@ -6,6 +6,5 @@ const onChange = (e: CheckboxChangeEvent) => {
   console.log(`checked = ${e.target.checked}`);
 };
 
-const CustomCheckBox: React.FC = () => <Checkbox onChange={onChange} />;
+export const CustomCheckBox: React.FC = () => <Checkbox onChange={onChange} />;
 
-export default CustomCheckBox;

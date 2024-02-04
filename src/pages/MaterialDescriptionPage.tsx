@@ -1,15 +1,9 @@
-import Header from "../components/Header";
-import Input from "../components/Input/CustomInput";
 import styled from "styled-components";
 // import SupplierCard from "../components/SupplierCard";
 // import { suppliersData } from "../const/data";
-import CustomDrawer from "../components/CustomDrawer";
 import { useEffect, useState } from "react";
-
 import SamplesForm from "./DrawerPages/SamplesForm";
-import Button from "../components/CustomButton";
 import QuoteForm from "./DrawerPages/QuoteForm";
-import CustomButton from "../components/CustomButton";
 import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
 import { AuthContainer, PageWrapper } from "./MaterialCardsPage";
@@ -17,15 +11,12 @@ import { http } from "../const/http";
 import {
   MaterialPageType, MaterialTableRows,
 } from "../types/pagesTypes";
-import {Spin } from "antd";
-import CustomTable from "../components/CustomTable";
 import { columns } from "../const/tableData";
 import { DataType } from "../types/componentsTypes";
-import { Logo } from "../components/Logo";
+import { Spin } from "antd";
+import { CustomButton, CustomDrawer, CustomInput, CustomTable, Header, Logo } from "../components";
 // import CustomCarousel from "../components/CustomCarousel";
 // import StickyComponent from "../components/StickyMaterialHeader";
-
-
 
 const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
@@ -100,7 +91,7 @@ const MaterialDescriptionPage: React.FC = () => {
         ) : (
           <div>
             <p>Ваш запрос был отправлен поставщику</p>
-            <Button
+            <CustomButton
               type="default"
               onClick={() => location.reload()}
               text="Продолжить"
@@ -120,7 +111,7 @@ const MaterialDescriptionPage: React.FC = () => {
         ) : (
           <div>
             <p>Ваш запрос был отправлен поставщику</p>
-            <Button
+            <CustomButton
               type="default"
               onClick={() => location.reload()}
               text="Продолжить"
@@ -131,7 +122,7 @@ const MaterialDescriptionPage: React.FC = () => {
 
       <Header>
       <Logo height={36} width={170}/>
-        <Input
+        <CustomInput
           name=""
           placeholder="Введите то, что вы хотите найти"
           onChange={setSearchState}

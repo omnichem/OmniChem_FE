@@ -16,7 +16,7 @@ interface CustomPaginationProps {
   pageSize: number;
 }
 
-const CustomPagination: React.FC<CustomPaginationProps> = ({
+export const CustomPagination: React.FC<CustomPaginationProps> = ({
   defaultPage,
   simple,
   total,
@@ -49,5 +49,3 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
 const StyledPagination = styled(Pagination)`
 
 `;
-
-export default CustomPagination;

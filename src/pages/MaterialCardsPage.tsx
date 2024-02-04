@@ -3,16 +3,13 @@ import { PaginationProps, Select, Popover, Spin } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import CollapseBlock from "../components/CollapseBlock";
-import CustomButton from "../components/CustomButton";
-import CustomPagination from "../components/CustomPagination";
-import Header from "../components/Header";
-import CustomInput from "../components/Input/CustomInput";
-import MaterialCard from "../components/MaterialCard/MaterialCard";
 import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
 import { CardMaterial, CardMaterialResponse } from "../types/pagesTypes";
 import {Logo} from "../components/Logo";
+import { CollapseBlock, CustomButton, CustomInput, Header } from "../components";
+import { CustomPagination } from "../components/CustomPagination";
+import { MaterialCard } from "../components/MaterialCard/MaterialCard";
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();

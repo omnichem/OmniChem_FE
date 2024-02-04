@@ -5,10 +5,10 @@ interface CustomCardProps {
   // title: string;
   children: React.ReactNode;
   onClick?: () => void;
-  width: number;
+  width?: number;
 }
 
-const CustomCard: React.FC<CustomCardProps> = ({ children, onClick, width }) => (
+export const CustomCard: React.FC<CustomCardProps> = ({ children, onClick, width }) => (
     <Card
       hoverable={true}
       style={{
@@ -19,5 +19,3 @@ const CustomCard: React.FC<CustomCardProps> = ({ children, onClick, width }) => 
       {children}
     </Card>
 );
-
-export default CustomCard;

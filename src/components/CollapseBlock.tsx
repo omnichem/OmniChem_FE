@@ -9,7 +9,7 @@ interface CollapseBlockProps {
   children?: React.ReactNode;
 }
 
-const CollapseBlock: React.FC<CollapseBlockProps> = ({
+export const CollapseBlock: React.FC<CollapseBlockProps> = ({
   items,
   ghost,
   children,
@@ -28,5 +28,3 @@ const CollapseBlock: React.FC<CollapseBlockProps> = ({
 const StyledCollapse = styled(Collapse)`
   width: 100%;
 `;
-
-export default CollapseBlock;

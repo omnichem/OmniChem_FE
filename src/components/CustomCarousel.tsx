@@ -1,6 +1,6 @@
 import React from 'react';
 import { Carousel } from 'antd';
-import CustomButton from './CustomButton';
+import {CustomButton} from './CustomButton';
 import styled from 'styled-components';
 
 interface CustomCarouselProps {
@@ -52,7 +52,7 @@ const settings = {
   prevArrow: <SamplePrevArrow />
 }
 
-const CustomCarousel: React.FC<CustomCarouselProps> = ({children, slidesToShow}) => {
+export const CustomCarousel: React.FC<CustomCarouselProps> = ({children, slidesToShow}) => {
   const onChange = (currentSlide: number) => {
     console.log(currentSlide);
   };
@@ -67,5 +67,3 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({children, slidesToShow})
 const StyledCarousel = styled(Carousel)`
 
 `
-
-export default CustomCarousel;

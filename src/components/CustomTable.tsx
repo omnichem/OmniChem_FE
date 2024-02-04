@@ -10,8 +10,6 @@ interface CustomTableProps {
   data: DataType[];
 }
 
-const CustomTable: React.FC<CustomTableProps> = ({ size, columns, data }) => (
+export const CustomTable: React.FC<CustomTableProps> = ({ size, columns, data }) => (
   <Table scroll={{ x: 50 }}bordered={true} pagination={false} size={size} columns={columns} dataSource={data} />
 );
-
-export default CustomTable;

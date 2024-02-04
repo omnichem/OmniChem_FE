@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
-import CustomButton from '../../../components/CustomButton';
+import { CustomButton } from '../../../components';
+
 
 const LoginSelectionPage = () => {
   const navigate = useNavigate();

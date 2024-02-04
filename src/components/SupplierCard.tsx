@@ -1,10 +1,10 @@
 import React from "react";
 
-import CustomButton from "./CustomButton";
+import {CustomButton} from "./CustomButton";
 
-import CollapseBlock from "./CollapseBlock";
+import {CollapseBlock} from "./CollapseBlock";
 import { CollapseProps } from "antd";
-import CustomCard from "./MaterialCard/CustomCard";
+import {CustomCard} from "./MaterialCard/CustomCard";
 import styled from "styled-components";
 
 interface MaterialCardProps {
@@ -13,7 +13,7 @@ interface MaterialCardProps {
   quoteRequest: () => void;
 }
 
-const SupplierCard: React.FC<MaterialCardProps> = ({
+export const SupplierCard: React.FC<MaterialCardProps> = ({
   items,
   sampleRequest,
   quoteRequest,

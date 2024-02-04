@@ -13,7 +13,7 @@ interface InputProps {
   name: string;
 }
 
-const CustomInput: React.FC<InputProps> = ({
+export const CustomInput: React.FC<InputProps> = ({
   placeholder,
   onChange,
   value,
@@ -37,4 +37,3 @@ const CustomInput: React.FC<InputProps> = ({
     />
   );
 };
-export default CustomInput;

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-function IconBasic_magnifier(props: React.SVGProps<SVGSVGElement>) {
+export function IconBasic_magnifier(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 64 64"
@@ -23,4 +23,4 @@ function IconBasic_magnifier(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export default IconBasic_magnifier;
+

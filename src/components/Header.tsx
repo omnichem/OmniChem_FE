@@ -5,7 +5,7 @@ interface HeaderProps {
   children: React.ReactNode;
 }
 
-const Header: React.FC<HeaderProps> = ({ children }) => {
+export const Header: React.FC<HeaderProps> = ({ children }) => {
   return (
     <StyledHeader>
       <HeaderContainer>{children}</HeaderContainer>
@@ -51,5 +51,3 @@ export const HeaderContainer = styled.div`
     box-sizing: border-box;
   }
 `;
-
-export default Header;

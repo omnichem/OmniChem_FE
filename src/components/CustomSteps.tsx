@@ -20,7 +20,7 @@ interface CustomStepsProps {
   size: "default" | "small";
 }
 
-const CustomSteps: React.FC<CustomStepsProps> = ({ current, size }) => (
+export const CustomSteps: React.FC<CustomStepsProps> = ({ current, size }) => (
   <StyledSteps
     current={current}
     progressDot={customDot}
@@ -40,5 +40,3 @@ const CustomSteps: React.FC<CustomStepsProps> = ({ current, size }) => (
 );
 
 const StyledSteps = styled(Steps)``;
-
-export default CustomSteps;

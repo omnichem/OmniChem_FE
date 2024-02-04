@@ -14,7 +14,7 @@ interface ButtonProps {
   style?: React.CSSProperties;
 }
 
-const CustomButton: React.FC<ButtonProps> = ({
+export const CustomButton: React.FC<ButtonProps> = ({
   children,
   text,
   shape,
@@ -44,5 +44,3 @@ const StyledButton = styled(Button)`
   align-items: center;
   justify-content: center;
 `;
-
-export default CustomButton;

@@ -8,7 +8,7 @@ interface CardInfoProps {
   children?: React.ReactNode;
 }
 
-const CardInfo: React.FC<CardInfoProps> = ({
+export const CardInfo: React.FC<CardInfoProps> = ({
   children,
   styleType = CardStyle.UN_WRAP,
 }) => {
@@ -49,4 +49,3 @@ const StyledButton = styled.div<{
     }
   }}
 `;
-export default CardInfo;

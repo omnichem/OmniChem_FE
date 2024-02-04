@@ -11,7 +11,7 @@ interface DivederProps {
   title: string;
 }
 
-const CustomDrawer: React.FC<DivederProps> = ({
+export const CustomDrawer: React.FC<DivederProps> = ({
   open,
   onClose,
   children,
@@ -33,5 +33,3 @@ const CustomDrawer: React.FC<DivederProps> = ({
 };
 
 const StyledDrawer = styled(Drawer)``;
-
-export default CustomDrawer;

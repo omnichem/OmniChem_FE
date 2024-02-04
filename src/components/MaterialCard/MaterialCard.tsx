@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import CustomButton from "../CustomButton";
+import {CustomButton} from "../CustomButton";
 import { CardStyle } from "../../types/componentsTypes";
-import CardInfo from "./CardInfo";
+import {CardInfo} from "./CardInfo";
 import fireIcon from "./fire2.png";
 import { Popover } from "antd";
 import { CardAttributes } from "../../types/pagesTypes";
@@ -21,7 +21,7 @@ interface MaterialCardProps {
   link: string;
 }
 
-const MaterialCard: React.FC<MaterialCardProps> = ({
+export const MaterialCard: React.FC<MaterialCardProps> = ({
   name,
   translated_description,
   is_supplier_available,
@@ -213,5 +213,3 @@ const Link = styled.a`
     color: #383a3b;
   }
 `;
-
-export default MaterialCard;
