@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
 const StyledHeader = styled.div`
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 1001;
   height: auto;
 
   background-color: #ffffff;

@@ -1,24 +1,23 @@
 import React from "react";
-import { Card, Space } from "antd";
+import { Card } from "antd";
 
 interface CustomCardProps {
   // title: string;
   children: React.ReactNode;
   onClick?: () => void;
+  width: number;
 }
 
-const CustomCard: React.FC<CustomCardProps> = ({ children, onClick }) => (
-  <Space direction="vertical" size={16}>
+const CustomCard: React.FC<CustomCardProps> = ({ children, onClick, width }) => (
     <Card
+      hoverable={true}
       style={{
-        width: 300,
-        boxShadow: "0 1px 2px -2px rgba(0, 0, 0, 0.16)",
+        width: width,
       }}
       onClick={onClick}
     >
       {children}
     </Card>
-  </Space>
 );
 
 export default CustomCard;

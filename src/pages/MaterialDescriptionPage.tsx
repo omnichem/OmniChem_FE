@@ -1,8 +1,8 @@
 import Header from "../components/Header";
 import Input from "../components/Input/CustomInput";
 import styled from "styled-components";
-import SupplierCard from "../components/SupplierCard";
-import { suppliersData } from "../const/data";
+// import SupplierCard from "../components/SupplierCard";
+// import { suppliersData } from "../const/data";
 import CustomDrawer from "../components/CustomDrawer";
 import { useEffect, useState } from "react";
 
@@ -12,7 +12,7 @@ import QuoteForm from "./DrawerPages/QuoteForm";
 import CustomButton from "../components/CustomButton";
 import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
-import { PageWrapper } from "./MainPage";
+import { AuthContainer, PageWrapper } from "./MaterialCardsPage";
 import { http } from "../const/http";
 import {
   MaterialPageType, MaterialTableRows,
@@ -21,11 +21,13 @@ import {Spin } from "antd";
 import CustomTable from "../components/CustomTable";
 import { columns } from "../const/tableData";
 import { DataType } from "../types/componentsTypes";
-import CustomCarousel from "../components/CustomCarousel";
+import { Logo } from "../components/Logo";
+// import CustomCarousel from "../components/CustomCarousel";
+// import StickyComponent from "../components/StickyMaterialHeader";
 
 
 
-const MaterialPage: React.FC = () => {
+const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false)
   const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([{
@@ -54,13 +56,13 @@ const MaterialPage: React.FC = () => {
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
   const [openSampleRequest, setOpenSampleRequest] = useState(false);
-  const showQuoteRequest = () => {
-    setOpenQuoteRequest(true);
-  };
+  // const showQuoteRequest = () => {
+  //   setOpenQuoteRequest(true);
+  // };
 
-  const showSampleRequest = () => {
-    setOpenSampleRequest(true);
-  };
+  // const showSampleRequest = () => {
+  //   setOpenSampleRequest(true);
+  // };
 
   const onCloseQuoteRequest = () => {
     setOpenQuoteRequest(false);
@@ -81,11 +83,11 @@ const MaterialPage: React.FC = () => {
     setSamplesFormStage(2);
   };
 
+
+  
   return (
     <div>
-    {
-      isLoading ? <Spin fullscreen={true} size="large"/> : <></>
-    }
+    
       <CustomDrawer
         open={openQuoteRequest}
         onClose={onCloseQuoteRequest}
@@ -128,8 +130,7 @@ const MaterialPage: React.FC = () => {
       </CustomDrawer>
 
       <Header>
-        <h1>OmniChem</h1>
-
+      <Logo height={36} width={170}/>
         <Input
           name=""
           placeholder="Введите то, что вы хотите найти"
@@ -137,11 +138,16 @@ const MaterialPage: React.FC = () => {
           value={searchState}
           addonBefore={<SearchOutlined />}
         />
+        <AuthContainer>
+        <CustomButton type="text" text="Войти в систему" onClick={()=> navigate('/login-selection')}/>
+        <CustomButton type="primary" text="Зарегистрироваться" onClick={()=> navigate('/register-selection')}/>
+        </AuthContainer>
       </Header>
-      
+      {
+      isLoading ? <Spin fullscreen={true} size="large"/> : <>
       <PageWrapper style={{ alignItems: "flex-start" }}>
         
-      <MaterialHeader>
+        <MaterialHeader>
           <CustomButton
             type="primary"
             shape="round"
@@ -150,14 +156,15 @@ const MaterialPage: React.FC = () => {
           />
           <h2>{material?.name}</h2>
         </MaterialHeader>
+      
         <DescriptionBlock>
           <FeatureLine>
             {material?.translated_description}
           </FeatureLine>
           
         </DescriptionBlock>
-        <Line />
-        <h2>Поставщики:</h2>
+        {/* <Line /> */}
+        {/* <h2>Поставщики:</h2>
         <CarouselWrapper>
         <CustomCarousel slidesToShow={4}>
         {suppliersData.length == 0 ? (
@@ -189,7 +196,7 @@ const MaterialPage: React.FC = () => {
             })
           )}
         </CustomCarousel>
-        </CarouselWrapper>
+        </CarouselWrapper> */}
         
         
       </PageWrapper>
@@ -230,16 +237,20 @@ const MaterialPage: React.FC = () => {
           <Line/>
         </FullSpecsWrapper>
       </FullSpecsBG>
+      </>
+    }
+      
       
     </div>
   );
 };
 
-const CarouselWrapper = styled.div`
-  width:100%;
-  margin-bottom: 30px;
+// const CarouselWrapper = styled.div`
+//   width:100%;
+//   margin-bottom: 30px;
   
-`
+
+// `
 
 const FeatureNameContainer = styled.div`
 width: 360px
@@ -260,7 +271,7 @@ const FeatureWrapper = styled.div`
     flex-direction: column;
     gap: 20px;
 
-    max-width: 310px;
+    max-width: 310px;}
 `
 
 const FullSpecsBG = styled.div`
@@ -276,7 +287,6 @@ const MaterialHeader = styled.div`
   max-width: 1440px;
 
   align-items: center;
-
 `;
 
 const Line = styled.div`
@@ -356,4 +366,4 @@ export const ScrollableList = styled.div`
 
   box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.2) inset;
 `;
-export default MaterialPage;
+export default MaterialDescriptionPage;

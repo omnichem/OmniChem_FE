@@ -5,34 +5,29 @@ import { CardStyle } from "../../types/componentsTypes";
 import CardInfo from "./CardInfo";
 import fireIcon from "./fire2.png";
 import { Popover } from "antd";
+import { CardAttributes } from "../../types/pagesTypes";
 
 interface MaterialCardProps {
-  manufacturerName: string;
+  id: number;
+  name: string;
+  translated_description: string;
+  is_supplier_available: boolean;
+  attributes: CardAttributes[];
+
   manufacturerImage?: string;
   manufacturerIcon?: string;
-  readyToUseProductType: string;
-  compatibleSubstratesAndSurfaces: string;
-  features: string;
-  chemicalFamily: string;
-  description: string;
-  materialName: string;
-  isHaveSupplier: boolean;
+
   onCardClick: (id: number) => void;
-  id: number;
   link: string;
 }
 
 const MaterialCard: React.FC<MaterialCardProps> = ({
-  manufacturerName,
-  manufacturerImage,
+  name,
+  translated_description,
+  is_supplier_available,
+  attributes,
   manufacturerIcon,
-  materialName,
-  readyToUseProductType,
-  compatibleSubstratesAndSurfaces,
-  features,
-  chemicalFamily,
-  description,
-  isHaveSupplier,
+  manufacturerImage,
   id,
   onCardClick,
   link
@@ -61,35 +56,28 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
           <ManufacturerIcon>{manufacturerIcon}</ManufacturerIcon>
         </CardHeader>
         <CardInfo styleType={styleType}>
-          <ManufactureName>{manufacturerName}</ManufactureName>
-          <MaterialName>{materialName}</MaterialName>
-          <div>
-            <MaterialDescription style={{ fontWeight: "700" }}>
-              Ready to Use Product Type:{readyToUseProductType}
-            </MaterialDescription>
-          </div>
-          <div>
-            <MaterialDescription style={{ fontWeight: "700" }}>
-              Compatible Substrates & Surfaces:{compatibleSubstratesAndSurfaces}
-            </MaterialDescription>
-          </div>
-          <div>
-            <MaterialDescription style={{ fontWeight: "700" }}>
-              Features: {features}
-            </MaterialDescription>
-          </div>
-          <div>
-            <MaterialDescription style={{ fontWeight: "700" }}>
-              Chemical Family: {chemicalFamily}
-            </MaterialDescription>
-          </div>
-          <MaterialDescription>{description}</MaterialDescription>
+          <MaterialName>{name}</MaterialName>
+          {
+            attributes.map((attribute)=> (
+              <div>
+                <MaterialAttributeName>
+                {attribute.attribute_name}
+                  </MaterialAttributeName>
+                  <MaterialAttributeValue>
+                  {attribute.attribute_values.map((value)=> (<span>{value}</span>))}
+                  </MaterialAttributeValue>
+              </div>
+                
+            ))
+          }
+          <MaterialAttributeValue>{translated_description}</MaterialAttributeValue>
+          
         </CardInfo>
       </StyledCard>
       <CardFooter>
         <LinkContainer>
           <Link href={link}>Посмотреть сырье </Link>
-          {isHaveSupplier ? (
+          {is_supplier_available ? (
             <FireIcon>
               <Popover content="У этого сырья есть поставщик!">
                 <img src={fireIcon} alt="" />
@@ -120,6 +108,13 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
   );
 };
 
+const MaterialAttributeName = styled.p`
+  color: #505050;
+  font-weight: 700;
+`
+const MaterialAttributeValue = styled.p`
+color: #505050;
+`
 const LinkContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -189,33 +184,12 @@ const ManufacturerIcon = styled.div`
   );
 `;
 
-const ManufactureName = styled.p`
-  color: rgb(138, 138, 138);
-  margin: 0px 0px -2px;
-
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.33333;
-  letter-spacing: 0px;
-  -webkit-font-smoothing: antialiased !important;
-`;
-
-const MaterialDescription = styled.span`
-  color: rgb(138, 138, 138);
-  margin: 0px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0px;
-  line-height: 14px;
-`;
-
 const MaterialName = styled.p`
   color: #222c2e;
   margin: 0;
-  font-style: normal;
 
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.375;
   letter-spacing: 0px;
 `;

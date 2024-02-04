@@ -46,6 +46,8 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   );
 };
 
-const StyledPagination = styled(Pagination)``;
+const StyledPagination = styled(Pagination)`
+
+`;
 
 export default CustomPagination;

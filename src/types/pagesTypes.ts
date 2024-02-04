@@ -1,60 +1,41 @@
-export interface Applications {
-  key: string;
-  value: string;
-}
-
-interface AttributeValue {
-  translated_value: string;
-  value: string;
-}
-
-interface Values {
+export interface CardAttributes {
   attribute_name: string;
-  translated_attribute_name: string;
-  values: AttributeValue[];
+  attribute_values: string[];
 }
 
-export interface Material {
+export interface CardMaterial {
   id: number;
-  value: string;
+  name: string;
+  translated_description: string;
   is_supplier_available: boolean;
-  first_filter: string;
-  second_filter: string;
-  third_filter: string;
-  brand: unknown;
-  company: string;
-  values: Values[];
+  attributes: CardAttributes[];
 }
-
 
 // карточки
-export interface MaterialResponse {
+export interface CardMaterialResponse {
   count: number;
   next: string;
   previous: string;
-  results: Material[];
+  results: CardMaterial[];
 }
-
 
 // описание сырья
 
-
 export interface MaterialPageAttributes {
-  attribute_name: string,
-      attribute_values: string[]
+  attribute_name: string;
+  attribute_values: string[];
 }
 
 export interface MaterialTableRows {
-      field_name: string;
-      field_value: string;
-      units: string;
-      test_method: null;
-    
+  field_name: string;
+  field_value: string;
+  units: string;
+  test_method: null;
 }
 
 export interface MaterialTable {
-      table_name: null,
-      table_rows: MaterialTableRows[]
+  table_name: null;
+  table_rows: MaterialTableRows[];
 }
 
 export interface MaterialPageType {
@@ -64,10 +45,10 @@ export interface MaterialPageType {
   is_supplier_available: boolean;
   company: string;
   brand: string;
-  attributes: MaterialPageAttributes[]
-  tables: MaterialTable[]
+  attributes: MaterialPageAttributes[];
+  tables: MaterialTable[];
 }
 
 export interface PageSize {
-  pageSize: 8 | 16 | 24 
-  }
+  pageSize: 8 | 16 | 24;
+}

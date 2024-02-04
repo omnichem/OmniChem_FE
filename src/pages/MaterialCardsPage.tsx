@@ -2,7 +2,6 @@ import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
 import { PaginationProps, Select, Popover, Spin } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import json from "../const/data2.json";
 import styled from "styled-components";
 import CollapseBlock from "../components/CollapseBlock";
 import CustomButton from "../components/CustomButton";
@@ -12,56 +11,40 @@ import CustomInput from "../components/Input/CustomInput";
 import MaterialCard from "../components/MaterialCard/MaterialCard";
 import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
-import { Material, MaterialResponse } from "../types/pagesTypes";
-import ErrorBoundary from "antd/es/alert/ErrorBoundary";
+import { CardMaterial, CardMaterialResponse } from "../types/pagesTypes";
+import {Logo} from "../components/Logo";
 
-const MainPage = () => {
-  const [materials, setMaterials] = useState<Material[]>(json.results);
+const MaterialCardsPage = () => {
+  const [materials, setMaterials] = useState<CardMaterial[]>();
   const [total, setTotal] = useState(50);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(16)
-  const debouncedMaterial = useDebounce(materials, 100000);
+  const debouncedMaterial = useDebounce(materials, 600000);
   const [isLoading, setIsLoading] = useState(false)
 
   const onChangePage: PaginationProps["onChange"] = (page: number) => {
-    
     setPage(page);
   };
 
   const onChangeSizePage: PaginationProps['onShowSizeChange'] = (current: number, size: number) => {
-    
     setPageSize(size)
   };
   useEffect(() => {
-    // axios({
-    //   method: "get",
-    //   url: "",
-    //   responseType: "stream",
-    // }).then(function (response) {
-    //   setMaterials(response.data);
-    // });
     setIsLoading(true)
     const fetchData = async () => {
-      
-      const response = await http.get<MaterialResponse>(
-        `API/v1/wiki/materials/?page=${page}&page_size=${pageSize}`
+      const response = await http.get<CardMaterialResponse>(
+        `API/v2/wiki/materials/?page=${page}&page_size=${pageSize}`
       );
+      console.log(response)
       setTotal(response.data.count);
       setMaterials(response.data.results);
       setIsLoading(false)
     };
     fetchData();
-    
   }, [page, debouncedMaterial, pageSize]);
-
-  // useEffect(() => {});
-  // Решит ли проблему заедания кнопки развертывания карточки сырья?
 
   const navigate = useNavigate();
 
-  // Контент окна чата
-  // const messages = ["string"];
-  // console.log(messages);
   const [chatMessage, setChatMessage] = useState("");
   const chatWindow = (
     <ChatBotWindow>
@@ -69,9 +52,6 @@ const MainPage = () => {
         <BotMessage>Привет я Бот!</BotMessage>
         <UserMessage>Скоко будет 2+2?</UserMessage>
         <BotMessage>Я думаю...</BotMessage>
-        {/* {messages.map((message) => (
-          <UserMessage>{message}</UserMessage>
-        ))} */}
       </MessagesWindow>
       <ChatBotFooter>
         <CustomInput
@@ -80,14 +60,13 @@ const MainPage = () => {
           onChange={setChatMessage}
           value={chatMessage}
         />
-
         <CustomButton text="Отправить" type="primary" />
       </ChatBotFooter>
     </ChatBotWindow>
   );
 
   const handleChange = (value: { value: string; label: React.ReactNode }) => {
-    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
+    console.log(value);
   };
 
   const filtersItems = [
@@ -201,13 +180,8 @@ const MainPage = () => {
     navigate(`/material/${materialId}`);
   };
 
-  
   return (
     <>
-    <ErrorBoundary>
-    {
-      isLoading ? <Spin fullscreen={true} size="large"/> : <></>
-    }
       <FloatButtonContainer>
         <Popover
           style={{}}
@@ -223,9 +197,8 @@ const MainPage = () => {
           />
         </Popover>
       </FloatButtonContainer>
-
       <Header>
-        <h1>OmniChem</h1>
+        <Logo height={36} width={170}/>
         <CustomInput
           name=""
           placeholder="Введите то, что вы хотите найти"
@@ -233,74 +206,85 @@ const MainPage = () => {
           value={""}
           addonBefore={<SearchOutlined />}
         />
+        <AuthContainer>
+        <CustomButton type="text" text="Войти в систему" onClick={()=> navigate('/login-selection')}/>
+        <CustomButton type="primary" text="Зарегистрироваться" onClick={()=> navigate('/register-selection')}/>
+        </AuthContainer>
+        
       </Header>
+      {
+      isLoading ? <Spin fullscreen={true} size="large"/> : <>
       <PageWrapper>
         <FiltersContainer>
           <CollapseBlock items={filtersItems}>
             <CustomButton text="Фильтры" type="primary" />
           </CollapseBlock>
         </FiltersContainer>
-
         <PaginationContainer style={{ marginBottom: "0" }}>
           <CustomPagination
           defaultPageSize={16}
-          showQuickJumper={true}
+          showQuickJumper={false}
           pageSize={pageSize}
           pageSizeOptions={[8, 16, 24]}
             onShowSizeChange={onChangeSizePage}
             current={page}
-            simple={false}
+            simple={true}
             
             onChange={onChangePage}
             total={total}
           />
-          
         </PaginationContainer>
         <MaterialsList>
-          {materials.map((material: Material) => (
+          {materials?.map((material: CardMaterial) => (
             <MaterialCard
               link={`/material/${material.id}`}
               id={material.id}
-              isHaveSupplier={material.is_supplier_available}
+              is_supplier_available={material.is_supplier_available}
               onCardClick={onCardClick}
               key={material.id}
-              manufacturerName={material.values[1].values[0].value}
-              materialName={material.value}
-              description={material.values[0].values[0].translated_value}
-              readyToUseProductType={
-                material.values[8].values[0].translated_value
-              }
-              chemicalFamily={material.values[3].values[0].translated_value}
-              compatibleSubstratesAndSurfaces={
-                material.values[4].values[0].translated_value
-              }
-              features={material.values[6].values[0].translated_value}
+              name={material.name}
+              translated_description={material.translated_description}
+              attributes={material.attributes}
             />
           ))}
+          
         </MaterialsList>
         <PaginationContainer>
         <CustomPagination
           defaultPageSize={16}
-          showQuickJumper={true}
+          showQuickJumper={false}
           pageSizeOptions={[8, 16, 24]}
             onShowSizeChange={onChangeSizePage}
             current={page}
-            simple={false}
+            simple={true}
             pageSize={pageSize}
             onChange={onChangePage}
             total={total}
           />
         </PaginationContainer>
       </PageWrapper>
-    </ErrorBoundary>
-    
+      </>
+    }
     </>
   );
 };
 
-export default MainPage;
+export default MaterialCardsPage;
+
+export const AuthContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`
+
+export const HeaderLogo = styled.div`
+  width: 170px;
+  height: 36px;
+`
 
 const PaginationContainer = styled.div`
+display: flex;
+align-items: center;
   margin: 0 auto;
   margin-bottom: 60px;
 `;
@@ -360,7 +344,7 @@ const FloatButtonContainer = styled.div`
   width: 50px;
   height: 50px;
 
-  z-index: 10;
+  z-index: 1001;
 
   @media (max-width: 620px) {
     top: 85%;
