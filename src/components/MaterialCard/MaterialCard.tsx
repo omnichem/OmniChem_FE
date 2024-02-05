@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {CustomButton} from "../CustomButton";
-import { CardStyle } from "../../types/componentsTypes";
+import { CardStyle, CardWrapperStyle } from "../../types/componentsTypes";
 import {CardInfo} from "./CardInfo";
 import fireIcon from "./fire2.png";
 import { Popover } from "antd";
 import { CardAttributes } from "../../types/pagesTypes";
+import CardWrapper from "./CardWrapper";
 
 interface MaterialCardProps {
   id: number;
@@ -13,10 +14,9 @@ interface MaterialCardProps {
   translated_description: string;
   is_supplier_available: boolean;
   attributes: CardAttributes[];
-
   manufacturerImage?: string;
   manufacturerIcon?: string;
-
+  loadingStyleType: CardWrapperStyle;
   onCardClick: (id: number) => void;
   link: string;
 }
@@ -30,7 +30,8 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
   manufacturerImage,
   id,
   onCardClick,
-  link
+  link,
+  loadingStyleType = CardWrapperStyle.LOADED
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [styleType, setStyleType] = useState<CardStyle>(CardStyle.UN_WRAP);
@@ -49,8 +50,8 @@ export const MaterialCard: React.FC<MaterialCardProps> = ({
   };
 
   return (
-    <CardWrapper>
-      <StyledCard onClick={onClick}>
+    <CardWrapper loadingStyleType={loadingStyleType}>
+      <StyledCard onClick={onClick} >
         <CardHeader>
           <ManufacturerImage>{manufacturerImage}</ManufacturerImage>
           <ManufacturerIcon>{manufacturerIcon}</ManufacturerIcon>
@@ -133,21 +134,23 @@ const FireIcon = styled.div`
   align-items: center;
 `;
 
-const CardWrapper = styled.div`
-  box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  overflow: hidden;
 
-  &:hover > div {
-    background-color: rgb(244, 244, 244);
-    transition: 1s;
-  }
 
-  &:not(:hover) > div {
-    background-color: rgb(255, 255, 255);
-    transition: 1s;
-  }
-`;
+// const CardWrapper = styled.div`
+//   box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.2);
+//   border-radius: 5px;
+//   overflow: hidden;
+
+//   &:hover > div {
+//     background-color: rgb(244, 244, 244);
+//     transition: 1s;
+//   }
+
+//   &:not(:hover) > div {
+//     background-color: rgb(255, 255, 255);
+//     transition: 1s;
+//   }
+// `;
 
 const StyledCard = styled.div`
   height: auto;

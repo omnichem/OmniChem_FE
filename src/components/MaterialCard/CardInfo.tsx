@@ -12,10 +12,10 @@ export const CardInfo: React.FC<CardInfoProps> = ({
   children,
   styleType = CardStyle.UN_WRAP,
 }) => {
-  return <StyledButton $styleType={styleType}>{children}</StyledButton>;
+  return <StyledCardInfo $styleType={styleType}>{children}</StyledCardInfo>;
 };
 
-const StyledButton = styled.div<{
+const StyledCardInfo = styled.div<{
   $styleType: CardStyle;
 }>`
   ${({ $styleType }) => {

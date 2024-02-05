@@ -4,13 +4,14 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import SamplesForm from "./DrawerPages/SamplesForm";
 import QuoteForm from "./DrawerPages/QuoteForm";
-import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, LoadingOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
 import { AuthContainer, PageWrapper } from "./MaterialCardsPage";
 import { http } from "../const/http";
 import {
   MaterialPageType, MaterialTableRows,
 } from "../types/pagesTypes";
+import "../styles/loading.css"
 import { columns } from "../const/tableData";
 import { DataType } from "../types/componentsTypes";
 import { Spin } from "antd";
@@ -135,7 +136,7 @@ const MaterialDescriptionPage: React.FC = () => {
         </AuthContainer>
       </Header>
       {
-      isLoading ? <Spin fullscreen={true} size="large"/> : <>
+      isLoading ? <Spin indicator={<LoadingOutlined />} fullscreen={true} size="large"/> : <div>
       <PageWrapper style={{ alignItems: "flex-start" }}>
         
         <MaterialHeader>
@@ -228,7 +229,7 @@ const MaterialDescriptionPage: React.FC = () => {
           <Line/>
         </FullSpecsWrapper>
       </FullSpecsBG>
-      </>
+      </div>
     }
       
       

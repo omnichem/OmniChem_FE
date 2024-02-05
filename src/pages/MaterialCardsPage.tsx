@@ -1,5 +1,5 @@
 import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
-import { PaginationProps, Select, Popover, Spin } from "antd";
+import { PaginationProps, Select, Popover } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
@@ -10,6 +10,10 @@ import {Logo} from "../components/Logo";
 import { CollapseBlock, CustomButton, CustomInput, Header } from "../components";
 import { CustomPagination } from "../components/CustomPagination";
 import { MaterialCard } from "../components/MaterialCard/MaterialCard";
+import "../styles/loading.css"
+import { loadingData } from "../const/loadingCards";
+import { CardWrapperStyle } from "../types/componentsTypes";
+import CardWrapper from "../components/MaterialCard/CardWrapper";
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();
@@ -209,15 +213,16 @@ const MaterialCardsPage = () => {
         </AuthContainer>
         
       </Header>
-      {
-      isLoading ? <Spin fullscreen={true} size="large"/> : <>
+      {/* {
+      isLoading ? <Spin fullscreen={true} size="large"/> : <> */}
       <PageWrapper>
         <FiltersContainer>
           <CollapseBlock items={filtersItems}>
             <CustomButton text="Фильтры" type="primary" />
           </CollapseBlock>
         </FiltersContainer>
-        <PaginationContainer style={{ marginBottom: "0" }}>
+        {
+          isLoading ? <div className={isLoading ? "loading" : ""}></div> : <PaginationContainer style={{ marginBottom: "0" }}>
           <CustomPagination
           defaultPageSize={16}
           showQuickJumper={false}
@@ -231,8 +236,28 @@ const MaterialCardsPage = () => {
             total={total}
           />
         </PaginationContainer>
-        <MaterialsList>
-          {materials?.map((material: CardMaterial) => (
+        }
+        <MaterialsList >
+          {
+            isLoading ? (
+              loadingData.map((data)=> <CardWrapper key={data.id} loadingStyleType={CardWrapperStyle.LOADING}><></></CardWrapper>)
+            ) : (
+              materials?.map((material: CardMaterial) => (
+                <MaterialCard
+                  loadingStyleType={CardWrapperStyle.LOADED}
+                  link={`/material/${material.id}`}
+                  id={material.id}
+                  is_supplier_available={material.is_supplier_available}
+                  onCardClick={onCardClick}
+                  key={material.id}
+                  name={material.name}
+                  translated_description={material.translated_description}
+                  attributes={material.attributes}
+                />
+              ))
+            )
+          }
+          {/* {materials?.map((material: CardMaterial) => (
             <MaterialCard
               link={`/material/${material.id}`}
               id={material.id}
@@ -243,26 +268,29 @@ const MaterialCardsPage = () => {
               translated_description={material.translated_description}
               attributes={material.attributes}
             />
-          ))}
+          ))} */}
           
         </MaterialsList>
-        <PaginationContainer>
-        <CustomPagination
+        {
+          isLoading ? <div className={isLoading ? "loading" : ""}></div> : <PaginationContainer style={{ margin: "0, 0, 10px, 0" }}>
+          <CustomPagination
           defaultPageSize={16}
           showQuickJumper={false}
+          pageSize={pageSize}
           pageSizeOptions={[8, 16, 24]}
             onShowSizeChange={onChangeSizePage}
             current={page}
             simple={true}
-            pageSize={pageSize}
+            
             onChange={onChangePage}
             total={total}
           />
         </PaginationContainer>
+        }
       </PageWrapper>
       </>
-    }
-    </>
+    // }
+    // </>
   );
 };
 
@@ -354,7 +382,7 @@ export const PageWrapper = styled.div`
   flex-direction: column;
   gap: 30px;
   align-items: center;
-
+  padding-bottom: 50px;
   margin: 0 auto;
   max-width: 1440px;
 
@@ -378,7 +406,7 @@ const MaterialsList = styled.div`
   /* grid-auto-rows: minmax(min-content, max-content); */
   grid-gap: 1rem;
 
-  padding-bottom: 30px;
+  /* margin-bottom: 10px; */
 
   @media (min-width: 620px) {
     grid-template-columns: repeat(2, 1fr);

@@ -22,3 +22,8 @@ export interface DataType {
   unit: string;
   method: null;
 }
+
+export enum CardWrapperStyle {
+  LOADED,
+  LOADING
+}
