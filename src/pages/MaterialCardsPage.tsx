@@ -1,19 +1,20 @@
 import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
-import { PaginationProps, Select, Popover } from "antd";
+import { PaginationProps, Select, Popover, Empty, Space, Alert } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
 import { CardMaterial, CardMaterialResponse } from "../types/pagesTypes";
-import {Logo} from "../components/Logo";
+import { Logo } from "../components/Logo";
 import { CollapseBlock, CustomButton, CustomInput, Header } from "../components";
 import { CustomPagination } from "../components/CustomPagination";
-import { MaterialCard } from "../components/MaterialCard/MaterialCard";
+// import { MaterialCard } from "../components/MaterialCard/MaterialCard";
 import "../styles/loading.css"
 import { loadingData } from "../const/loadingCards";
 import { CardWrapperStyle } from "../types/componentsTypes";
 import CardWrapper from "../components/MaterialCard/CardWrapper";
+import { MaterialCard2 } from "../components/MaterialCard/MaterialCard2";
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();
@@ -21,8 +22,11 @@ const MaterialCardsPage = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(16)
   const debouncedMaterial = useDebounce(materials, 600000);
+  const [showFirstComponent, setShowFirstComponent] = useState(true);
+  // const [firstLoading, setFirstLoading] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
-
+  const [searchMaterial, setSearchMaterial] = useState("")
+  const debouncedSearchMaterial = useDebounce(searchMaterial, 200);
   const onChangePage: PaginationProps["onChange"] = (page: number) => {
     setPage(page);
   };
@@ -30,19 +34,22 @@ const MaterialCardsPage = () => {
   const onChangeSizePage: PaginationProps['onShowSizeChange'] = (current: number, size: number) => {
     setPageSize(size)
   };
+
   useEffect(() => {
     setIsLoading(true)
     const fetchData = async () => {
       const response = await http.get<CardMaterialResponse>(
-        `API/v2/wiki/materials/?page=${page}&page_size=${pageSize}`
+        // `API/v2/wiki/materials/?search=${searchMaterial}&page=${page}&page_size=${pageSize}`
+        `/API/v2/wiki/materials/?search=${encodeURI(debouncedSearchMaterial)}&page=${page}&page_size=${pageSize}`
       );
       console.log(response)
       setTotal(response.data.count);
       setMaterials(response.data.results);
       setIsLoading(false)
+      setShowFirstComponent(false);
     };
     fetchData();
-  }, [page, debouncedMaterial, pageSize]);
+  }, [page, debouncedMaterial, pageSize, debouncedSearchMaterial]);
 
   const navigate = useNavigate();
 
@@ -199,19 +206,19 @@ const MaterialCardsPage = () => {
         </Popover>
       </FloatButtonContainer>
       <Header>
-        <Logo height={36} width={170}/>
+        <Logo height={36} width={170} />
         <CustomInput
-          name=""
+          name="searchMaterialInput"
           placeholder="Введите то, что вы хотите найти"
-          onChange={() => {}}
-          value={""}
+          onChange={setSearchMaterial}
+          value={searchMaterial}
           addonBefore={<SearchOutlined />}
         />
-        <AuthContainer>
+        {/* <AuthContainer>
         <CustomButton type="text" text="Войти в систему" onClick={()=> navigate('/login-selection')}/>
         <CustomButton type="primary" text="Зарегистрироваться" onClick={()=> navigate('/register-selection')}/>
-        </AuthContainer>
-        
+        </AuthContainer> */}
+
       </Header>
       {/* {
       isLoading ? <Spin fullscreen={true} size="large"/> : <> */}
@@ -223,74 +230,80 @@ const MaterialCardsPage = () => {
         </FiltersContainer>
         {
           isLoading ? <div className={isLoading ? "loading" : ""}></div> : <PaginationContainer style={{ marginBottom: "0" }}>
-          <CustomPagination
-          defaultPageSize={16}
-          showQuickJumper={false}
-          pageSize={pageSize}
-          pageSizeOptions={[8, 16, 24]}
-            onShowSizeChange={onChangeSizePage}
-            current={page}
-            simple={true}
-            
-            onChange={onChangePage}
-            total={total}
-          />
-        </PaginationContainer>
-        }
-        <MaterialsList >
-          {
-            isLoading ? (
-              loadingData.map((data)=> <CardWrapper key={data.id} loadingStyleType={CardWrapperStyle.LOADING}><></></CardWrapper>)
-            ) : (
-              materials?.map((material: CardMaterial) => (
-                <MaterialCard
-                  loadingStyleType={CardWrapperStyle.LOADED}
-                  link={`/material/${material.id}`}
-                  id={material.id}
-                  is_supplier_available={material.is_supplier_available}
-                  onCardClick={onCardClick}
-                  key={material.id}
-                  name={material.name}
-                  translated_description={material.translated_description}
-                  attributes={material.attributes}
-                />
-              ))
-            )
-          }
-          {/* {materials?.map((material: CardMaterial) => (
-            <MaterialCard
-              link={`/material/${material.id}`}
-              id={material.id}
-              is_supplier_available={material.is_supplier_available}
-              onCardClick={onCardClick}
-              key={material.id}
-              name={material.name}
-              translated_description={material.translated_description}
-              attributes={material.attributes}
+            <CustomPagination
+
+              hideOnSinglePage={true}
+              defaultPageSize={16}
+              showQuickJumper={false}
+              pageSize={pageSize}
+              pageSizeOptions={[8, 16, 24]}
+              onShowSizeChange={onChangeSizePage}
+              current={page}
+              simple={true}
+
+              onChange={onChangePage}
+              total={total}
             />
-          ))} */}
-          
-        </MaterialsList>
+          </PaginationContainer>
+        }
+        {
+          showFirstComponent ? (<MaterialsList>
+            {
+              loadingData.map((data) => <CardWrapper key={data.id} loadingStyleType={CardWrapperStyle.LOADING}><></></CardWrapper>)
+            }
+          </MaterialsList>
+          ) : (
+            materials?.length == 0 && isLoading == false ? <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "100px" }}>
+              <Alert
+                message="Мы ничего не нашли :("
+                description="Попробуйте обновить страницу или изменить запрос"
+                type="info"
+                action={
+                  <Space direction="vertical">
+                    <CustomButton onClick={() => location.reload()} type="primary" text="Обновить страницу" />
+                  </Space>
+                }
+              />
+              <Empty />
+            </div> :
+              <MaterialsList >
+                {
+                  materials?.map((material: CardMaterial) => (
+                    <MaterialCard2
+                      is_supplier_available={Math.random() < 0.5}
+                      loading={isLoading}
+                      id={material.id}
+                      clickButton={onCardClick}
+                      key={material.id}
+                      name={material.name}
+                      translated_description={material.translated_description}
+                      attributes={material.attributes}
+                    />
+                  ))
+                }
+              </MaterialsList>
+          )
+        }
         {
           isLoading ? <div className={isLoading ? "loading" : ""}></div> : <PaginationContainer style={{ margin: "0, 0, 10px, 0" }}>
-          <CustomPagination
-          defaultPageSize={16}
-          showQuickJumper={false}
-          pageSize={pageSize}
-          pageSizeOptions={[8, 16, 24]}
-            onShowSizeChange={onChangeSizePage}
-            current={page}
-            simple={true}
-            
-            onChange={onChangePage}
-            total={total}
-          />
-        </PaginationContainer>
+            <CustomPagination
+              hideOnSinglePage={true}
+              defaultPageSize={16}
+              showQuickJumper={false}
+              pageSize={pageSize}
+              pageSizeOptions={[8, 16, 24]}
+              onShowSizeChange={onChangeSizePage}
+              current={page}
+              simple={true}
+
+              onChange={onChangePage}
+              total={total}
+            />
+          </PaginationContainer>
         }
       </PageWrapper>
-      </>
-    // }
-    // </>
+    </>
+
   );
 };
 

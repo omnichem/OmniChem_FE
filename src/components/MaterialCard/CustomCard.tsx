@@ -9,13 +9,13 @@ interface CustomCardProps {
 }
 
 export const CustomCard: React.FC<CustomCardProps> = ({ children, onClick, width }) => (
-    <Card
-      hoverable={true}
-      style={{
-        width: width,
-      }}
-      onClick={onClick}
-    >
-      {children}
-    </Card>
+  <Card
+    hoverable={true}
+    style={{
+      width: width,
+    }}
+    onClick={onClick}
+  >
+    {children}
+  </Card>
 );

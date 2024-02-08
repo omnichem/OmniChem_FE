@@ -11,5 +11,5 @@ interface CustomTableProps {
 }
 
 export const CustomTable: React.FC<CustomTableProps> = ({ size, columns, data }) => (
-  <Table scroll={{ x: 50 }}bordered={true} pagination={false} size={size} columns={columns} dataSource={data} />
+  <Table scroll={{ x: 50 }} bordered={true} pagination={false} size={size} columns={columns} dataSource={data} />
 );

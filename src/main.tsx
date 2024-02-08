@@ -10,52 +10,56 @@ import LoginSelectionPage from "./pages/authPages/loginPages/LoginSelectionPage.
 import RegisterSelectionPage from "./pages/authPages/registerPages/RegisterSelectionPage.tsx";
 import MaterialCardsPage from "./pages/MaterialCardsPage.tsx";
 import MaterialDescriptionPage from "./pages/MaterialDescriptionPage.tsx";
+import ruRU from 'antd/locale/ru_RU';
+import SuppliersRegisterPage from "./pages/authPages/registerPages/suppliersRegisterPages/SuppliersRegisterPage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MaterialCardsPage />,
-    errorElement: <ErrorPage/>
+    errorElement: <ErrorPage />
   },
   {
     path: `/material/:id`,
     element: <MaterialDescriptionPage />,
-    errorElement: <ErrorPage/>
+    errorElement: <ErrorPage />
   },
   {
     path: `/login-selection`,
-    element: <LoginSelectionPage/>,
-    errorElement: <ErrorPage/>
+    element: <LoginSelectionPage />,
+    errorElement: <ErrorPage />
   },
   {
     path: `/customer-login`,
-    element: <CustomersLoginPage/>,
-    errorElement: <ErrorPage/>
+    element: <CustomersLoginPage />,
+    errorElement: <ErrorPage />
   },
   {
     path: `/supplier-login`,
-    element: <CustomersLoginPage/>,
-    errorElement: <ErrorPage/>
+    element: <CustomersLoginPage />,
+    errorElement: <ErrorPage />
   },
   {
     path: `/register-selection`,
-    element: <RegisterSelectionPage/>,
-    errorElement: <ErrorPage/>
+    element: <RegisterSelectionPage />,
+    errorElement: <ErrorPage />
   },
   {
     path: `/supplier-register`,
-    element: <CustomersRegisterPage/>,
-    errorElement: <ErrorPage/>
+    element: <CustomersRegisterPage />,
+    errorElement: <ErrorPage />
   },
   {
     path: `/customer-register`,
-    element: <CustomersRegisterPage/>,
-    errorElement: <ErrorPage/>
+    element: <SuppliersRegisterPage />,
+    errorElement: <ErrorPage />
   },
 ]);
 
+console.log(import.meta.env)
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <ConfigProvider theme={theme}>
+  <ConfigProvider theme={theme} locale={ruRU}>
     <RouterProvider router={router} />
   </ConfigProvider>
 );

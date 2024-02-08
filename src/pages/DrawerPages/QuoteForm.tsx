@@ -104,7 +104,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
           />
           <CustomInput
             disabled={true}
-            onChange={() => {}}
+            onChange={() => { }}
             placeholder="Kg"
             value=""
             name="kg"

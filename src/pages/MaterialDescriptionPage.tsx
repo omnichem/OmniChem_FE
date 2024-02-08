@@ -6,7 +6,7 @@ import SamplesForm from "./DrawerPages/SamplesForm";
 import QuoteForm from "./DrawerPages/QuoteForm";
 import { ArrowLeftOutlined, LoadingOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
-import { AuthContainer, PageWrapper } from "./MaterialCardsPage";
+import { PageWrapper } from "./MaterialCardsPage";
 import { http } from "../const/http";
 import {
   MaterialPageType, MaterialTableRows,
@@ -24,9 +24,9 @@ const MaterialDescriptionPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([{
     field_name: "",
-      field_value: "",
-      units: "",
-      test_method: null
+    field_value: "",
+    units: "",
+    test_method: null
   }])
   const { id } = useParams();
   useEffect(() => {
@@ -43,7 +43,7 @@ const MaterialDescriptionPage: React.FC = () => {
     fetchData();
   }, [id]);
 
-  
+
   const [searchState, setSearchState] = useState("");
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
@@ -76,10 +76,10 @@ const MaterialDescriptionPage: React.FC = () => {
   };
 
 
-  
+
   return (
     <div>
-    
+
       <CustomDrawer
         open={openQuoteRequest}
         onClose={onCloseQuoteRequest}
@@ -122,7 +122,7 @@ const MaterialDescriptionPage: React.FC = () => {
       </CustomDrawer>
 
       <Header>
-      <Logo height={36} width={170}/>
+        <Logo height={36} width={170} />
         <CustomInput
           name=""
           placeholder="Введите то, что вы хотите найти"
@@ -130,33 +130,33 @@ const MaterialDescriptionPage: React.FC = () => {
           value={searchState}
           addonBefore={<SearchOutlined />}
         />
-        <AuthContainer>
+        {/* <AuthContainer>
         <CustomButton type="text" text="Войти в систему" onClick={()=> navigate('/login-selection')}/>
         <CustomButton type="primary" text="Зарегистрироваться" onClick={()=> navigate('/register-selection')}/>
-        </AuthContainer>
+        </AuthContainer> */}
       </Header>
       {
-      isLoading ? <Spin indicator={<LoadingOutlined />} fullscreen={true} size="large"/> : <div>
-      <PageWrapper style={{ alignItems: "flex-start" }}>
-        
-        <MaterialHeader>
-          <CustomButton
-            type="primary"
-            shape="round"
-            icon={<ArrowLeftOutlined />}
-            onClick={() => navigate("/")}
-          />
-          <h2>{material?.name}</h2>
-        </MaterialHeader>
-      
-        <DescriptionBlock>
-          <FeatureLine>
-            {material?.translated_description}
-          </FeatureLine>
-          
-        </DescriptionBlock>
-        {/* <Line /> */}
-        {/* <h2>Поставщики:</h2>
+        isLoading ? <Spin indicator={<LoadingOutlined />} fullscreen={true} size="large" /> : <div>
+          <PageWrapper style={{ alignItems: "flex-start" }}>
+
+            <MaterialHeader>
+              <CustomButton
+                type="primary"
+                shape="round"
+                icon={<ArrowLeftOutlined />}
+                onClick={() => navigate("/")}
+              />
+              <h2>{material?.name}</h2>
+            </MaterialHeader>
+
+            <DescriptionBlock>
+              <FeatureLine>
+                {material?.translated_description}
+              </FeatureLine>
+
+            </DescriptionBlock>
+            {/* <Line /> */}
+            {/* <h2>Поставщики:</h2>
         <CarouselWrapper>
         <CustomCarousel slidesToShow={4}>
         {suppliersData.length == 0 ? (
@@ -189,34 +189,34 @@ const MaterialDescriptionPage: React.FC = () => {
           )}
         </CustomCarousel>
         </CarouselWrapper> */}
-        
-        
-      </PageWrapper>
-      <FullSpecsBG>
-        <FullSpecsWrapper >
-              {material?.attributes.map((attribute)=> (
+
+
+          </PageWrapper>
+          <FullSpecsBG>
+            <FullSpecsWrapper >
+              {material?.attributes.map((attribute) => (
                 <>
-                <FeatureWrapper>
-                  <FeatureNameContainer>
-                  <FeatureName>
-                    {attribute.attribute_name}: 
-                  </FeatureName>
-                  </FeatureNameContainer>
-                  
-                  <FeatureLineContainer key={`featureLineContainer:${attribute.attribute_name}`}>
-                  {
-                    attribute.attribute_values.map((attributeValues) => (
-                      <FeatureLine>{attributeValues}</FeatureLine>
-                    ))
-                  }
-                  </FeatureLineContainer>
-                  
-                </FeatureWrapper>
-                <Line/>
+                  <FeatureWrapper>
+                    <FeatureNameContainer>
+                      <FeatureName>
+                        {attribute.attribute_name}:
+                      </FeatureName>
+                    </FeatureNameContainer>
+
+                    <FeatureLineContainer key={`featureLineContainer:${attribute.attribute_name}`}>
+                      {
+                        attribute.attribute_values.map((attributeValues) => (
+                          <FeatureLine>{attributeValues}</FeatureLine>
+                        ))
+                      }
+                    </FeatureLineContainer>
+
+                  </FeatureWrapper>
+                  <Line />
                 </>
               ))}
-          <CustomTable size="large" columns={columns} data={materialTable?.map((tableRow) => {
-              const data: DataType =
+              <CustomTable size="large" columns={columns} data={materialTable?.map((tableRow) => {
+                const data: DataType =
                 {
                   key: tableRow.field_name,
                   name: tableRow.field_name,
@@ -224,15 +224,15 @@ const MaterialDescriptionPage: React.FC = () => {
                   unit: tableRow.units,
                   method: tableRow.test_method,
                 }
-              return data
-            })}/>
-          <Line/>
-        </FullSpecsWrapper>
-      </FullSpecsBG>
-      </div>
-    }
-      
-      
+                return data
+              })} />
+              <Line />
+            </FullSpecsWrapper>
+          </FullSpecsBG>
+        </div>
+      }
+
+
     </div>
   );
 };
@@ -240,7 +240,7 @@ const MaterialDescriptionPage: React.FC = () => {
 // const CarouselWrapper = styled.div`
 //   width:100%;
 //   margin-bottom: 30px;
-  
+
 
 // `
 

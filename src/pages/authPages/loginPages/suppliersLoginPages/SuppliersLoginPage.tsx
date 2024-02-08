@@ -1,8 +1,9 @@
-import React from 'react'
+
 
 const SuppliersLoginPage = () => {
   return (
-    <div>SuppliersLoginPage</div>
+    <div>
+    </div>
   )
 }
 

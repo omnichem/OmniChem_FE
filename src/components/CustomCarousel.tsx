@@ -1,6 +1,6 @@
 import React from 'react';
 import { Carousel } from 'antd';
-import {CustomButton} from './CustomButton';
+import { CustomButton } from './CustomButton';
 import styled from 'styled-components';
 
 interface CustomCarouselProps {
@@ -8,7 +8,7 @@ interface CustomCarouselProps {
   slidesToShow: number;
 }
 
-const SampleNextArrow = (props: {className?: string, style?: React.CSSProperties, onClick?: ()=> void}) => {
+const SampleNextArrow = (props: { className?: string, style?: React.CSSProperties, onClick?: () => void }) => {
   const { className, style, onClick } = props
   return (
     <div
@@ -27,7 +27,7 @@ const SampleNextArrow = (props: {className?: string, style?: React.CSSProperties
   )
 }
 
-const SamplePrevArrow = (props: {className?: string, style?: React.CSSProperties, onClick?: ()=> void}) => {
+const SamplePrevArrow = (props: { className?: string, style?: React.CSSProperties, onClick?: () => void }) => {
   const { className, style, onClick } = props
   return (
     <div
@@ -52,13 +52,13 @@ const settings = {
   prevArrow: <SamplePrevArrow />
 }
 
-export const CustomCarousel: React.FC<CustomCarouselProps> = ({children, slidesToShow}) => {
+export const CustomCarousel: React.FC<CustomCarouselProps> = ({ children, slidesToShow }) => {
   const onChange = (currentSlide: number) => {
     console.log(currentSlide);
   };
 
   return (
-      <StyledCarousel dots={false} arrows {...settings} slidesToShow={slidesToShow} afterChange={onChange} autoplay={true}>
+    <StyledCarousel dots={false} arrows {...settings} slidesToShow={slidesToShow} afterChange={onChange} autoplay={true}>
       {children}
     </StyledCarousel>
   );

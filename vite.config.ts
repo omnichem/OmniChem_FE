@@ -1,8 +1,12 @@
-import { defineConfig } from "vite";
+// vite.config.local-development.js
+import { defineConfig } from 'vite';
+import dotenv from 'dotenv';
 import react from "@vitejs/plugin-react-swc";
 
-// https://vitejs.dev/config/
+dotenv.config({ path: '.env' });
+
 export default defineConfig({
+  envPrefix: 'APP_',
   plugins: [react()],
   server: {
     host: true,
@@ -10,8 +14,8 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
-    proxy: {
-      "/API": "212.233.79.177:8000",
-    },
+    // proxy: {
+    //   "/API": "212.233.79.177:8000",
+    // },
   },
 });

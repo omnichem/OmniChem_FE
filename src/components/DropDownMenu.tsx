@@ -1,7 +1,7 @@
 import React from "react";
 import type { MenuProps } from "antd";
 import { Dropdown, Space } from "antd";
-import {CustomButton} from "./CustomButton";
+import { CustomButton } from "./CustomButton";
 
 import styled from "styled-components";
 

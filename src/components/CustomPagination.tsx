@@ -14,6 +14,7 @@ interface CustomPaginationProps {
   showQuickJumper: boolean;
   defaultPageSize: number;
   pageSize: number;
+  hideOnSinglePage: boolean;
 }
 
 export const CustomPagination: React.FC<CustomPaginationProps> = ({
@@ -26,17 +27,19 @@ export const CustomPagination: React.FC<CustomPaginationProps> = ({
   pageSizeOptions,
   showQuickJumper,
   defaultPageSize,
-  pageSize
+  pageSize,
+  hideOnSinglePage
 }) => {
   return (
     <StyledPagination
-    defaultPageSize={defaultPageSize}
+      hideOnSinglePage={hideOnSinglePage}
+      defaultPageSize={defaultPageSize}
       simple={simple}
       current={current}
       defaultCurrent={defaultPage}
       onChange={onChange}
       total={total}
-      showTotal={(total) => `Total ${total} items`}
+      showTotal={(total) => `Найдено ${total} Позиций`}
       pageSizeOptions={pageSizeOptions}
       onShowSizeChange={onShowSizeChange}
       showQuickJumper={showQuickJumper}

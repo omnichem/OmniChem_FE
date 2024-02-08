@@ -47,14 +47,20 @@ body {
   display: flex;
   align-items: baseline;
 }
-.ant-card .ant-card-body {
-  padding: 0;
+:where(.css-dev-only-do-not-override-9dgqwo).ant-card .ant-card-body::before {
+  display: none;
+} 
+
+:where(.css-dev-only-do-not-override-9dgqwo).ant-card .ant-card-body::after {
+  display: none;
 }
 
-.ant-card-loading .ant-card-body {
-  padding: 20px !important;
+.ant-card-loading {
+  width: 348px !important;
   height: 446px;
+  border-radius: 4px;
 }
+
 
 .ant-spin-fullscreen {
   background: linear-gradient(100deg, #eceff1 30%, #f6f7f8 50%, #eceff1 70%);
@@ -67,4 +73,16 @@ body {
   100% {
     background-position: 0 50%;
   }
+}
+
+.ant-card-contain-tabs >.ant-card-head .ant-card-head-title, .ant-card-contain-tabs >.ant-card-head .ant-card-extra{
+  padding: 0;
+}
+
+.ant-card-contain-tabs >.ant-card-head {
+  padding: 0;
+}
+
+.ant-card .ant-card-head .ant-tabs-top {
+  padding: 0 20px;
 }
