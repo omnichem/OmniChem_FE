@@ -27,7 +27,8 @@ const MaterialCardsPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [searchMaterial, setSearchMaterial] = useState("")
   const debouncedSearchMaterial = useDebounce(searchMaterial, 200);
-  const [filters, setFilters] = useState<Filter[]>()
+  const [filtersResponse, setFiltersResponse] = useState<Filter[]>()
+  const [userFilters, setUserFilters] = useState("")
   const onChangePage: PaginationProps["onChange"] = (page: number) => {
     setPage(page);
   };
@@ -40,54 +41,39 @@ const MaterialCardsPage = () => {
     setIsLoading(true)
     const fetchData = async () => {
       const response = await http.get<CardMaterialResponse>(
-        // `API/v2/wiki/materials/?search=${searchMaterial}&page=${page}&page_size=${pageSize}`
-        `/API/v2/wiki/materials/?search=${encodeURI(debouncedSearchMaterial)}&page=${page}&page_size=${pageSize}`
+        `/API/v2/wiki/materials/?${userFilters}&search=${encodeURI(debouncedSearchMaterial)}&page=${page}&page_size=${pageSize}`
       );
-      const filtersResponse = await http.get("/API/v2/wiki/filters/")
-
+      const filtersResponseReq = await http.get("/API/v2/wiki/filters/")
+      console.log(response)
       console.log(filtersResponse)
-      setFilters(filtersResponse.data)
+      setFiltersResponse(filtersResponseReq.data)
       setTotal(response.data.count);
       setMaterials(response.data.results);
       setIsLoading(false)
       setShowFirstComponent(false);
     };
     fetchData();
-  }, [page, debouncedMaterial, pageSize, debouncedSearchMaterial]);
+  }, [page, debouncedMaterial, pageSize, debouncedSearchMaterial, userFilters]);
 
   const navigate = useNavigate();
 
-  // const [chatMessage, setChatMessage] = useState("");
-  // const chatWindow = (
-  //   <ChatBotWindow>
-  //     <MessagesWindow>
-  //       <BotMessage>Привет я Бот!</BotMessage>
-  //       <UserMessage>Скоко будет 2+2?</UserMessage>
-  //       <BotMessage>Я думаю...</BotMessage>
-  //     </MessagesWindow>
-  //     <ChatBotFooter>
-  //       <CustomInput
-  //         name="chatInput"
-  //         placeholder="Напишите свой вопрос"
-  //         onChange={setChatMessage}
-  //         value={chatMessage}
-  //       />
-  //       <CustomButton text="Отправить" type="primary" />
-  //     </ChatBotFooter>
-  //   </ChatBotWindow>
-  // );
-
   const handleChange = (value: { value: string; label: React.ReactNode }) => {
-    console.log(value);
-    setSearchMaterial(value)
+
   };
 
   const onCardClick = (materialId: number) => {
     navigate(`/material/${materialId}`);
   };
 
-  const handleFilterChange = (value: string[]) => {
+  const handleFilterChange = (value: string) => {
     console.log(`selected ${value}`);
+    setUserFilters(value)
+    console.log(userFilters)
+    // if (userFilters) {
+    //   setUserFilters(userFilters + ' & ' + value)
+    // } else {
+    //   setUserFilters(value)
+    // }
   }
   return (
     <>
@@ -124,9 +110,9 @@ const MaterialCardsPage = () => {
       <PageWrapper>
         <FiltersContainer>
           {
-            filters?.map((filter: Filter) => {
+            filtersResponse?.map((filter: Filter) => {
               const options: SelectProps['options'] = filter.attribute_values.map((attribute) => { return { value: `${filter.translated_name}=${attribute}`, label: attribute } })
-              return <Select style={{ width: '100%' }} mode="multiple" onChange={handleChange} placeholder={filter.translated_name} options={options} />
+              return <Select virtual={true} style={{ width: '100%' }} onChange={handleFilterChange} placeholder={filter.translated_name} options={options} />
             })
           }
         </FiltersContainer>
@@ -423,3 +409,23 @@ const FiltersContainer = styled.div`
     gap: 10px;
   }
 `;
+
+// const [chatMessage, setChatMessage] = useState("");
+// const chatWindow = (
+//   <ChatBotWindow>
+//     <MessagesWindow>
+//       <BotMessage>Привет я Бот!</BotMessage>
+//       <UserMessage>Скоко будет 2+2?</UserMessage>
+//       <BotMessage>Я думаю...</BotMessage>
+//     </MessagesWindow>
+//     <ChatBotFooter>
+//       <CustomInput
+//         name="chatInput"
+//         placeholder="Напишите свой вопрос"
+//         onChange={setChatMessage}
+//         value={chatMessage}
+//       />
+//       <CustomButton text="Отправить" type="primary" />
+//     </ChatBotFooter>
+//   </ChatBotWindow>
+// );
