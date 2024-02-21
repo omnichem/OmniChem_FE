@@ -1,13 +1,12 @@
 * {
   margin: 0;
   padding: 0;
-  
 }
 
 body {
   -webkit-font-smoothing: antialiased;
   background-color: #ffffff;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .ant-popover .ant-popover-inner {
@@ -18,14 +17,15 @@ body {
   font-size: 20px;
 }
 
-.ant-collapse>.ant-collapse-item >.ant-collapse-header{
+.ant-collapse > .ant-collapse-item > .ant-collapse-header {
   display: flex;
   align-items: center;
   line-height: 20px;
   font-size: 18px;
 }
 
-.ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td {
+.ant-table-wrapper .ant-table-thead > tr > th,
+.ant-table-wrapper .ant-table-thead > tr > td {
   background-color: #222c2e;
   color: #ffffff;
 }
@@ -33,12 +33,12 @@ body {
 .ant-carousel {
   .slick-next {
     &::before {
-      content: '';
+      content: "";
     }
   }
-  .slick-prev { 
+  .slick-prev {
     &::before {
-      content: '';
+      content: "";
     }
   }
 }
@@ -49,7 +49,7 @@ body {
 }
 :where(.css-dev-only-do-not-override-9dgqwo).ant-card .ant-card-body::before {
   display: none;
-} 
+}
 
 :where(.css-dev-only-do-not-override-9dgqwo).ant-card .ant-card-body::after {
   display: none;
@@ -60,7 +60,6 @@ body {
   height: 446px;
   border-radius: 4px;
 }
-
 
 .ant-spin-fullscreen {
   background: linear-gradient(100deg, #eceff1 30%, #f6f7f8 50%, #eceff1 70%);
@@ -75,14 +74,25 @@ body {
   }
 }
 
-.ant-card-contain-tabs >.ant-card-head .ant-card-head-title, .ant-card-contain-tabs >.ant-card-head .ant-card-extra{
+.ant-card-contain-tabs > .ant-card-head .ant-card-head-title,
+.ant-card-contain-tabs > .ant-card-head .ant-card-extra {
   padding: 0;
 }
 
-.ant-card-contain-tabs >.ant-card-head {
+.ant-card-contain-tabs > .ant-card-head {
   padding: 0;
 }
 
 .ant-card .ant-card-head .ant-tabs-top {
   padding: 0 20px;
+}
+
+.ant-form-vertical .ant-form-item-label > label,
+.ant-col-24.ant-form-item-label > label,
+.ant-col-xl-24.ant-form-item-label > label {
+  display: flex;
+}
+
+.ant-select-dropdown {
+  width: 300px !important;
 }

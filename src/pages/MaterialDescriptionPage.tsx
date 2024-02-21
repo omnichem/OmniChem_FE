@@ -1,6 +1,6 @@
 import styled from "styled-components";
-// import SupplierCard from "../components/SupplierCard";
-// import { suppliersData } from "../const/data";
+import SupplierCard from "../components/SupplierCard";
+import { suppliersData } from "../const/data";
 import { useEffect, useState } from "react";
 import SamplesForm from "./DrawerPages/SamplesForm";
 import QuoteForm from "./DrawerPages/QuoteForm";
@@ -14,10 +14,9 @@ import {
 import "../styles/loading.css"
 import { columns } from "../const/tableData";
 import { DataType } from "../types/componentsTypes";
-import { Spin } from "antd";
+import { Alert, Input, Modal, Spin } from "antd";
 import { CustomButton, CustomDrawer, CustomInput, CustomTable, Header, Logo } from "../components";
-// import CustomCarousel from "../components/CustomCarousel";
-// import StickyComponent from "../components/StickyMaterialHeader";
+const { TextArea } = Input;
 
 const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
@@ -48,13 +47,13 @@ const MaterialDescriptionPage: React.FC = () => {
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
   const [openSampleRequest, setOpenSampleRequest] = useState(false);
-  // const showQuoteRequest = () => {
-  //   setOpenQuoteRequest(true);
-  // };
+  const showQuoteRequest = () => {
+    setOpenQuoteRequest(true);
+  };
 
-  // const showSampleRequest = () => {
-  //   setOpenSampleRequest(true);
-  // };
+  const showSampleRequest = () => {
+    setOpenSampleRequest(true);
+  };
 
   const onCloseQuoteRequest = () => {
     setOpenQuoteRequest(false);
@@ -75,11 +74,24 @@ const MaterialDescriptionPage: React.FC = () => {
     setSamplesFormStage(2);
   };
 
+  const [isOpenInfReqModal, setIsOpenInfReqModal] = useState(false)
+  const openReqModal = () => {
+    setIsOpenInfReqModal(true);
+  };
 
-
+  const closeReqModal = () => {
+    setIsOpenInfReqModal(false)
+  }
   return (
     <div>
-
+      <Modal open={isOpenInfReqModal} title="Напишите интересующий вас вопрос сдесь" onCancel={closeReqModal} footer={false} >
+        <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
+          <TextArea rows={4} />
+          <Alert message="Помимо вашего вопроса, мы отправим поставщику данные о вас: имя, фамилия и ИНН. Предоставление этих данных при запросе к поставщику поможет обеспечить более качественное обслуживание и улучшить коммуникацию." />
+          <CustomButton text="Отправить" type="primary"></CustomButton>
+        </div>
+        {/* В дальнейшем при клике в модалке должен быть получен id поставщика что бы отправить ему запрос, получить его надо из карточки */}
+      </Modal>
       <CustomDrawer
         open={openQuoteRequest}
         onClose={onCloseQuoteRequest}
@@ -136,7 +148,7 @@ const MaterialDescriptionPage: React.FC = () => {
         </AuthContainer> */}
       </Header>
       {
-        isLoading ? <Spin indicator={<LoadingOutlined />} fullscreen={true} size="large" /> : <div>
+        isLoading ? <Spin style={{ zIndex: "9" }} indicator={<LoadingOutlined />} fullscreen={true} size="large" /> : <div>
           <PageWrapper style={{ alignItems: "flex-start" }}>
 
             <MaterialHeader>
@@ -155,42 +167,35 @@ const MaterialDescriptionPage: React.FC = () => {
               </FeatureLine>
 
             </DescriptionBlock>
-            {/* <Line /> */}
-            {/* <h2>Поставщики:</h2>
-        <CarouselWrapper>
-        <CustomCarousel slidesToShow={4}>
-        {suppliersData.length == 0 ? (
-            <h2>В настоящее время у этого сырья нет поставщиков</h2>
-          ) : (
-            suppliersData.map((supplier) => {
-              const items = [
-                {
-                  key: supplier.supplierName,
-                  label: supplier.supplierName,
-                  children: (
-                    <div>
-                      <p>Seller city: {supplier.city}</p>
-                      <p>Legal entity: {supplier.legalEntity}</p>
-                      <p>Main advantages: {supplier.mainAdvantages}</p>
-                      <p>Brief description:{supplier.briefDescription}</p>
-                    </div>
-                  ),
-                },
-              ];
-              return (
-                <SupplierCard
-                  key={`supplierCard:${supplier.id}`}
-                  items={items}
-                  sampleRequest={showSampleRequest}
-                  quoteRequest={showQuoteRequest}
-                />
-              );
-            })
-          )}
-        </CustomCarousel>
-        </CarouselWrapper> */}
-
-
+            <Line />
+            <h2>Поставщики:</h2>
+            <ScrollableList>
+              {suppliersData.map((supplier) => {
+                const items = [
+                  {
+                    key: supplier.supplierName,
+                    label: supplier.supplierName,
+                    children: (
+                      <div>
+                        <p>Seller city: {supplier.city}</p>
+                        <p>Legal entity: {supplier.legalEntity}</p>
+                        <p>Main advantages: {supplier.mainAdvantages}</p>
+                        <p>Brief description:{supplier.briefDescription}</p>
+                      </div>
+                    ),
+                  },
+                ];
+                return (
+                  <SupplierCard
+                    key={supplier.id}
+                    items={items}
+                    sampleRequest={showSampleRequest}
+                    quoteRequest={showQuoteRequest}
+                    informationRequest={openReqModal}
+                  />
+                );
+              })}
+            </ScrollableList>
           </PageWrapper>
           <FullSpecsBG>
             <FullSpecsWrapper >
@@ -202,7 +207,6 @@ const MaterialDescriptionPage: React.FC = () => {
                         {attribute.attribute_name}:
                       </FeatureName>
                     </FeatureNameContainer>
-
                     <FeatureLineContainer key={`featureLineContainer:${attribute.attribute_name}`}>
                       {
                         attribute.attribute_values.map((attributeValues) => (
@@ -210,7 +214,6 @@ const MaterialDescriptionPage: React.FC = () => {
                         ))
                       }
                     </FeatureLineContainer>
-
                   </FeatureWrapper>
                   <Line />
                 </>
@@ -231,21 +234,12 @@ const MaterialDescriptionPage: React.FC = () => {
           </FullSpecsBG>
         </div>
       }
-
-
     </div>
   );
 };
 
-// const CarouselWrapper = styled.div`
-//   width:100%;
-//   margin-bottom: 30px;
-
-
-// `
-
 const FeatureNameContainer = styled.div`
-width: 360px
+  width: 360px
 `
 const FeatureLineContainer = styled.div`
   display: flex;
@@ -328,7 +322,6 @@ const DescriptionBlock = styled.p`
 
 const FeatureLine = styled.p`
   color: #505050;
-  /* white-space: nowrap; */
 `;
 
 const FeatureName = styled.span`

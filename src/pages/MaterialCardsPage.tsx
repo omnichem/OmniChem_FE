@@ -1,11 +1,11 @@
-import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
-import { PaginationProps, Select, Popover, Empty, Space, Alert } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { PaginationProps, Select, Empty, Space, Alert, SelectProps } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
-import { CardMaterial, CardMaterialResponse } from "../types/pagesTypes";
+import { CardMaterial, CardMaterialResponse, Filter } from "../types/pagesTypes";
 import { Logo } from "../components/Logo";
 import { CollapseBlock, CustomButton, CustomInput, Header } from "../components";
 import { CustomPagination } from "../components/CustomPagination";
@@ -27,6 +27,7 @@ const MaterialCardsPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [searchMaterial, setSearchMaterial] = useState("")
   const debouncedSearchMaterial = useDebounce(searchMaterial, 200);
+  const [filters, setFilters] = useState<Filter[]>()
   const onChangePage: PaginationProps["onChange"] = (page: number) => {
     setPage(page);
   };
@@ -42,7 +43,10 @@ const MaterialCardsPage = () => {
         // `API/v2/wiki/materials/?search=${searchMaterial}&page=${page}&page_size=${pageSize}`
         `/API/v2/wiki/materials/?search=${encodeURI(debouncedSearchMaterial)}&page=${page}&page_size=${pageSize}`
       );
-      console.log(response)
+      const filtersResponse = await http.get("/API/v2/wiki/filters/")
+
+      console.log(filtersResponse)
+      setFilters(filtersResponse.data)
       setTotal(response.data.count);
       setMaterials(response.data.results);
       setIsLoading(false)
@@ -53,144 +57,41 @@ const MaterialCardsPage = () => {
 
   const navigate = useNavigate();
 
-  const [chatMessage, setChatMessage] = useState("");
-  const chatWindow = (
-    <ChatBotWindow>
-      <MessagesWindow>
-        <BotMessage>Привет я Бот!</BotMessage>
-        <UserMessage>Скоко будет 2+2?</UserMessage>
-        <BotMessage>Я думаю...</BotMessage>
-      </MessagesWindow>
-      <ChatBotFooter>
-        <CustomInput
-          name="chatInput"
-          placeholder="Напишите свой вопрос"
-          onChange={setChatMessage}
-          value={chatMessage}
-        />
-        <CustomButton text="Отправить" type="primary" />
-      </ChatBotFooter>
-    </ChatBotWindow>
-  );
+  // const [chatMessage, setChatMessage] = useState("");
+  // const chatWindow = (
+  //   <ChatBotWindow>
+  //     <MessagesWindow>
+  //       <BotMessage>Привет я Бот!</BotMessage>
+  //       <UserMessage>Скоко будет 2+2?</UserMessage>
+  //       <BotMessage>Я думаю...</BotMessage>
+  //     </MessagesWindow>
+  //     <ChatBotFooter>
+  //       <CustomInput
+  //         name="chatInput"
+  //         placeholder="Напишите свой вопрос"
+  //         onChange={setChatMessage}
+  //         value={chatMessage}
+  //       />
+  //       <CustomButton text="Отправить" type="primary" />
+  //     </ChatBotFooter>
+  //   </ChatBotWindow>
+  // );
 
   const handleChange = (value: { value: string; label: React.ReactNode }) => {
     console.log(value);
+    setSearchMaterial(value)
   };
-
-  const filtersItems = [
-    {
-      key: 1,
-      label: <p>Фильтры</p>,
-      children: (
-        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-          <Select
-            placeholder="Химическое семейство"
-            labelInValue
-            style={{ width: "100%" }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "1",
-                label: "Filter 1",
-              },
-              {
-                value: "2",
-                label: "Filter 2",
-              },
-            ]}
-          />
-          <Select
-            placeholder="Особенности"
-            labelInValue
-            style={{ width: "100%" }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "1",
-                label: "Filter 1",
-              },
-              {
-                value: "2",
-                label: "Filter 2",
-              },
-            ]}
-          />
-          <Select
-            placeholder="Конечное использование"
-            labelInValue
-            style={{ width: "100%" }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "1",
-                label: "Filter 1",
-              },
-              {
-                value: "2",
-                label: "Filter 2",
-              },
-            ]}
-          />
-          <Select
-            placeholder="Поставщики"
-            labelInValue
-            style={{ width: "100%" }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "1",
-                label: "Filter 1",
-              },
-              {
-                value: "2",
-                label: "Filter 2",
-              },
-            ]}
-          />
-          <Select
-            placeholder="Совместимые подложки и поверхности"
-            labelInValue
-            style={{ width: "100%" }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "1",
-                label: "Filter 1",
-              },
-              {
-                value: "2",
-                label: "Filter 2",
-              },
-            ]}
-          />
-          <Select
-            placeholder="Готовый к использованию продукт"
-            labelInValue
-            style={{ width: "100%" }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "1",
-                label: "Filter 1",
-              },
-              {
-                value: "2",
-                label: "Filter 2",
-              },
-            ]}
-          />
-        </div>
-      ),
-    },
-  ];
 
   const onCardClick = (materialId: number) => {
     navigate(`/material/${materialId}`);
   };
 
+  const handleFilterChange = (value: string[]) => {
+    console.log(`selected ${value}`);
+  }
   return (
     <>
-      <FloatButtonContainer>
+      {/* <FloatButtonContainer>
         <Popover
           style={{}}
           content={chatWindow}
@@ -204,7 +105,7 @@ const MaterialCardsPage = () => {
             shape="circle"
           />
         </Popover>
-      </FloatButtonContainer>
+      </FloatButtonContainer> */}
       <Header>
         <Logo height={36} width={170} />
         <CustomInput
@@ -220,13 +121,14 @@ const MaterialCardsPage = () => {
         </AuthContainer> */}
 
       </Header>
-      {/* {
-      isLoading ? <Spin fullscreen={true} size="large"/> : <> */}
       <PageWrapper>
         <FiltersContainer>
-          <CollapseBlock items={filtersItems}>
-            <CustomButton text="Фильтры" type="primary" />
-          </CollapseBlock>
+          {
+            filters?.map((filter: Filter) => {
+              const options: SelectProps['options'] = filter.attribute_values.map((attribute) => { return { value: `${filter.translated_name}=${attribute}`, label: attribute } })
+              return <Select style={{ width: '100%' }} mode="multiple" onChange={handleChange} placeholder={filter.translated_name} options={options} />
+            })
+          }
         </FiltersContainer>
         {
           isLoading ? <div className={isLoading ? "loading" : ""}></div> : <PaginationContainer style={{ marginBottom: "0" }}>
@@ -327,68 +229,68 @@ align-items: center;
   margin-bottom: 60px;
 `;
 
-const ChatBotWindow = styled.div`
-  height: 300px;
-  width: 300px;
+// const ChatBotWindow = styled.div`
+//   height: 300px;
+//   width: 300px;
 
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// `;
 
-const MessagesWindow = styled.div`
-  background-color: #d7d7d7;
-  border-radius: 10px;
-  height: 100%;
+// const MessagesWindow = styled.div`
+//   background-color: #d7d7d7;
+//   border-radius: 10px;
+//   height: 100%;
 
-  box-sizing: border-box;
-  padding: 10px;
+//   box-sizing: border-box;
+//   padding: 10px;
 
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
 
-  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset;
-`;
+//   box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset;
+// `;
 
-const ChatBotFooter = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
+// const ChatBotFooter = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   gap: 10px;
 
-  align-items: center;
-`;
+//   align-items: center;
+// `;
 
-const BotMessage = styled.div`
-  padding: 5px 15px;
-  background-color: #00a99d;
-  color: #ffffff;
+// const BotMessage = styled.div`
+//   padding: 5px 15px;
+//   background-color: #00a99d;
+//   color: #ffffff;
 
-  border-radius: 10px 10px 10px 0;
-`;
+//   border-radius: 10px 10px 10px 0;
+// `;
 
-const UserMessage = styled.div`
-  padding: 5px 15px;
-  background-color: #ffffff;
+// const UserMessage = styled.div`
+//   padding: 5px 15px;
+//   background-color: #ffffff;
 
-  border-radius: 10px 10px 0 10px;
-`;
+//   border-radius: 10px 10px 0 10px;
+// `;
 
-const FloatButtonContainer = styled.div`
-  position: fixed;
-  top: 90%;
-  left: 95%;
+// const FloatButtonContainer = styled.div`
+//   position: fixed;
+//   top: 90%;
+//   left: 95%;
 
-  width: 50px;
-  height: 50px;
+//   width: 50px;
+//   height: 50px;
 
-  z-index: 1001;
+//   z-index: 1001;
 
-  @media (max-width: 620px) {
-    top: 85%;
-    left: 80%;
-  }
-`;
+//   @media (max-width: 620px) {
+//     top: 85%;
+//     left: 80%;
+//   }
+// `;
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -405,7 +307,7 @@ export const PageWrapper = styled.div`
     gap: 20px;
 
     max-width: 310px;
-
+    
     .dropDown {
       width: 100%;
     }

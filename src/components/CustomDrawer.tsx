@@ -32,4 +32,6 @@ export const CustomDrawer: React.FC<DivederProps> = ({
   );
 };
 
-const StyledDrawer = styled(Drawer)``;
+const StyledDrawer = styled(Drawer)`
+z-index: 11;
+`;

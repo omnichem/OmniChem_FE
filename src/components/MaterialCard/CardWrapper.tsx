@@ -23,7 +23,7 @@ const StyledCardWrapper = styled.div<{
           width: 348px;
           height: 500px;
           
-          z-index: 100;
+          
           color: transparent;
           background: linear-gradient(100deg, #eceff1 30%, #f6f7f8 50%, #eceff1 70%);
           background-size: 400%;

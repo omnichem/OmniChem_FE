@@ -11,12 +11,14 @@ interface MaterialCardProps {
   items: CollapseProps["items"];
   sampleRequest: () => void;
   quoteRequest: () => void;
+  informationRequest: () => void;
 }
 
 export const SupplierCard: React.FC<MaterialCardProps> = ({
   items,
   sampleRequest,
   quoteRequest,
+  informationRequest
 }) => {
   return (
     <CustomCard>
@@ -39,6 +41,7 @@ export const SupplierCard: React.FC<MaterialCardProps> = ({
           text="Запросить образец"
           onClick={sampleRequest}
         />
+        <CustomButton type="text" text="Дополнительная информация" onClick={informationRequest} />
       </RequestWrapper>
     </CustomCard>
   );

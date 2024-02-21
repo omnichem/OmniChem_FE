@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Form, Select } from "antd";
 import isInn from "is-inn-js";
-import { customizeRequiredMark } from "../../const/const";
 import { CustomButton, CustomInput } from "../../components";
 
 interface QuoteFormProps {
@@ -25,11 +24,12 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
   );
 
   return (
-    <Form layout="vertical" requiredMark={customizeRequiredMark}>
+    <Form layout="vertical" >
       <Form.Item
         name="market"
         label="Ваш маркет"
-        rules={[{ required: true, message: "Пожалуйста выберите маркет!" }]}
+        tooltip="Укажите название вашего магазина или предприятия, где будет осуществляться заказ сырья."
+        rules={[{ required: true, message: "Пожалуйста выберите маркет" }]}
       >
         <Select>
           <Select.Option value="demo">Demo 1</Select.Option>
@@ -39,9 +39,10 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
         </Select>
       </Form.Item>
       <Form.Item
+        tooltip="Укажите точный адрес доставки сырья, чтобы поставщик смог доставить товар в нужное место."
         label="Адрес"
         name="address"
-        rules={[{ required: true, message: "Пожалуйста введите адрес!" }]}
+        rules={[{ required: true, message: "Пожалуйста введите адрес" }]}
       >
         <CustomInput
           placeholder=""
@@ -51,7 +52,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
         />
       </Form.Item>
 
-      <Form.Item name="phone" label="Номер телефона" required>
+      <Form.Item name="phone" label="Номер телефона" tooltip="Укажите контактный номер телефона, по которому с вами можно связаться для уточнения деталей заказа." required>
         <CustomInput
           addonBefore={prefixSelector}
           maxLength={10}
@@ -62,13 +63,13 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
         />
         {phone.length < 10 ? (
           <p style={{ color: "#ff8800" }}>
-            Поле номера телефона должно содержать 10 цифр!
+            Поле номера телефона должно содержать 10 цифр
           </p>
         ) : (
-          <p style={{ color: "#52c41a" }}>Телефон валиден!</p>
+          <p style={{ color: "#52c41a" }}>Телефон валиден</p>
         )}
       </Form.Item>
-      <Form.Item required label="ИНН" name="inn">
+      <Form.Item required label="ИНН" tooltip="Укажите ваш ИНН для оформления документов и соблюдения налоговых требований." name="inn">
         <CustomInput
           maxLength={12}
           placeholder=""
@@ -79,20 +80,21 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
 
         {inn.length == 12 ? (
           isInn(inn) ? (
-            <p style={{ color: "#52c41a" }}>ИНН валиден!</p>
+            <p style={{ color: "#52c41a" }}>ИНН валиден</p>
           ) : (
-            <p style={{ color: "#ff4d4f" }}>ИНН не валиден!</p>
+            <p style={{ color: "#ff4d4f" }}>ИНН не валиден</p>
           )
         ) : (
-          <p style={{ color: "#ff8800" }}>Поле ИНН должно содержать 12 цифр!</p>
+          <p style={{ color: "#ff8800" }}>Поле ИНН должно содержать 12 цифр</p>
         )}
         {/* 772331755151 */}
       </Form.Item>
       <Form.Item
         name="annual volume"
+        tooltip="Укажите примерный годовой объем сырья, который вы планируете заказывать у нас."
         label="Годовой объём"
         rules={[
-          { required: true, message: "Пожалуйста, укажите годовой объем!" },
+          { required: true, message: "Пожалуйста, укажите годовой объем" },
         ]}
       >
         <div style={{ display: "flex", gap: "10px" }}>
@@ -111,7 +113,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
           />
         </div>
       </Form.Item>
-      <Form.Item required={false} name="comments" label="Комментарии к заказу">
+      <Form.Item required={false} tooltip="Дополнительная информация или специфические требования к заказу, которые необходимо учесть при его обработке." name="comments" label="Комментарии к заказу">
         <CustomInput
           placeholder="Напишите несколько пожеланий"
           onChange={setComments}

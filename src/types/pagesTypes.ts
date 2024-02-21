@@ -52,3 +52,9 @@ export interface MaterialPageType {
 export interface PageSize {
   pageSize: 8 | 16 | 24;
 }
+
+// Фильтры
+export interface Filter {
+  translated_name: string;
+  attribute_values: string[];
+}
