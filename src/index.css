@@ -96,3 +96,8 @@ body {
 .ant-select-dropdown {
   width: 300px !important;
 }
+.ant-collapse .ant-collapse-content>.ant-collapse-content-box {
+  max-height: 300px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}

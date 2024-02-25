@@ -11,3 +11,5 @@ export { Header } from "./Header";
 export { Logo } from "./Logo";
 export { CustomSteps } from "./CustomSteps";
 export { SupplierCard } from "./SupplierCard";
+export {Filters} from "./Filters"
+export {FilterItem} from "./FilterItem"

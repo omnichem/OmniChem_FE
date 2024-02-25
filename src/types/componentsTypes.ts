@@ -23,6 +23,10 @@ export interface DataType {
   method: null;
 }
 
+export interface FilterType {
+  value: string;
+}
+
 export enum CardWrapperStyle {
   LOADED,
   LOADING

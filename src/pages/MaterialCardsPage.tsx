@@ -1,5 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { PaginationProps, Select, Empty, Space, Alert, SelectProps } from "antd";
+import { PaginationProps, Empty, Space, Alert, Checkbox, Avatar, List, CheckboxProps } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
 import { CardMaterial, CardMaterialResponse, Filter } from "../types/pagesTypes";
 import { Logo } from "../components/Logo";
-import { CollapseBlock, CustomButton, CustomInput, Header } from "../components";
+import { CollapseBlock, CustomButton, CustomInput, FilterItem, Filters, Header } from "../components";
 import { CustomPagination } from "../components/CustomPagination";
 // import { MaterialCard } from "../components/MaterialCard/MaterialCard";
 import "../styles/loading.css"
@@ -15,6 +15,7 @@ import { loadingData } from "../const/loadingCards";
 import { CardWrapperStyle } from "../types/componentsTypes";
 import CardWrapper from "../components/MaterialCard/CardWrapper";
 import { MaterialCard2 } from "../components/MaterialCard/MaterialCard2";
+import VirtualList from 'rc-virtual-list';
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();
@@ -57,24 +58,16 @@ const MaterialCardsPage = () => {
 
   const navigate = useNavigate();
 
-  const handleChange = (value: { value: string; label: React.ReactNode }) => {
-
-  };
-
   const onCardClick = (materialId: number) => {
     navigate(`/material/${materialId}`);
   };
 
-  const handleFilterChange = (value: string) => {
-    console.log(`selected ${value}`);
-    setUserFilters(value)
-    console.log(userFilters)
-    // if (userFilters) {
-    //   setUserFilters(userFilters + ' & ' + value)
-    // } else {
-    //   setUserFilters(value)
-    // }
-  }
+  const CheckFilter: CheckboxProps['onChange'] = (e) => {
+    if (!e) setUserFilters("")
+    setUserFilters(e.target.value)
+    console.log(e.target.value);
+  };
+
   return (
     <>
       {/* <FloatButtonContainer>
@@ -108,70 +101,99 @@ const MaterialCardsPage = () => {
 
       </Header>
       <PageWrapper>
-        <FiltersContainer>
+
+        {/* <FiltersContainer>
           {
             filtersResponse?.map((filter: Filter) => {
               const options: SelectProps['options'] = filter.attribute_values.map((attribute) => { return { value: `${filter.translated_name}=${attribute}`, label: attribute } })
               return <Select virtual={true} style={{ width: '100%' }} onChange={handleFilterChange} placeholder={filter.translated_name} options={options} />
             })
           }
-        </FiltersContainer>
-        {
-          isLoading ? <div className={isLoading ? "loading" : ""}></div> : <PaginationContainer style={{ marginBottom: "0" }}>
-            <CustomPagination
+        </FiltersContainer> */}
+        <PaginationContainer>
+          <CustomPagination
 
-              hideOnSinglePage={true}
-              defaultPageSize={16}
-              showQuickJumper={false}
-              pageSize={pageSize}
-              pageSizeOptions={[8, 16, 24]}
-              onShowSizeChange={onChangeSizePage}
-              current={page}
-              simple={true}
+            hideOnSinglePage={true}
+            defaultPageSize={16}
+            showQuickJumper={false}
+            pageSize={pageSize}
+            pageSizeOptions={[8, 16, 24]}
+            onShowSizeChange={onChangeSizePage}
+            current={page}
+            simple={true}
 
-              onChange={onChangePage}
-              total={total}
-            />
-          </PaginationContainer>
-        }
-        {
-          showFirstComponent ? (<MaterialsList>
+            onChange={onChangePage}
+            total={total}
+          />
+        </PaginationContainer>
+
+        <MaterialsListWrapper>
+          <Filters>
+
+            <div style={{ borderRadius: "8px", backgroundColor: "#fafafa", padding: "10px", display: "flex", justifyContent: "center", outline: "1px solid #d9d9d9", boxSizing: "border-box" }}>
+              <h2>Фильтры</h2>
+            </div>
             {
-              loadingData.map((data) => <CardWrapper key={data.id} loadingStyleType={CardWrapperStyle.LOADING}><></></CardWrapper>)
+              filtersResponse?.map((filter) => {
+
+                const items = [
+                  {
+                    key: filter.translated_name,
+                    label: filter.translated_name,
+                    children: <FilterItemWrapper>
+
+                      {
+                        filter.attribute_values.map((value) => <FilterItem filterCategory={filter.translated_name} onChange={CheckFilter} text={value}></FilterItem>)
+                      }
+                    </FilterItemWrapper>,
+
+                  },
+                ];
+                return <CollapseBlock items={items} />
+              })
             }
-          </MaterialsList>
-          ) : (
-            materials?.length == 0 && isLoading == false ? <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "100px" }}>
-              <Alert
-                message="Мы ничего не нашли :("
-                description="Попробуйте обновить страницу или изменить запрос"
-                type="info"
-                action={
-                  <Space direction="vertical">
-                    <CustomButton onClick={() => location.reload()} type="primary" text="Обновить страницу" />
-                  </Space>
-                }
-              />
-              <Empty />
-            </div> :
-              <MaterialsList >
-                {
-                  materials?.map((material: CardMaterial) => (
-                    <MaterialCard2
-                      is_supplier_available={Math.random() < 0.5}
-                      loading={isLoading}
-                      id={material.id}
-                      clickButton={onCardClick}
-                      key={material.id}
-                      name={material.name}
-                      translated_description={material.translated_description}
-                      attributes={material.attributes}
-                    />
-                  ))
-                }
-              </MaterialsList>
-          )
-        }
+
+
+          </Filters>
+          {
+            showFirstComponent ? (<MaterialsList>
+              {
+                loadingData.map((data) => <CardWrapper key={data.id} loadingStyleType={CardWrapperStyle.LOADING}><></></CardWrapper>)
+              }
+            </MaterialsList>
+            ) : (
+              materials?.length == 0 && isLoading == false ? <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "100px" }}>
+                <Alert
+                  message="Мы ничего не нашли :("
+                  description="Попробуйте обновить страницу или изменить запрос"
+                  type="info"
+                  action={
+                    <Space direction="vertical">
+                      <CustomButton onClick={() => location.reload()} type="primary" text="Обновить страницу" />
+                    </Space>
+                  }
+                />
+                <Empty />
+              </div> :
+                <MaterialsList >
+                  {
+                    materials?.map((material: CardMaterial) => (
+                      <MaterialCard2
+                        is_supplier_available={Math.random() < 0.5}
+                        loading={isLoading}
+                        id={material.id}
+                        clickButton={onCardClick}
+                        key={material.id}
+                        name={material.name}
+                        translated_description={material.translated_description}
+                        attributes={material.attributes}
+                      />
+                    ))
+                  }
+                </MaterialsList>
+            )
+          }
+        </MaterialsListWrapper>
         {
           isLoading ? <div className={isLoading ? "loading" : ""}></div> : <PaginationContainer style={{ margin: "0, 0, 10px, 0" }}>
             <CustomPagination
@@ -197,6 +219,21 @@ const MaterialCardsPage = () => {
 
 export default MaterialCardsPage;
 
+const FilterItemWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+`
+
+export const MaterialsListWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+`
+
 export const AuthContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -212,7 +249,6 @@ const PaginationContainer = styled.div`
 display: flex;
 align-items: center;
   margin: 0 auto;
-  margin-bottom: 60px;
 `;
 
 // const ChatBotWindow = styled.div`
@@ -305,7 +341,7 @@ const MaterialsList = styled.div`
 
   display: grid;
   /* grid-auto-rows: minmax(min-content, max-content); */
-  grid-gap: 1rem;
+  grid-gap: 1.5rem;
 
   /* margin-bottom: 10px; */
 
@@ -316,10 +352,10 @@ const MaterialsList = styled.div`
     grid-template-columns: repeat(3, 1fr);
   }
   @media (min-width: 1240px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
   @media (min-width: 1550px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
@@ -405,7 +441,7 @@ const FiltersContainer = styled.div`
 
   @media (min-width: 992px) {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 10px;
   }
 `;

@@ -20,7 +20,7 @@ const StyledCardWrapper = styled.div<{
     switch ($loadingStyleType) {
       case CardWrapperStyle.LOADING:
         return css`
-          width: 348px;
+          width: 397px;
           height: 500px;
           
           
