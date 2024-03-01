@@ -96,8 +96,23 @@ body {
 .ant-select-dropdown {
   width: 300px !important;
 }
-.ant-collapse .ant-collapse-content>.ant-collapse-content-box {
+.ant-collapse .ant-collapse-content > .ant-collapse-content-box {
+  padding: 0 0 0 10px;
+}
+.ant-collapse > .ant-collapse-item:last-child {
+  border-radius: 4px;
+}
+
+.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline {
   max-height: 300px;
   overflow-y: scroll;
-  overflow-x: hidden;
+}
+
+.ant-menu-item .ant-menu-item-only-child {
+  padding-left: 10px;
+}
+
+.ant-alert-content {
+  display: flex;
+  justify-content: center;
 }

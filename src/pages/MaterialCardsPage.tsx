@@ -1,5 +1,5 @@
-import { SearchOutlined } from "@ant-design/icons";
-import { PaginationProps, Empty, Space, Alert, Checkbox, Avatar, List, CheckboxProps } from "antd";
+import { LoadingOutlined, SearchOutlined } from "@ant-design/icons";
+import { PaginationProps, CheckboxProps, Layout, Breadcrumb, Flex, Row, Col, Collapse, Alert, Spin } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
@@ -7,35 +7,59 @@ import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
 import { CardMaterial, CardMaterialResponse, Filter } from "../types/pagesTypes";
 import { Logo } from "../components/Logo";
-import { CollapseBlock, CustomButton, CustomInput, FilterItem, Filters, Header } from "../components";
+import { CustomButton, CustomInput } from "../components";
 import { CustomPagination } from "../components/CustomPagination";
-// import { MaterialCard } from "../components/MaterialCard/MaterialCard";
 import "../styles/loading.css"
-import { loadingData } from "../const/loadingCards";
-import { CardWrapperStyle } from "../types/componentsTypes";
-import CardWrapper from "../components/MaterialCard/CardWrapper";
 import { MaterialCard2 } from "../components/MaterialCard/MaterialCard2";
-import VirtualList from 'rc-virtual-list';
+import { Content, Header } from "antd/es/layout/layout";
+import Sider from "antd/es/layout/Sider";
+import { RowVirtualizerFixed } from "../components/RowVirtualizerFixed";
+import { PersistedKey } from "../const/persistedKey";
+import { CustomModal } from "../components/CustomModal";
+import { RegisterForm } from "./authModalContent/registerPages/RegisterForm";
+import { LoginForm } from "./authModalContent/loginPages/LoginForm";
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();
   const [total, setTotal] = useState(50);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(16)
+  const [page, setPage] = useState(() => {
+    const target = sessionStorage.getItem(PersistedKey.Page)
+    if (!target) {
+      sessionStorage.setItem(PersistedKey.Page, "1")
+      return 1
+    }
+    return parseInt(target)
+  });
+  const [pageSize, setPageSize] = useState(() => {
+    const target = sessionStorage.getItem(PersistedKey.PageSize)
+    if (!target) {
+      sessionStorage.setItem(PersistedKey.PageSize, "15")
+      return 15
+    }
+    return parseInt(target)
+  }
+  )
   const debouncedMaterial = useDebounce(materials, 600000);
-  const [showFirstComponent, setShowFirstComponent] = useState(true);
-  // const [firstLoading, setFirstLoading] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
-  const [searchMaterial, setSearchMaterial] = useState("")
+  const [searchMaterial, setSearchMaterial] = useState(() => {
+    const target = sessionStorage.getItem(PersistedKey.SearchMaterial)
+    if (!target) {
+      sessionStorage.setItem(PersistedKey.SearchMaterial, "")
+      return ""
+    }
+    return ""
+  })
   const debouncedSearchMaterial = useDebounce(searchMaterial, 200);
   const [filtersResponse, setFiltersResponse] = useState<Filter[]>()
   const [userFilters, setUserFilters] = useState("")
   const onChangePage: PaginationProps["onChange"] = (page: number) => {
     setPage(page);
+    sessionStorage.setItem(PersistedKey.Page, page.toString())
   };
 
   const onChangeSizePage: PaginationProps['onShowSizeChange'] = (current: number, size: number) => {
     setPageSize(size)
+    sessionStorage.setItem(PersistedKey.PageSize, size.toString())
   };
 
   useEffect(() => {
@@ -51,7 +75,6 @@ const MaterialCardsPage = () => {
       setTotal(response.data.count);
       setMaterials(response.data.results);
       setIsLoading(false)
-      setShowFirstComponent(false);
     };
     fetchData();
   }, [page, debouncedMaterial, pageSize, debouncedSearchMaterial, userFilters]);
@@ -68,24 +91,28 @@ const MaterialCardsPage = () => {
     console.log(e.target.value);
   };
 
+  const [isRegModalOpen, setIsReqModalOpen] = useState(false)
+  const [isLogModalOpen, setIsLogModalOpen] = useState(false)
+
+  const clickRegisterButton = () => {
+    setIsLogModalOpen(false)
+    setIsReqModalOpen(true)
+  }
+
+  const clickLoginButton = () => {
+    setIsReqModalOpen(false)
+    setIsLogModalOpen(true)
+
+  }
   return (
-    <>
-      {/* <FloatButtonContainer>
-        <Popover
-          style={{}}
-          content={chatWindow}
-          title="Задайте вопрос OmniChem"
-          trigger="click"
-        >
-          <CustomButton
-            style={{ height: "100%", width: "100%", fontSize: "25px" }}
-            icon={<MessageOutlined />}
-            type="primary"
-            shape="circle"
-          />
-        </Popover>
-      </FloatButtonContainer> */}
-      <Header>
+    <Layout>
+      <CustomModal isModalOpen={isRegModalOpen} handleModalCancel={() => setIsReqModalOpen(false)}>
+        <RegisterForm submitBuyerRegister={() => { }} submitSupplierRegister={() => { }} loginButton={clickLoginButton} />
+      </CustomModal>
+      <CustomModal isModalOpen={isLogModalOpen} handleModalCancel={() => setIsLogModalOpen(false)}>
+        <LoginForm submitBuyerLogin={() => { }} submitSupplierLogin={() => { }} registerButton={clickRegisterButton} />
+      </CustomModal>
+      <Header style={{ padding: "10px", display: 'flex', gap: "20px", alignItems: 'center', position: "sticky", top: "0", zIndex: "10", height: "auto", backgroundColor: "#ffffff" }}>
         <Logo height={36} width={170} />
         <CustomInput
           name="searchMaterialInput"
@@ -94,139 +121,108 @@ const MaterialCardsPage = () => {
           value={searchMaterial}
           addonBefore={<SearchOutlined />}
         />
-        {/* <AuthContainer>
-        <CustomButton type="text" text="Войти в систему" onClick={()=> navigate('/login-selection')}/>
-        <CustomButton type="primary" text="Зарегистрироваться" onClick={()=> navigate('/register-selection')}/>
-        </AuthContainer> */}
-
+        <AuthContainer>
+          <CustomButton type="text" text="Войти в систему" onClick={() => setIsLogModalOpen(true)} />
+          <CustomButton type="primary" text="Зарегистрироваться" onClick={() => setIsReqModalOpen(true)} />
+        </AuthContainer>
       </Header>
-      <PageWrapper>
+      {
+        isLoading ? <Spin style={{ zIndex: "9" }} indicator={<LoadingOutlined />} fullscreen={true} size="large" /> : (
+          <Layout>
+            <Sider breakpoint="xl" collapsedWidth="0" width={250} style={{ backgroundColor: "#ffffff", padding: "0 5px 0 5px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <Alert style={{ fontSize: "21px", borderRadius: "4px" }} message="Фильтры" />
+                {
+                  filtersResponse?.map((filter) => {
+                    const items = [{
+                      key: `filter${filter.translated_name}`,
+                      label: filter.translated_name,
+                      children: <div style={{ height: "250px" }}><RowVirtualizerFixed text="" filterCategory={filter.translated_name} onChange={CheckFilter} data={filter.attribute_values} /></div>
+                    }]
+                    return <Collapse style={{ borderRadius: "4px" }} items={items} />
+                  })
+                }
+              </div>
+            </Sider>
+            <Layout style={{ padding: '24px 24px 24px' }} >
+              {/* <Breadcrumb style={{ margin: '16px 0' }}>
+                <Breadcrumb.Item>Home</Breadcrumb.Item>
+                <Breadcrumb.Item>List</Breadcrumb.Item>
+                <Breadcrumb.Item>App</Breadcrumb.Item>
+              </Breadcrumb> */}
+              <Content style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
+                <Flex justify="center">
+                  <CustomPagination
 
-        {/* <FiltersContainer>
-          {
-            filtersResponse?.map((filter: Filter) => {
-              const options: SelectProps['options'] = filter.attribute_values.map((attribute) => { return { value: `${filter.translated_name}=${attribute}`, label: attribute } })
-              return <Select virtual={true} style={{ width: '100%' }} onChange={handleFilterChange} placeholder={filter.translated_name} options={options} />
-            })
-          }
-        </FiltersContainer> */}
-        <PaginationContainer>
-          <CustomPagination
+                    hideOnSinglePage={true}
+                    defaultPageSize={15}
+                    showQuickJumper={false}
+                    pageSize={pageSize}
+                    pageSizeOptions={[9, 15, 21]}
+                    onShowSizeChange={onChangeSizePage}
+                    current={page}
+                    simple={true}
 
-            hideOnSinglePage={true}
-            defaultPageSize={16}
-            showQuickJumper={false}
-            pageSize={pageSize}
-            pageSizeOptions={[8, 16, 24]}
-            onShowSizeChange={onChangeSizePage}
-            current={page}
-            simple={true}
-
-            onChange={onChangePage}
-            total={total}
-          />
-        </PaginationContainer>
-
-        <MaterialsListWrapper>
-          <Filters>
-
-            <div style={{ borderRadius: "8px", backgroundColor: "#fafafa", padding: "10px", display: "flex", justifyContent: "center", outline: "1px solid #d9d9d9", boxSizing: "border-box" }}>
-              <h2>Фильтры</h2>
-            </div>
-            {
-              filtersResponse?.map((filter) => {
-
-                const items = [
-                  {
-                    key: filter.translated_name,
-                    label: filter.translated_name,
-                    children: <FilterItemWrapper>
-
-                      {
-                        filter.attribute_values.map((value) => <FilterItem filterCategory={filter.translated_name} onChange={CheckFilter} text={value}></FilterItem>)
-                      }
-                    </FilterItemWrapper>,
-
-                  },
-                ];
-                return <CollapseBlock items={items} />
-              })
-            }
-
-
-          </Filters>
-          {
-            showFirstComponent ? (<MaterialsList>
-              {
-                loadingData.map((data) => <CardWrapper key={data.id} loadingStyleType={CardWrapperStyle.LOADING}><></></CardWrapper>)
-              }
-            </MaterialsList>
-            ) : (
-              materials?.length == 0 && isLoading == false ? <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "100px" }}>
-                <Alert
-                  message="Мы ничего не нашли :("
-                  description="Попробуйте обновить страницу или изменить запрос"
-                  type="info"
-                  action={
-                    <Space direction="vertical">
-                      <CustomButton onClick={() => location.reload()} type="primary" text="Обновить страницу" />
-                    </Space>
-                  }
-                />
-                <Empty />
-              </div> :
-                <MaterialsList >
+                    onChange={onChangePage}
+                    total={total}
+                  />
+                </Flex>
+                <Row wrap={true} gutter={[16, 16]}>
                   {
                     materials?.map((material: CardMaterial) => (
-                      <MaterialCard2
-                        is_supplier_available={Math.random() < 0.5}
-                        loading={isLoading}
-                        id={material.id}
-                        clickButton={onCardClick}
-                        key={material.id}
-                        name={material.name}
-                        translated_description={material.translated_description}
-                        attributes={material.attributes}
-                      />
+                      <Col
+                        // mobile
+                        xs={{ span: 23 }}
+                        sm={{ span: 24 }}
+                        // 175%
+                        md={{ span: 12 }}
+                        lg={{ span: 6 }}
+                        xl={{ span: 8 }}
+                        xxl={{ span: 6 }}>
+
+                        <MaterialCard2
+                          is_supplier_available={Math.random() < 0.5}
+                          loading={isLoading}
+                          id={material.id}
+                          clickButton={onCardClick}
+                          key={material.id}
+                          name={material.name}
+                          translated_description={material.translated_description}
+                          attributes={material.attributes}
+                        />
+                      </Col>
                     ))
                   }
-                </MaterialsList>
-            )
-          }
-        </MaterialsListWrapper>
-        {
-          isLoading ? <div className={isLoading ? "loading" : ""}></div> : <PaginationContainer style={{ margin: "0, 0, 10px, 0" }}>
-            <CustomPagination
-              hideOnSinglePage={true}
-              defaultPageSize={16}
-              showQuickJumper={false}
-              pageSize={pageSize}
-              pageSizeOptions={[8, 16, 24]}
-              onShowSizeChange={onChangeSizePage}
-              current={page}
-              simple={true}
+                </Row>
+                <Flex justify="center">
+                  <CustomPagination
+                    hideOnSinglePage={true}
+                    defaultPageSize={15}
+                    showQuickJumper={false}
+                    pageSize={pageSize}
+                    pageSizeOptions={[9, 15, 21]}
+                    onShowSizeChange={onChangeSizePage}
+                    current={page}
+                    simple={true}
 
-              onChange={onChangePage}
-              total={total}
-            />
-          </PaginationContainer>
-        }
-      </PageWrapper>
-    </>
+                    onChange={onChangePage}
+                    total={total}
+                  />
+                </Flex>
+              </Content>
+            </Layout>
+          </Layout>
+        )
+      }
 
+      {/* <Footer style={{ textAlign: 'center' }}>
+        OmniChem ©{new Date().getFullYear()}
+      </Footer> */}
+    </Layout >
   );
 };
 
 export default MaterialCardsPage;
-
-const FilterItemWrapper = styled.div`
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-
-  box-sizing: border-box;
-
-`
 
 export const MaterialsListWrapper = styled.div`
   display: flex;
@@ -244,75 +240,6 @@ export const HeaderLogo = styled.div`
   width: 170px;
   height: 36px;
 `
-
-const PaginationContainer = styled.div`
-display: flex;
-align-items: center;
-  margin: 0 auto;
-`;
-
-// const ChatBotWindow = styled.div`
-//   height: 300px;
-//   width: 300px;
-
-//   display: flex;
-//   flex-direction: column;
-//   gap: 10px;
-// `;
-
-// const MessagesWindow = styled.div`
-//   background-color: #d7d7d7;
-//   border-radius: 10px;
-//   height: 100%;
-
-//   box-sizing: border-box;
-//   padding: 10px;
-
-//   display: flex;
-//   flex-direction: column;
-//   gap: 10px;
-
-//   box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset;
-// `;
-
-// const ChatBotFooter = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   gap: 10px;
-
-//   align-items: center;
-// `;
-
-// const BotMessage = styled.div`
-//   padding: 5px 15px;
-//   background-color: #00a99d;
-//   color: #ffffff;
-
-//   border-radius: 10px 10px 10px 0;
-// `;
-
-// const UserMessage = styled.div`
-//   padding: 5px 15px;
-//   background-color: #ffffff;
-
-//   border-radius: 10px 10px 0 10px;
-// `;
-
-// const FloatButtonContainer = styled.div`
-//   position: fixed;
-//   top: 90%;
-//   left: 95%;
-
-//   width: 50px;
-//   height: 50px;
-
-//   z-index: 1001;
-
-//   @media (max-width: 620px) {
-//     top: 85%;
-//     left: 80%;
-//   }
-// `;
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -333,29 +260,6 @@ export const PageWrapper = styled.div`
     .dropDown {
       width: 100%;
     }
-  }
-`;
-
-const MaterialsList = styled.div`
-  max-width: 1440px;
-
-  display: grid;
-  /* grid-auto-rows: minmax(min-content, max-content); */
-  grid-gap: 1.5rem;
-
-  /* margin-bottom: 10px; */
-
-  @media (min-width: 620px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (min-width: 930px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (min-width: 1240px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (min-width: 1550px) {
-    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
@@ -411,57 +315,3 @@ export const VerticalDivider = styled.div`
 export const InputWrapper = styled.div`
   flex: 2;
 `;
-
-const FiltersContainer = styled.div`
-  width: 100%;
-
-  @media (min-width: 320px) and (max-width: 768px) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-
-    max-width: 310px;
-
-    .dropDown {
-      width: 100%;
-    }
-  }
-
-  @media (min-width: 768px) and (max-width: 992px) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-
-    max-width: 768px;
-
-    /* .dropDown {
-      width: 100%;
-    } */
-  }
-
-  @media (min-width: 992px) {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-`;
-
-// const [chatMessage, setChatMessage] = useState("");
-// const chatWindow = (
-//   <ChatBotWindow>
-//     <MessagesWindow>
-//       <BotMessage>Привет я Бот!</BotMessage>
-//       <UserMessage>Скоко будет 2+2?</UserMessage>
-//       <BotMessage>Я думаю...</BotMessage>
-//     </MessagesWindow>
-//     <ChatBotFooter>
-//       <CustomInput
-//         name="chatInput"
-//         placeholder="Напишите свой вопрос"
-//         onChange={setChatMessage}
-//         value={chatMessage}
-//       />
-//       <CustomButton text="Отправить" type="primary" />
-//     </ChatBotFooter>
-//   </ChatBotWindow>
-// );

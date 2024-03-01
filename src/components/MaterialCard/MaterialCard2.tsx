@@ -176,9 +176,8 @@ color: #505050;
 
 const StyledCard = styled(Card)`
   /* border-radius: 4px; */
-  width: 348px;
+  width: 100%;
   height: 500px;
-  max-width: 470px;
   border: none;
   &:hover {
     border: none;

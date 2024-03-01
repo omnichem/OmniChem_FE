@@ -6,6 +6,13 @@ export const theme: ThemeConfig = {
     colorInfo: "#00a99d",
     colorSuccess: "#52c41a",
   },
+  "components": {
+    "Input": {
+      "activeBorderColor": "rgb(255, 0, 0)",
+      // "colorPrimary": "rgb(255, 0, 0)",
+      "colorPrimaryActive": "rgb(32, 255, 0)"
+    }
+  }
   // components: {
   //   Input: {
   //     colorPrimary: "#1677ff",
