@@ -6,7 +6,7 @@ import SamplesForm from "./DrawerPages/SamplesForm";
 import QuoteForm from "./DrawerPages/QuoteForm";
 import { ArrowLeftOutlined, LoadingOutlined, SearchOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
-import { PageWrapper } from "./MaterialCardsPage";
+import { AuthContainer, PageWrapper } from "./MaterialCardsPage";
 import { http } from "../const/http";
 import {
   MaterialPageType, MaterialTableRows,
@@ -83,6 +83,7 @@ const MaterialDescriptionPage: React.FC = () => {
     setIsOpenInfReqModal(false)
   }
   return (
+
     <div>
       <Modal open={isOpenInfReqModal} title="Напишите интересующий вас вопрос сдесь" onCancel={closeReqModal} footer={false} >
         <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
@@ -135,16 +136,10 @@ const MaterialDescriptionPage: React.FC = () => {
 
       <Header>
         <Logo height={36} width={170} />
-        <CustomInput
-          name=""
-          placeholder="Введите то, что вы хотите найти"
-          onChange={setSearchState}
-          value={searchState}
-          addonBefore={<SearchOutlined />}
-        />
+
         {/* <AuthContainer>
-        <CustomButton type="text" text="Войти в систему" onClick={()=> navigate('/login-selection')}/>
-        <CustomButton type="primary" text="Зарегистрироваться" onClick={()=> navigate('/register-selection')}/>
+          <CustomButton type="text" text="Войти в систему" onClick={() => setIsLogModalOpen(true)} />
+          <CustomButton type="primary" text="Зарегистрироваться" onClick={() => setIsReqModalOpen(true)} />
         </AuthContainer> */}
       </Header>
       {
