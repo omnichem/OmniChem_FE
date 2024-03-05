@@ -1,17 +1,23 @@
-import { Card } from 'antd'
+import { Card, Checkbox, Divider } from 'antd'
 import React from 'react'
 import { styled } from 'styled-components'
 
-interface FiltersProps {
+interface FilterItemProps {
   children: React.ReactNode
+  data: string[];
+  text?: string;
+  onChange: (e: CheckboxChangeEvent) => void;
+  filterCategory: string;
 }
 
-export const Filters: React.FC<FiltersProps> = ({ children }) => {
+
+export const FilterItem: React.FC<FilterItemProps> = ({ children, data, text, onChange, filterCategory }) => {
   return (
     <FiltersWrapper >
-      {
-        children
-      }
+      <div >
+        <div style={{ padding: "10px 10px 10px 0", display: "flex", flexDirection: "row", gap: "15px" }}><Checkbox value={filterCategory.concat("=").concat(data[virtualRow.index])} onChange={onChange} />{data[virtualRow.index]}</div>
+        <Divider style={{ margin: 0 }} />
+      </div>
     </FiltersWrapper>
   )
 }

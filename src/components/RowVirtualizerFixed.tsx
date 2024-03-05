@@ -51,8 +51,8 @@ export const RowVirtualizerFixed: React.FC<RowVirtualizerProps> = ({ data, onCha
               }}
               ref={virtualizer.measureElement}
             >
-              <div className="row">
-                <div className="title" style={{ padding: "10px 10px 10px 0", display: "flex", flexDirection: "row", gap: "15px" }}><Checkbox value={filterCategory.concat("=").concat(data[virtualRow.index])} onChange={onChange} />{data[virtualRow.index]}</div>
+              <div >
+                <div style={{ padding: "10px 10px 10px 0", display: "flex", flexDirection: "row", gap: "15px" }}><Checkbox value={filterCategory.concat("=").concat(data[virtualRow.index])} onChange={onChange} />{data[virtualRow.index]}</div>
                 <Divider style={{ margin: 0 }} />
               </div>
             </div>
