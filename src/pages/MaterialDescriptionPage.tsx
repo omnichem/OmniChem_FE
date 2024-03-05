@@ -2,11 +2,11 @@ import styled from "styled-components";
 import SupplierCard from "../components/SupplierCard";
 import { suppliersData } from "../const/data";
 import { useEffect, useState } from "react";
-import SamplesForm from "./DrawerPages/SamplesForm";
-import QuoteForm from "./DrawerPages/QuoteForm";
-import { ArrowLeftOutlined, LoadingOutlined, SearchOutlined } from "@ant-design/icons";
+import SamplesForm from "./drawerPages/SamplesForm";
+import QuoteForm from "./drawerPages/QuoteForm";
+import { ArrowLeftOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
-import { AuthContainer, PageWrapper } from "./MaterialCardsPage";
+import { PageWrapper } from "./MaterialCardsPage";
 import { http } from "../const/http";
 import {
   MaterialPageType, MaterialTableRows,
@@ -15,7 +15,7 @@ import "../styles/loading.css"
 import { columns } from "../const/tableData";
 import { DataType } from "../types/componentsTypes";
 import { Alert, Input, Modal, Spin } from "antd";
-import { CustomButton, CustomDrawer, CustomInput, CustomTable, Header, Logo } from "../components";
+import { CustomButton, CustomDrawer, CustomTable, Header, Logo } from "../components";
 const { TextArea } = Input;
 
 const MaterialDescriptionPage: React.FC = () => {
@@ -42,8 +42,6 @@ const MaterialDescriptionPage: React.FC = () => {
     fetchData();
   }, [id]);
 
-
-  const [searchState, setSearchState] = useState("");
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
   const [openSampleRequest, setOpenSampleRequest] = useState(false);
@@ -151,7 +149,7 @@ const MaterialDescriptionPage: React.FC = () => {
                 type="primary"
                 shape="round"
                 icon={<ArrowLeftOutlined />}
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/materials")}
               />
               <h2>{material?.name}</h2>
             </MaterialHeader>

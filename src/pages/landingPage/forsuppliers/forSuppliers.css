@@ -1,0 +1,36 @@
+.forSuppliers-wrapper {
+    width: 100%;
+}
+.forSuppliers-background {
+    width: 100%;
+    height: auto;
+    background-color: rgb(81, 81, 84);
+    position: static;
+}
+.marketView-forSuppliersBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.forSuppliers-text {
+    width: 74rem;
+    height: 10rem;
+    color: rgb(255, 255, 255);
+}
+.opportunitiesForSuppliers-btn {
+    font-size: 1.5625rem;
+    color: rgb(255, 255, 255);
+    background-color: rgb(4, 156, 142);
+    border-radius: 5rem;
+    border: none;
+    width: 36.25rem;
+    height: 5.8rem;
+}
+.opportunitiesForSuppliers-btn:hover {
+    color: rgb(4, 156, 142);
+    background-color: rgb(255, 255, 255);
+    border: 2rem solid (4, 156, 142);
+}
+

@@ -10,7 +10,7 @@ import { Logo } from "../components/Logo";
 import { CustomButton, CustomInput } from "../components";
 import { CustomPagination } from "../components/CustomPagination";
 import "../styles/loading.css"
-import { MaterialCard2 } from "../components/MaterialCard/MaterialCard2";
+import { MaterialCard2 } from "../components/materialCard/MaterialCard2";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { RowVirtualizerFixed } from "../components/RowVirtualizerFixed";
