@@ -1,93 +1,68 @@
 .header {
-    width: 100%;
-    height: 8.5625rem;
-    border-bottom: 1px solid rgb(127, 128, 133);
-    background: rgb(255, 255, 255, 100%);
-    position: sticky;
-    top: 0;
-    z-index: 1001;
-}
-.header-wrapper {
-    width: 100%;
-    padding: 1.5rem 2.5rem;
-}
-.header-container {
-    width: 100%;
+  outline: 1px solid rgb(127, 128, 133);
+  background: rgb(255, 255, 255, 100%);
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+    padding: 0;
+  }
+
+  @media (min-width: 992px) {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-end;
-    text-align: center;
-    gap: 50rem;
-}
-.header-logo {
-    width: 12rem;
-    height: 100%;
-}
-.navList {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-    text-align: end;
-    gap: 3rem;
-}
-.navList-link {
-    display: inline-block;
-    text-align: center;
-    width: auto;
-    font-size: clamp(1rem, 0.839rem + 0.8vw, 1.563rem);
-}
-.navList-link:hover {
-    color: rgb(4, 156, 142);
-    font-weight: bold;
-    border-bottom: 2px solid rgb(4, 156, 142);
+    gap: 100px;
+
+    box-sizing: border-box;
+  }
 }
 
-@media (min-width: 768px) and (max-width:992px) {
-    .header {
-        width: 100vw;
-    }
-    .header-container {
-        gap: 28rem;
-    }
+.header-container {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+
+  padding: 0 60px;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    padding: 0;
+  }
+
+  @media (max-width: 320px) {
+    padding: 0;
+  }
 }
-@media (min-width: 480px) and (max-width:768px) {
-    .header {
-        width: 100vw;
-    }
-    .header-container {
-        gap: 35rem;
-    }
-    .navList {
-        gap: 2rem;
-    }
-}
-@media (min-width: 375px) and (max-width:480px) {
-    .header {
-        width: 100vw;
-    }
-    .header-container {
-        gap: 25rem;
-    }
+.header-logo {
+  width: 12rem;
+  height: 100%;
 }
 .navList {
-    gap: 2rem;
-    }
-@media screen and (min-width: 320px) and (max-width: 375px) {
-    .header {
-        width: 100vw;
-    }
-    .header-container {
-        gap: 25rem;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  box-sizing: border-box;
+  padding: 10px;
 }
-@media (max-width: 320px){
-    .header {
-        width: 100vw;
-    }
-    .header-container {
-        align-items: flex-end;
-        gap: 18rem;
-    }
+.navList-link {
+  display: inline-block;
+  text-align: center;
+  width: auto;
+  font-size: clamp(1rem, 0.839rem + 0.8vw, 1.563rem);
+}
+.navList-link:hover {
+  color: rgb(4, 156, 142);
+  font-weight: bold;
+  border-bottom: 2px solid rgb(4, 156, 142);
 }
