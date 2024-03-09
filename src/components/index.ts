@@ -1,6 +1,6 @@
 export { CustomButton } from "./CustomButton";
 export { CollapseBlock } from "./CollapseBlock";
-export { CustomInput } from "./input/CustomInput";
+export { CustomInput } from "./Input/CustomInput"
 export { CustomCarousel } from "./CustomCarousel";
 export { CustomCheckBox } from "./CustomCheckBox";
 export { CustomDrawer } from "./CustomDrawer";

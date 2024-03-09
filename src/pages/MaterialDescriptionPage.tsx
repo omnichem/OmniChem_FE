@@ -2,8 +2,6 @@ import styled from "styled-components";
 import SupplierCard from "../components/SupplierCard";
 import { suppliersData } from "../const/data";
 import { useEffect, useState } from "react";
-import SamplesForm from "./drawerPages/SamplesForm";
-import QuoteForm from "./drawerPages/QuoteForm";
 import { ArrowLeftOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
 import { PageWrapper } from "./MaterialCardsPage";
@@ -16,6 +14,8 @@ import { columns } from "../const/tableData";
 import { DataType } from "../types/componentsTypes";
 import { Alert, Input, Modal, Spin } from "antd";
 import { CustomButton, CustomDrawer, CustomTable, Header, Logo } from "../components";
+import QuoteForm from "./DrawerPages/QuoteForm";
+import SamplesForm from "./DrawerPages/SamplesForm";
 const { TextArea } = Input;
 
 const MaterialDescriptionPage: React.FC = () => {

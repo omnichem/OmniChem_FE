@@ -11,7 +11,7 @@ const AboutSection = () => {
                 <img className="aboutSection-bigLogo" src={bigLogo} alt="цифровая витрина химических материалов" />
                 <h2 className="aboutSection-title mainTitle">
                 Самый простой способ найти ингридиенты, 
-                полимеры и продукты малотоннажной химии.
+                полимеры и продукты малотоннажной химии. Андрей
                 </h2>
                 <h3 className="aboutSection-subtitle">
                 Более <strong>100 тысяч продуктов</strong> в одном месте 

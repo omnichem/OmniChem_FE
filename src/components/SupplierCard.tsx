@@ -4,8 +4,9 @@ import { CustomButton } from "./CustomButton";
 
 import { CollapseBlock } from "./CollapseBlock";
 import { CollapseProps } from "antd";
-import { CustomCard } from "./materialCard/CustomCard";
+
 import styled from "styled-components";
+import { CustomCard } from "./MaterialCard/CustomCard";
 
 interface MaterialCardProps {
   items: CollapseProps["items"];
