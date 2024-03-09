@@ -1,4 +1,5 @@
 import { Card, Checkbox, Divider } from 'antd'
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import React from 'react'
 import { styled } from 'styled-components'
 

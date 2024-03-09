@@ -7,10 +7,17 @@ import ErrorPage from "./pages/errorPages/ErrorPage.tsx";
 import MaterialCardsPage from "./pages/MaterialCardsPage.tsx";
 import MaterialDescriptionPage from "./pages/MaterialDescriptionPage.tsx";
 import ruRU from 'antd/locale/ru_RU';
+import { Landing } from "../src/pages/landingPage/Landing.jsx"
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Landing />,
+    errorElement: <ErrorPage />,
+
+  },
+  {
+    path: "/materials",
     element: <MaterialCardsPage />,
     errorElement: <ErrorPage />,
 

@@ -1,0 +1,17 @@
+.suppliers-grid {
+    display: grid;
+    grid-template-columns: 10rem 10rem 10rem 10rem 10rem;
+    place-items: center stretch;
+}
+.suppliers-link {
+    cursor: pointer;
+}
+.suppliers-logo {
+    width: 70%;
+    height: auto;
+}
+@media screen and (max-width: 320px) {
+    .suppliers-grid {
+    grid-template-columns: 9rem 9rem 9rem 9rem 9rem;
+    }
+}

@@ -10,7 +10,6 @@ import { Logo } from "../components/Logo";
 import { CustomButton, CustomInput } from "../components";
 import { CustomPagination } from "../components/CustomPagination";
 import "../styles/loading.css"
-import { MaterialCard2 } from "../components/MaterialCard/MaterialCard2";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { RowVirtualizerFixed } from "../components/RowVirtualizerFixed";
@@ -18,6 +17,7 @@ import { PersistedKey } from "../const/persistedKey";
 import { CustomModal } from "../components/CustomModal";
 import { RegisterForm } from "./authModalContent/registerPages/RegisterForm";
 import { LoginForm } from "./authModalContent/loginPages/LoginForm";
+import { MaterialCard2 } from "../components/MaterialCard/MaterialCard2";
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();
