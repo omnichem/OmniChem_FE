@@ -1,5 +1,5 @@
 import { LoadingOutlined, SearchOutlined } from "@ant-design/icons";
-import { PaginationProps, CheckboxProps, Layout, Breadcrumb, Flex, Row, Col, Collapse, Alert, Spin } from "antd";
+import { PaginationProps, CheckboxProps, Layout, Breadcrumb, Flex, Row, Col, Collapse, Alert, Spin, Checkbox, Avatar, List, Typography } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import { http } from "../const/http";
 import useDebounce from "../hooks/useDebounce";
 import { CardMaterial, CardMaterialResponse, Filter } from "../types/pagesTypes";
 import { Logo } from "../components/Logo";
-import { CustomButton, CustomInput } from "../components";
+import { CollapseBlock, CustomButton, CustomInput } from "../components";
 import { CustomPagination } from "../components/CustomPagination";
 import "../styles/loading.css"
 import { Content, Header } from "antd/es/layout/layout";
@@ -18,6 +18,8 @@ import { CustomModal } from "../components/CustomModal";
 import { RegisterForm } from "./authModalContent/registerPages/RegisterForm";
 import { LoginForm } from "./authModalContent/loginPages/LoginForm";
 import { MaterialCard2 } from "../components/MaterialCard/MaterialCard2";
+import VirtualList from 'rc-virtual-list';
+import { FilterItem } from "../components/FilterItem";
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();
@@ -68,6 +70,7 @@ const MaterialCardsPage = () => {
       const response = await http.get<CardMaterialResponse>(
         `/API/v2/wiki/materials/?${userFilters}&search=${encodeURI(debouncedSearchMaterial)}&page=${page}&page_size=${pageSize}`
       );
+      // /API/v2/wiki/materials/?company=Franklin Fibre&company=SIRG
       const filtersResponseReq = await http.get("/API/v2/wiki/filters/")
       console.log(response)
       console.log(filtersResponse)
@@ -85,11 +88,23 @@ const MaterialCardsPage = () => {
     navigate(`/material/${materialId}`);
   };
 
-  const CheckFilter: CheckboxProps['onChange'] = (e) => {
-    if (!e) setUserFilters("")
-    setUserFilters(e.target.value)
-    console.log(e.target.value);
+  const [filterStore, setFilterStore] = useState<string[]>([])
+  console.log(filterStore)
+  console.log(userFilters)
+
+  const CheckFilter: CheckboxProps['onChange'] = (event) => {
+    const value = event.target.value;
+    if (filterStore.includes(value)) {
+      setFilterStore(filterStore.filter(item => item !== value));
+    } else {
+      setFilterStore([...filterStore, value]);
+      // setUserFilters(filterStore.join("&"))
+    }
   };
+
+  useEffect(() => {
+    setUserFilters(filterStore.join('&'));
+  }, [filterStore]);
 
   const [isRegModalOpen, setIsReqModalOpen] = useState(false)
   const [isLogModalOpen, setIsLogModalOpen] = useState(false)
@@ -102,8 +117,24 @@ const MaterialCardsPage = () => {
   const clickLoginButton = () => {
     setIsReqModalOpen(false)
     setIsLogModalOpen(true)
-
   }
+
+  // const [filtersList, setFiltersList] = useState()
+  // const [searchFilterInput, setSearchFilterInput] = useState("")
+
+  // const filterSearch = (searchFilter: string, listOfFilters: string[]) => {
+  //   if (!searchFilter) {
+  //     return listOfFilters
+  //   }
+  //   return listOfFilters.filter((filter) => filter.toLowerCase().includes(searchFilter.toLowerCase()))
+  // }
+
+  // useEffect(()=> {
+  //   const Debonce = setTimeout(()=> {
+  //     const filteredValues = filterSearch(search)
+  //   })
+  // })
+
   return (
     <Layout>
       <CustomModal isModalOpen={isRegModalOpen} handleModalCancel={() => setIsReqModalOpen(false)}>
@@ -127,92 +158,119 @@ const MaterialCardsPage = () => {
         </AuthContainer>
       </Header>
       {
-        isLoading ? <Spin style={{ zIndex: "9" }} indicator={<LoadingOutlined />} fullscreen={true} size="large" /> : (
-          <Layout>
-            <Sider breakpoint="xl" collapsedWidth="0" width={250} style={{ backgroundColor: "#ffffff", padding: "0 5px 0 5px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <Alert style={{ fontSize: "21px", borderRadius: "4px" }} message="Фильтры" />
-                {
-                  filtersResponse?.map((filter) => {
-                    const items = [{
-                      key: `filter${filter.translated_name}`,
-                      label: filter.translated_name,
-                      children: <div style={{ height: "250px" }}><RowVirtualizerFixed text="" filterCategory={filter.translated_name} onChange={CheckFilter} data={filter.attribute_values} /></div>
-                    }]
-                    return <Collapse style={{ borderRadius: "4px" }} items={items} />
-                  })
-                }
-              </div>
-            </Sider>
-            <Layout style={{ padding: '24px 24px 24px' }} >
-              {/* <Breadcrumb style={{ margin: '16px 0' }}>
+
+        <Layout>
+          <Sider breakpoint="xl" collapsedWidth="0" width={250} style={{ backgroundColor: "#ffffff", padding: "0 5px 0 5px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <Alert style={{ fontSize: "21px", borderRadius: "4px" }} message="Фильтры" />
+              {
+                filtersResponse?.map((filter) => {
+                  const items = [{
+                    key: `filter${filter.translated_name}`,
+                    label: filter.translated_name,
+                    children:
+                      <div>
+                        {/* 
+                        {/* <div style={{ height: "300px" }}>
+                          {/*  */}
+                        {/* <RowVirtualizerFixed text="" filterCategory={filter.translated_name} onChange={CheckFilter} data={filter.attribute_values} /> */}
+                        {/* </div> */}
+                        <List
+                          header={<FilterSearchWrpapper>
+                            <CustomInput style={{}} placeholder="Введите название фильтра" name="filter-input" onChange={() => { }} value="" />
+                          </FilterSearchWrpapper>}
+                          footer={<div>Footer</div>}
+                          bordered
+                          style={{ height: "300px", overflowY: "scroll", overflowX: "hidden" }}
+                          dataSource={filter.attribute_values}
+                          renderItem={(item) => (
+                            <List.Item>
+                              {/* <Checkbox value={""} onChange={CheckFilter} /> */}
+                              <FilterItem filterCategory={filter.translated_name} onChange={CheckFilter} text={item} />
+                            </List.Item>
+                          )}
+                        />
+                      </div>
+                  }]
+                  return <CollapseBlock items={items} />
+                })
+              }
+            </div>
+          </Sider>
+          <Layout style={{ padding: '24px 24px 24px' }} >
+            {/* <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>List</Breadcrumb.Item>
                 <Breadcrumb.Item>App</Breadcrumb.Item>
               </Breadcrumb> */}
-              <Content style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
-                <Flex justify="center">
-                  <CustomPagination
+            <Flex justify="center">
+              <CustomPagination
 
-                    hideOnSinglePage={true}
-                    defaultPageSize={15}
-                    showQuickJumper={false}
-                    pageSize={pageSize}
-                    pageSizeOptions={[9, 15, 21]}
-                    onShowSizeChange={onChangeSizePage}
-                    current={page}
-                    simple={true}
+                hideOnSinglePage={true}
+                defaultPageSize={15}
+                showQuickJumper={false}
+                pageSize={pageSize}
+                pageSizeOptions={[9, 15, 21]}
+                onShowSizeChange={onChangeSizePage}
+                current={page}
+                simple={true}
 
-                    onChange={onChangePage}
-                    total={total}
-                  />
-                </Flex>
-                <Row wrap={true} gutter={[16, 16]}>
-                  {
-                    materials?.map((material: CardMaterial) => (
-                      <Col
-                        // mobile
-                        xs={{ span: 23 }}
-                        sm={{ span: 24 }}
-                        // 175%
-                        md={{ span: 12 }}
-                        lg={{ span: 6 }}
-                        xl={{ span: 8 }}
-                        xxl={{ span: 6 }}>
+                onChange={onChangePage}
+                total={total}
+              />
+            </Flex>
 
-                        <MaterialCard2
-                          is_supplier_available={Math.random() < 0.5}
-                          loading={isLoading}
-                          id={material.id}
-                          clickButton={onCardClick}
-                          key={material.id}
-                          name={material.name}
-                          translated_description={material.translated_description}
-                          attributes={material.attributes}
-                        />
-                      </Col>
-                    ))
-                  }
-                </Row>
-                <Flex justify="center">
-                  <CustomPagination
-                    hideOnSinglePage={true}
-                    defaultPageSize={15}
-                    showQuickJumper={false}
-                    pageSize={pageSize}
-                    pageSizeOptions={[9, 15, 21]}
-                    onShowSizeChange={onChangeSizePage}
-                    current={page}
-                    simple={true}
 
-                    onChange={onChangePage}
-                    total={total}
-                  />
-                </Flex>
-              </Content>
-            </Layout>
+            <Content style={{ display: "flex", gap: "20px", flexDirection: "column", height: "100%" }}>
+              {
+                isLoading ? <Spin style={{ zIndex: "9" }} indicator={<LoadingOutlined />} fullscreen={false} size="large" /> : (
+                  <Row wrap={true} gutter={[16, 16]}>
+                    {
+                      materials?.map((material: CardMaterial) => (
+                        <Col
+                          // mobile
+                          xs={{ span: 23 }}
+                          sm={{ span: 24 }}
+                          // 175%
+                          md={{ span: 12 }}
+                          lg={{ span: 6 }}
+                          xl={{ span: 8 }}
+                          xxl={{ span: 6 }}>
+
+                          <MaterialCard2
+                            is_supplier_available={Math.random() < 0.5}
+                            loading={isLoading}
+                            id={material.id}
+                            clickButton={onCardClick}
+                            key={material.id}
+                            name={material.name}
+                            translated_description={material.translated_description}
+                            attributes={material.attributes}
+                          />
+                        </Col>
+                      ))
+                    }
+                  </Row>
+                )}
+
+            </Content>
+            <Flex justify="center">
+              <CustomPagination
+                hideOnSinglePage={true}
+                defaultPageSize={15}
+                showQuickJumper={false}
+                pageSize={pageSize}
+                pageSizeOptions={[9, 15, 21]}
+                onShowSizeChange={onChangeSizePage}
+                current={page}
+                simple={true}
+
+                onChange={onChangePage}
+                total={total}
+              />
+            </Flex>
           </Layout>
-        )
+        </Layout>
       }
 
       {/* <Footer style={{ textAlign: 'center' }}>
@@ -223,6 +281,12 @@ const MaterialCardsPage = () => {
 };
 
 export default MaterialCardsPage;
+
+export const FilterSearchWrpapper = styled.div`
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+`
 
 export const MaterialsListWrapper = styled.div`
   display: flex;

@@ -8,7 +8,7 @@ interface InputProps {
   addonBefore?: React.ReactNode;
   disabled?: boolean;
   maxLength?: number;
-
+  style?: React.CSSProperties;
   status?: "error" | "warning" | "";
   name: string;
 }
@@ -20,12 +20,13 @@ export const CustomInput: React.FC<InputProps> = ({
   addonBefore,
   disabled,
   maxLength,
-
+  style,
   status,
   name,
 }) => {
   return (
     <Input
+      style={style}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
       value={value}

@@ -3,7 +3,8 @@ import { Card, Divider, Popover } from 'antd';
 import styled from 'styled-components';
 import { CustomButton } from '..';
 import { CardAttributes } from '../../types/pagesTypes';
-import fireIcon from "./fire2.png";
+import fireIcon from "../../pictures/cardLogo.svg";
+import { CardLogo } from './CardLogo';
 
 const tabList = [
   {
@@ -104,7 +105,7 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({ is_supplier_availa
         tabBarExtraContent={is_supplier_available ? (
           <FireIcon>
             <Popover content="У этого сырья есть поставщик!">
-              <img src={fireIcon} alt="" />
+              <CardLogo width={40} height={40} />
             </Popover>
           </FireIcon>
         ) : (
