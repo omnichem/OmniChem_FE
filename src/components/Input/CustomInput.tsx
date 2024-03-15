@@ -1,5 +1,5 @@
-import React from "react";
-import { Input } from "antd";
+import React from 'react';
+import { Input } from 'antd';
 
 interface InputProps {
   placeholder: string;
@@ -9,7 +9,7 @@ interface InputProps {
   disabled?: boolean;
   maxLength?: number;
   style?: React.CSSProperties;
-  status?: "error" | "warning" | "";
+  status?: 'error' | 'warning' | '';
   name: string;
 }
 
@@ -28,7 +28,7 @@ export const CustomInput: React.FC<InputProps> = ({
     <Input
       style={style}
       placeholder={placeholder}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={e => onChange(e.target.value)}
       value={value}
       disabled={disabled}
       maxLength={maxLength}

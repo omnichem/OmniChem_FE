@@ -1,11 +1,11 @@
-import React from "react";
-import { Table } from "antd";
+import React from 'react';
+import { Table } from 'antd';
 
-import { DataType } from "../types/componentsTypes";
-import { TableProps } from "antd/es/table";
+import { DataType } from '../types/componentsTypes';
+import { TableProps } from 'antd/es/table';
 
 interface CustomTableProps {
-  size: "large" | "middle" | "small";
+  size: 'large' | 'middle' | 'small';
   columns: TableProps<DataType>['columns'];
   data: DataType[];
 }

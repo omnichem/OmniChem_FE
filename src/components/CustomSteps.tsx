@@ -1,9 +1,9 @@
-import React from "react";
-import type { StepsProps } from "antd";
-import { Popover, Steps } from "antd";
-import styled from "styled-components";
+import React from 'react';
+import type { StepsProps } from 'antd';
+import { Popover, Steps } from 'antd';
+import styled from 'styled-components';
 
-const customDot: StepsProps["progressDot"] = (dot, { status, index }) => (
+const customDot: StepsProps['progressDot'] = (dot, { status, index }) => (
   <Popover
     content={
       <span>
@@ -17,7 +17,7 @@ const customDot: StepsProps["progressDot"] = (dot, { status, index }) => (
 
 interface CustomStepsProps {
   current: number;
-  size: "default" | "small";
+  size: 'default' | 'small';
 }
 
 export const CustomSteps: React.FC<CustomStepsProps> = ({ current, size }) => (
@@ -27,13 +27,13 @@ export const CustomSteps: React.FC<CustomStepsProps> = ({ current, size }) => (
     size={size}
     items={[
       {
-        title: "Finished",
+        title: 'Finished',
       },
       {
-        title: "In Progress",
+        title: 'In Progress',
       },
       {
-        title: "Waiting",
+        title: 'Waiting',
       },
     ]}
   />

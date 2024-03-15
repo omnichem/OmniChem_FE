@@ -1,19 +1,15 @@
-import React from "react";
-import type { CollapseProps } from "antd";
-import { Collapse } from "antd";
-import styled from "styled-components";
+import React from 'react';
+import type { CollapseProps } from 'antd';
+import { Collapse } from 'antd';
+import styled from 'styled-components';
 
 interface CollapseBlockProps {
-  items: CollapseProps["items"];
+  items: CollapseProps['items'];
   ghost?: boolean;
   children?: React.ReactNode;
 }
 
-export const CollapseBlock: React.FC<CollapseBlockProps> = ({
-  items,
-  ghost,
-  children,
-}) => {
+export const CollapseBlock: React.FC<CollapseBlockProps> = ({ items, ghost, children }) => {
   const onChange = (key: string | string[]) => {
     console.log(key);
   };

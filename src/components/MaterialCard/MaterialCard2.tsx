@@ -32,14 +32,13 @@ interface CardHeaderProps {
 }
 
 const CardHeader: React.FC<CardHeaderProps> = ({ manufacturerIcon, manufacturerImage }) => {
-
   return (
     <StyledCardHeader>
       <ManufacturerImage>{manufacturerImage}</ManufacturerImage>
       <ManufacturerIcon>{manufacturerIcon}</ManufacturerIcon>
     </StyledCardHeader>
-  )
-}
+  );
+};
 
 interface MaterialCard2Props {
   clickButton: (id: number) => void;
@@ -51,7 +50,15 @@ interface MaterialCard2Props {
   is_supplier_available: boolean;
 }
 
-export const MaterialCard2: React.FC<MaterialCard2Props> = ({ is_supplier_available, clickButton, id, loading, name, translated_description, attributes }) => {
+export const MaterialCard2: React.FC<MaterialCard2Props> = ({
+  is_supplier_available,
+  clickButton,
+  id,
+  loading,
+  name,
+  translated_description,
+  attributes,
+}) => {
   const [activeTabKey1, setActiveTabKey1] = useState<string>('tab1');
 
   const onClick = () => {
@@ -59,59 +66,67 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({ is_supplier_availa
   };
 
   const contentList: Record<string, React.ReactNode> = {
-    tab1: <Tab1ContentWrapper>
-
-      <MaterialName>{name}</MaterialName>
-      <Divider style={{ margin: 0 }} />
-      {
-        attributes.map((attribute) => (
-          <div >
-            <MaterialAttributeName>
-              {attribute.attribute_name}:
-            </MaterialAttributeName>
+    tab1: (
+      <Tab1ContentWrapper>
+        <MaterialName>{name}</MaterialName>
+        <Divider style={{ margin: 0 }} />
+        {attributes.map(attribute => (
+          <div>
+            <MaterialAttributeName>{attribute.attribute_name}:</MaterialAttributeName>
             <MaterialAttributeValue>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "2px" }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px' }}>
                 {attribute.attribute_values.map((value, index) => {
                   if (index === attribute.attribute_values.length - 1) {
                     return value;
                   } else {
-                    return value.concat(" / ");
+                    return value.concat(' / ');
                   }
-                }
-                )}
+                })}
               </div>
             </MaterialAttributeValue>
             {/* <Divider/> */}
           </div>
-        ))
-      }
-
-    </Tab1ContentWrapper>,
-    tab2: <Tab2ContentWrapper>
-      <div><MaterialAttributeValue>{translated_description}</MaterialAttributeValue></div>
-    </Tab2ContentWrapper>,
+        ))}
+      </Tab1ContentWrapper>
+    ),
+    tab2: (
+      <Tab2ContentWrapper>
+        <div>
+          <MaterialAttributeValue>{translated_description}</MaterialAttributeValue>
+        </div>
+      </Tab2ContentWrapper>
+    ),
   };
 
   const onTab1Change = (key: string) => {
     setActiveTabKey1(key);
   };
 
-
   return (
     <>
       <StyledCard
         onClick={onClick}
-        tabBarExtraContent={is_supplier_available ? (
-          <Popover content={<p>"У этого сырья есть поставщик!"<br />Напишите в чат: <a href='https://t.me/omnichem'>OmniChem</a></p>}>
-            <div>
-              <CardLogo width={40} height={40} />
-            </div>
-          </Popover>
-        ) : (
-          <></>
-        )}
+        tabBarExtraContent={
+          is_supplier_available ? (
+            <Popover
+              content={
+                <p>
+                  "У этого сырья есть поставщик!"
+                  <br />
+                  Напишите в чат: <a href="https://t.me/omnichem">OmniChem</a>
+                </p>
+              }
+            >
+              <div>
+                <CardLogo width={40} height={40} />
+              </div>
+            </Popover>
+          ) : (
+            <></>
+          )
+        }
         loading={loading}
-        title={<CardHeader manufacturerIcon='' manufacturerImage='' />}
+        title={<CardHeader manufacturerIcon="" manufacturerImage="" />}
         style={{ width: '100%' }}
         // extra={<a href="#">More</a>}
         tabList={tabList}
@@ -121,12 +136,7 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({ is_supplier_availa
       >
         <CardContentWrapper>
           {contentList[activeTabKey1]}
-          <CustomButton
-            type="default"
-            text={"Подробнее"}
-            onClick={onClick}
-            style={{ width: "100%" }}
-          />
+          <CustomButton type="default" text={'Подробнее'} onClick={onClick} style={{ width: '100%' }} />
         </CardContentWrapper>
       </StyledCard>
     </>
@@ -141,29 +151,29 @@ const CardContentWrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   justify-content: space-between;
-`
+`;
 
 const Tab1ContentWrapper = styled.div`
-display:flex;
-flex-direction: column;
-justify-content: space-between;
-overflow: hidden;
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+`;
 
 const Tab2ContentWrapper = styled.div`
   overflow: scroll;
   &::-webkit-scrollbar {
-            display: none;
-          }
-`
+    display: none;
+  }
+`;
 
 const MaterialAttributeName = styled.p`
   color: #505050;
   font-weight: 700;
-`
+`;
 const MaterialAttributeValue = styled.p`
-color: #505050;
-`
+  color: #505050;
+`;
 
 const StyledCard = styled(Card)`
   /* border-radius: 4px; */
@@ -176,15 +186,15 @@ const StyledCard = styled(Card)`
   outline: 1px solid rgba(5, 5, 5, 0.06);
 
   .ant-card-body {
-  padding: 20px;
-  height: 324px;
-  display: flex;
-}
-`
+    padding: 20px;
+    height: 324px;
+    display: flex;
+  }
+`;
 const StyledCardHeader = styled.div`
   height: 120px;
   position: relative;
-`
+`;
 
 const ManufacturerImage = styled.div`
   width: 100%;
@@ -201,9 +211,9 @@ const ManufacturerIcon = styled.div`
   position: absolute;
   top: 20px;
   left: 20px;
-  
+
   /* background-color: #383a3b; */
   clip-path: path(
-    "M 85.9033 94.638 C 61.0345 96.4547 36.1656 96.4547 11.2998 94.638 C 6.5484 94.2765 2.32561 90.0538 1.96409 85.3026 C 0.147385 60.4345 0.147385 35.5665 1.96409 10.7014 C 2.32561 5.94714 6.5484 1.72448 11.2998 1.36298 C 36.1687 -0.453675 61.0375 -0.453675 85.9033 1.36298 C 90.6547 1.72448 94.8775 5.94714 95.239 10.6984 C 97.0557 35.5665 97.0557 60.4345 95.239 85.2996 C 94.8805 90.0508 90.6547 94.2765 85.9033 94.638 Z"
+    'M 85.9033 94.638 C 61.0345 96.4547 36.1656 96.4547 11.2998 94.638 C 6.5484 94.2765 2.32561 90.0538 1.96409 85.3026 C 0.147385 60.4345 0.147385 35.5665 1.96409 10.7014 C 2.32561 5.94714 6.5484 1.72448 11.2998 1.36298 C 36.1687 -0.453675 61.0375 -0.453675 85.9033 1.36298 C 90.6547 1.72448 94.8775 5.94714 95.239 10.6984 C 97.0557 35.5665 97.0557 60.4345 95.239 85.2996 C 94.8805 90.0508 90.6547 94.2765 85.9033 94.638 Z'
   );
 `;

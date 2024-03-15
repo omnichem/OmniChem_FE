@@ -27,11 +27,14 @@ export const RowVirtualizerFixed: React.FC<RowVirtualizerProps> = ({ data, itemR
 
   return (
     <div style={{ height: '100%' }}>
-      <CustomInput name="" placeholder="Введите название фильтра" value={searchFilter} onChange={setSearchFilter} />
+      <div style={{ boxSizing: 'border-box', padding: '10px' }}>
+        <CustomInput name="" placeholder="Введите название фильтра" value={searchFilter} onChange={setSearchFilter} />
+      </div>
+      <Divider style={{ margin: '0' }} />
       <div
         ref={parentRef}
         style={{
-          height: `calc(100% - 32px)`,
+          height: `calc(100% - 51.33px)`,
           width: `100%`,
           overflow: 'auto',
         }}

@@ -1,23 +1,17 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Form, Input } from 'antd'
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input } from 'antd';
 
 interface RegSupplierFormProps {
   submitsupplierLogin: () => void;
-  loginButton: () => void
+  loginButton: () => void;
 }
 
 export const RegSupplierForm: React.FC<RegSupplierFormProps> = ({ loginButton, submitsupplierLogin }) => {
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
-  }
+  };
   return (
-    <Form
-      name="normal_login"
-
-      layout='vertical'
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-    >
+    <Form name="normal_login" layout="vertical" initialValues={{ remember: true }} onFinish={onFinish}>
       <Form.Item
         label="Login поставщика"
         required
@@ -55,5 +49,5 @@ export const RegSupplierForm: React.FC<RegSupplierFormProps> = ({ loginButton, s
         <Button onClick={loginButton}>Войти сейчас!</Button>
       </Form.Item>
     </Form>
-  )
-}
+  );
+};

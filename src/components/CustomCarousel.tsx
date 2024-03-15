@@ -8,8 +8,8 @@ interface CustomCarouselProps {
   slidesToShow: number;
 }
 
-const SampleNextArrow = (props: { className?: string, style?: React.CSSProperties, onClick?: () => void }) => {
-  const { className, style, onClick } = props
+const SampleNextArrow = (props: { className?: string; style?: React.CSSProperties; onClick?: () => void }) => {
+  const { className, style, onClick } = props;
   return (
     <div
       className={className}
@@ -18,17 +18,17 @@ const SampleNextArrow = (props: { className?: string, style?: React.CSSPropertie
         color: 'black',
         fontSize: '15px',
         lineHeight: '1.5715',
-        zIndex: "10"
+        zIndex: '10',
       }}
       onClick={onClick}
     >
-      <CustomButton type='primary' text='>' />
+      <CustomButton type="primary" text=">" />
     </div>
-  )
-}
+  );
+};
 
-const SamplePrevArrow = (props: { className?: string, style?: React.CSSProperties, onClick?: () => void }) => {
-  const { className, style, onClick } = props
+const SamplePrevArrow = (props: { className?: string; style?: React.CSSProperties; onClick?: () => void }) => {
+  const { className, style, onClick } = props;
   return (
     <div
       className={className}
@@ -37,20 +37,19 @@ const SamplePrevArrow = (props: { className?: string, style?: React.CSSPropertie
         color: 'black',
         fontSize: '15px',
         lineHeight: '1.5715',
-        zIndex: "10"
+        zIndex: '10',
       }}
       onClick={onClick}
     >
-      <CustomButton type='primary' text='<' />
+      <CustomButton type="primary" text="<" />
     </div>
-  )
-}
-
+  );
+};
 
 const settings = {
   nextArrow: <SampleNextArrow />,
-  prevArrow: <SamplePrevArrow />
-}
+  prevArrow: <SamplePrevArrow />,
+};
 
 export const CustomCarousel: React.FC<CustomCarouselProps> = ({ children, slidesToShow }) => {
   const onChange = (currentSlide: number) => {
@@ -58,12 +57,17 @@ export const CustomCarousel: React.FC<CustomCarouselProps> = ({ children, slides
   };
 
   return (
-    <StyledCarousel dots={false} arrows {...settings} slidesToShow={slidesToShow} afterChange={onChange} autoplay={true}>
+    <StyledCarousel
+      dots={false}
+      arrows
+      {...settings}
+      slidesToShow={slidesToShow}
+      afterChange={onChange}
+      autoplay={true}
+    >
       {children}
     </StyledCarousel>
   );
 };
 
-const StyledCarousel = styled(Carousel)`
-
-`
+const StyledCarousel = styled(Carousel)``;

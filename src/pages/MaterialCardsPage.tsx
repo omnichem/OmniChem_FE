@@ -154,9 +154,22 @@ const MaterialCardsPage = () => {
             breakpoint="xl"
             collapsedWidth="0"
             width={250}
-            style={{ backgroundColor: '#ffffff', padding: '0 5px 0 5px' }}
+            style={{ backgroundColor: '#f5f5f5', padding: '97px 0 10px 20px' }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                position: 'sticky',
+                top: '77px',
+                backgroundColor: '#ffffff',
+                padding: '10px',
+                borderRadius: '8px',
+                boxShadow:
+                  '0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09)',
+              }}
+            >
               <Alert style={{ fontSize: '21px', borderRadius: '4px' }} message="Фильтры" />
               {filtersResponse?.map(filter => {
                 const items = [
@@ -167,7 +180,6 @@ const MaterialCardsPage = () => {
                       <div>
                         <div style={{ height: '300px' }}>
                           <RowVirtualizerFixed
-                    
                             itemRenderer={text => (
                               <FilterItem
                                 checked={filterStore.includes(`${filter.translated_name}=${text}`)}
@@ -179,20 +191,6 @@ const MaterialCardsPage = () => {
                             data={filter.attribute_values}
                           />
                         </div>
-                        {/* <List
-                            header={<FilterSearchWrpapper>
-                              <CustomInput style={{}} placeholder="Введите название фильтра" name="filter-input" onChange={() => { }} value="" />
-                            </FilterSearchWrpapper>}
-                            bordered
-                            style={{ height: "300px", overflowY: "scroll", overflowX: "hidden" }}
-                            dataSource={filter.attribute_values}
-                            renderItem={(item) => (
-                              <List.Item>
-                                
-                                <FilterItem filterCategory={filter.translated_name} onChange={CheckFilter} text={item} />
-                              </List.Item>
-                            )}
-                          /> */}
                       </div>
                     ),
                   },
@@ -201,7 +199,7 @@ const MaterialCardsPage = () => {
               })}
             </div>
           </Sider>
-          <Layout style={{ padding: '24px 24px 24px' }}>
+          <Layout style={{ padding: '24px 24px 24px', height: '100%' }}>
             {/* <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>List</Breadcrumb.Item>
@@ -209,8 +207,9 @@ const MaterialCardsPage = () => {
               </Breadcrumb> */}
 
             <Content style={{ display: 'flex', gap: '20px', flexDirection: 'column', height: '100%' }}>
-              <Flex justify="center">
+              <Flex justify="center" style={{ position: 'sticky', top: '77px', zIndex: 10 }}>
                 <CustomPagination
+                  style={{ borderRadius: '4px', backgroundColor: '#f5f5f5', padding: '10px' }}
                   hideOnSinglePage={true}
                   defaultPageSize={15}
                   showQuickJumper={false}
@@ -267,9 +266,7 @@ const MaterialCardsPage = () => {
         </Layout>
       )}
 
-      {/* <Footer style={{ textAlign: 'center' }}>
-        OmniChem ©{new Date().getFullYear()}
-      </Footer> */}
+      {/* <Footer style={{ textAlign: 'center' }}>OmniChem ©{new Date().getFullYear()}</Footer> */}
     </Layout>
   );
 };

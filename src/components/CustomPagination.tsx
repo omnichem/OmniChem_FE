@@ -1,12 +1,13 @@
-import React from "react";
-import { Pagination, PaginationProps } from "antd";
+import React, { useEffect, useState } from 'react';
+import { Pagination, PaginationProps } from 'antd';
+import './customPaginationStyle.css';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 interface CustomPaginationProps {
   total: number;
   current: number;
-  onChange: PaginationProps["onChange"];
+  onChange: PaginationProps['onChange'];
   defaultPage?: number;
   simple: boolean;
   onShowSizeChange: PaginationProps['onShowSizeChange'];
@@ -15,6 +16,7 @@ interface CustomPaginationProps {
   defaultPageSize: number;
   pageSize: number;
   hideOnSinglePage: boolean;
+  style?: React.CSSProperties;
 }
 
 export const CustomPagination: React.FC<CustomPaginationProps> = ({
@@ -28,10 +30,30 @@ export const CustomPagination: React.FC<CustomPaginationProps> = ({
   showQuickJumper,
   defaultPageSize,
   pageSize,
-  hideOnSinglePage
+  hideOnSinglePage,
+  style,
 }) => {
+  const [isSticky, setIsSticky] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 100) {
+      setIsSticky(true);
+    } else {
+      setIsSticky(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <StyledPagination
+      className={`myStickyComponent ${isSticky ? 'sticky' : ''}`}
+      style={style}
       hideOnSinglePage={hideOnSinglePage}
       defaultPageSize={defaultPageSize}
       simple={simple}
@@ -39,7 +61,7 @@ export const CustomPagination: React.FC<CustomPaginationProps> = ({
       defaultCurrent={defaultPage}
       onChange={onChange}
       total={total}
-      showTotal={(total) => `Найдено ${total} Позиций`}
+      showTotal={total => `Найдено ${total} Позиций`}
       pageSizeOptions={pageSizeOptions}
       onShowSizeChange={onShowSizeChange}
       showQuickJumper={showQuickJumper}
@@ -49,6 +71,4 @@ export const CustomPagination: React.FC<CustomPaginationProps> = ({
   );
 };
 
-const StyledPagination = styled(Pagination)`
-
-`;
+const StyledPagination = styled(Pagination)``;

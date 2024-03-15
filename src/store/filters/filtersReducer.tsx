@@ -1,4 +1,4 @@
-import { Action, FilterState } from "./types";
+import { Action, FilterState } from './types';
 
 const initialState: FilterState = {
   filters: [],
@@ -6,7 +6,7 @@ const initialState: FilterState = {
 
 export function filtersReducer(state = initialState, action: Action) {
   switch (action.type) {
-    case "SAVE_FILTERS":
+    case 'SAVE_FILTERS':
       return { ...state, products: [...state.filters, ...action.payload] };
 
     default:

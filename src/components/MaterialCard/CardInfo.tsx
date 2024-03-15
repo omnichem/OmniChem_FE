@@ -1,17 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import styled, { css } from "styled-components";
-import { CardStyle } from "../../types/componentsTypes";
+import styled, { css } from 'styled-components';
+import { CardStyle } from '../../types/componentsTypes';
 
 interface CardInfoProps {
   styleType: CardStyle;
   children?: React.ReactNode;
 }
 
-export const CardInfo: React.FC<CardInfoProps> = ({
-  children,
-  styleType = CardStyle.UN_WRAP,
-}) => {
+export const CardInfo: React.FC<CardInfoProps> = ({ children, styleType = CardStyle.UN_WRAP }) => {
   return <StyledCardInfo $styleType={styleType}>{children}</StyledCardInfo>;
 };
 
