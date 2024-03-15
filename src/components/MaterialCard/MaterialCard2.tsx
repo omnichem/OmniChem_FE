@@ -3,7 +3,6 @@ import { Card, Divider, Popover } from 'antd';
 import styled from 'styled-components';
 import { CustomButton } from '..';
 import { CardAttributes } from '../../types/pagesTypes';
-import fireIcon from "../../pictures/cardLogo.svg";
 import { CardLogo } from './CardLogo';
 
 const tabList = [
@@ -103,13 +102,13 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({ is_supplier_availa
       <StyledCard
         onClick={onClick}
         tabBarExtraContent={is_supplier_available ? (
-          <FireIcon>
-            <Popover content="У этого сырья есть поставщик!">
+          <Popover content={<p>"У этого сырья есть поставщик!"<br />Напишите в чат: <a href='https://t.me/omnichem'>OmniChem</a></p>}>
+            <div>
               <CardLogo width={40} height={40} />
-            </Popover>
-          </FireIcon>
+            </div>
+          </Popover>
         ) : (
-          <FireIcon></FireIcon>
+          <></>
         )}
         loading={loading}
         title={<CardHeader manufacturerIcon='' manufacturerImage='' />}
@@ -133,15 +132,6 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({ is_supplier_availa
     </>
   );
 };
-
-const FireIcon = styled.div`
-  height: 24px;
-  width: 24px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const CardContentWrapper = styled.div`
   height: 100%;
