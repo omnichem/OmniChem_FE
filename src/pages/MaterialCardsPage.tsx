@@ -1,97 +1,99 @@
-import { LoadingOutlined, SearchOutlined } from "@ant-design/icons";
-import { PaginationProps, CheckboxProps, Layout, Breadcrumb, Flex, Row, Col, Alert, Spin, List } from "antd";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
-import styled from "styled-components";
-import { http } from "../const/http";
-import useDebounce from "../hooks/useDebounce";
-import { CardMaterial, CardMaterialResponse, Filter } from "../types/pagesTypes";
-import { Logo } from "../components/Logo";
-import { CollapseBlock, CustomButton, CustomInput } from "../components";
-import { CustomPagination } from "../components/CustomPagination";
-import "../styles/loading.css"
-import { Content, Header } from "antd/es/layout/layout";
-import Sider from "antd/es/layout/Sider";
-import { PersistedKey } from "../const/persistedKey";
-import { CustomModal } from "../components/CustomModal";
-import { RegisterForm } from "./authModalContent/registerPages/RegisterForm";
-import { LoginForm } from "./authModalContent/loginPages/LoginForm";
-import { MaterialCard2 } from "../components/MaterialCard/MaterialCard2";
-import { FilterItem } from "../components/FilterItem";
+import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
+import { PaginationProps, CheckboxProps, Layout, Breadcrumb, Flex, Row, Col, Alert, Spin, List } from 'antd';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
+import { http } from '../const/http';
+import useDebounce from '../hooks/useDebounce';
+import { CardMaterial, CardMaterialResponse, Filter } from '../types/pagesTypes';
+import { Logo } from '../components/Logo';
+import { CollapseBlock, CustomButton, CustomInput } from '../components';
+import { CustomPagination } from '../components/CustomPagination';
+import '../styles/loading.css';
+import { Content, Header } from 'antd/es/layout/layout';
+import Sider from 'antd/es/layout/Sider';
+import { PersistedKey } from '../const/persistedKey';
+import { CustomModal } from '../components/CustomModal';
+import { RegisterForm } from './authModalContent/registerPages/RegisterForm';
+import { LoginForm } from './authModalContent/loginPages/LoginForm';
+import { MaterialCard2 } from '../components/MaterialCard/MaterialCard2';
+import { FilterItem } from '../components/FilterItem';
+import { RowVirtualizerFixed } from '../components/RowVirtualizerFixed';
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();
   const [total, setTotal] = useState(50);
   const [page, setPage] = useState(() => {
-    const target = sessionStorage.getItem(PersistedKey.Page)
+    const target = sessionStorage.getItem(PersistedKey.Page);
     if (!target) {
-      sessionStorage.setItem(PersistedKey.Page, "1")
-      return 1
+      sessionStorage.setItem(PersistedKey.Page, '1');
+      return 1;
     }
-    return parseInt(target)
+    return parseInt(target);
   });
   const [pageSize, setPageSize] = useState(() => {
-    const target = sessionStorage.getItem(PersistedKey.PageSize)
+    const target = sessionStorage.getItem(PersistedKey.PageSize);
     if (!target) {
-      sessionStorage.setItem(PersistedKey.PageSize, "15")
-      return 15
+      sessionStorage.setItem(PersistedKey.PageSize, '15');
+      return 15;
     }
-    return parseInt(target)
-  }
-  )
+    return parseInt(target);
+  });
   const debouncedMaterial = useDebounce(materials, 600000);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [searchMaterial, setSearchMaterial] = useState(() => {
-    const target = sessionStorage.getItem(PersistedKey.SearchMaterial)
+    const target = sessionStorage.getItem(PersistedKey.SearchMaterial);
     if (!target) {
-      sessionStorage.setItem(PersistedKey.SearchMaterial, "")
-      return ""
+      sessionStorage.setItem(PersistedKey.SearchMaterial, '');
+      return '';
     }
-    return ""
-  })
+    return '';
+  });
   const debouncedSearchMaterial = useDebounce(searchMaterial, 200);
-  const [filtersResponse, setFiltersResponse] = useState<Filter[]>()
-  const [userFilters, setUserFilters] = useState("")
-  const [filterStore, setFilterStore] = useState<string[]>([])
+  const [filtersResponse, setFiltersResponse] = useState<Filter[]>();
+  const [userFilters, setUserFilters] = useState('');
+  const [filterStore, setFilterStore] = useState<string[]>([]);
   const navigate = useNavigate();
-  const [isRegModalOpen, setIsReqModalOpen] = useState(false)
-  const [isLogModalOpen, setIsLogModalOpen] = useState(false)
-  const [firstLoading, setFirstLoading] = useState(true)
+  const [isRegModalOpen, setIsReqModalOpen] = useState(false);
+  const [isLogModalOpen, setIsLogModalOpen] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const fetchData = async () => {
       const response = await http.get<CardMaterialResponse>(
-        `/API/v2/wiki/materials/?${userFilters}&search=${encodeURI(debouncedSearchMaterial)}&page=${page}&page_size=${pageSize}`
+        `/API/v2/wiki/materials/?${userFilters}&search=${encodeURI(
+          debouncedSearchMaterial
+        )}&page=${page}&page_size=${pageSize}`
       );
       // /API/v2/wiki/materials/?company=Franklin Fibre&company=SIRG
-      const filtersResponseReq = await http.get("/API/v2/wiki/filters/")
-      setFiltersResponse(filtersResponseReq.data)
+      const filtersResponseReq = await http.get('/API/v2/wiki/filters/');
+      setFiltersResponse(filtersResponseReq.data);
       setTotal(response.data.count);
       setMaterials(response.data.results);
-      setIsLoading(false)
+      setIsLoading(false);
       setUserFilters(filterStore.join('&'));
-      setFirstLoading(false)
+      setFirstLoading(false);
     };
     fetchData();
   }, [page, debouncedMaterial, pageSize, debouncedSearchMaterial, userFilters, filterStore]);
 
-  const onChangePage: PaginationProps["onChange"] = (page: number) => {
+  const onChangePage: PaginationProps['onChange'] = (page: number) => {
     setPage(page);
-    sessionStorage.setItem(PersistedKey.Page, page.toString())
+    sessionStorage.setItem(PersistedKey.Page, page.toString());
   };
 
   const onChangeSizePage: PaginationProps['onShowSizeChange'] = (current: number, size: number) => {
-    setPageSize(size)
-    sessionStorage.setItem(PersistedKey.PageSize, size.toString())
+    setPageSize(size);
+    sessionStorage.setItem(PersistedKey.PageSize, size.toString());
   };
 
-  const CheckFilter: CheckboxProps['onChange'] = (event) => {
+  const checkFilter: CheckboxProps['onChange'] = event => {
     const value = event.target.value;
     if (filterStore.includes(value)) {
-      setFilterStore(filterStore.filter(item => item !== value));
+      setFilterStore(prev => prev.filter(item => item !== value));
     } else {
-      setFilterStore([...filterStore, value]);
+      setFilterStore(prev => [...prev, value]);
       // setUserFilters(filterStore.join("&"))
     }
   };
@@ -101,24 +103,36 @@ const MaterialCardsPage = () => {
   };
 
   const clickRegisterButton = () => {
-    setIsLogModalOpen(false)
-    setIsReqModalOpen(true)
-  }
+    setIsLogModalOpen(false);
+    setIsReqModalOpen(true);
+  };
 
   const clickLoginButton = () => {
-    setIsReqModalOpen(false)
-    setIsLogModalOpen(true)
-  }
+    setIsReqModalOpen(false);
+    setIsLogModalOpen(true);
+  };
 
   return (
     <Layout>
       <CustomModal isModalOpen={isRegModalOpen} handleModalCancel={() => setIsReqModalOpen(false)}>
-        <RegisterForm submitBuyerRegister={() => { }} submitSupplierRegister={() => { }} loginButton={clickLoginButton} />
+        <RegisterForm submitBuyerRegister={() => {}} submitSupplierRegister={() => {}} loginButton={clickLoginButton} />
       </CustomModal>
       <CustomModal isModalOpen={isLogModalOpen} handleModalCancel={() => setIsLogModalOpen(false)}>
-        <LoginForm submitBuyerLogin={() => { }} submitSupplierLogin={() => { }} registerButton={clickRegisterButton} />
+        <LoginForm submitBuyerLogin={() => {}} submitSupplierLogin={() => {}} registerButton={clickRegisterButton} />
       </CustomModal>
-      <Header style={{ padding: "10px", display: 'flex', gap: "20px", alignItems: 'center', position: "sticky", top: "0", zIndex: "10", height: "auto", backgroundColor: "#ffffff" }}>
+      <Header
+        style={{
+          padding: '10px',
+          display: 'flex',
+          gap: '20px',
+          alignItems: 'center',
+          position: 'sticky',
+          top: '0',
+          zIndex: '10',
+          height: 'auto',
+          backgroundColor: '#ffffff',
+        }}
+      >
         <Logo height={36} width={170} />
         <CustomInput
           name="searchMaterialInput"
@@ -132,27 +146,40 @@ const MaterialCardsPage = () => {
           <CustomButton type="primary" text="Зарегистрироваться" onClick={() => setIsReqModalOpen(true)} />
         </AuthContainer>
       </Header>
-      {
-        firstLoading ? (
-          <Spin style={{ zIndex: "9" }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
-        ) : (
-          <Layout>
-            <Sider breakpoint="xl" collapsedWidth="0" width={250} style={{ backgroundColor: "#ffffff", padding: "0 5px 0 5px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <Alert style={{ fontSize: "21px", borderRadius: "4px" }} message="Фильтры" />
-                {
-                  filtersResponse?.map((filter) => {
-                    const items = [{
-                      key: `filter${filter.translated_name}`,
-                      label: filter.translated_name,
-                      children:
-                        <div>
-                          {/* 
-                        {/* <div style={{ height: "300px" }}>
-                          {/*  */}
-                          {/* <RowVirtualizerFixed text="" filterCategory={filter.translated_name} onChange={CheckFilter} data={filter.attribute_values} /> */}
-                          {/* </div> */}
-                          <List
+      {firstLoading ? (
+        <Spin style={{ zIndex: '9' }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
+      ) : (
+        <Layout>
+          <Sider
+            breakpoint="xl"
+            collapsedWidth="0"
+            width={250}
+            style={{ backgroundColor: '#ffffff', padding: '0 5px 0 5px' }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <Alert style={{ fontSize: '21px', borderRadius: '4px' }} message="Фильтры" />
+              {filtersResponse?.map(filter => {
+                const items = [
+                  {
+                    key: `filter${filter.translated_name}`,
+                    label: filter.translated_name,
+                    children: (
+                      <div>
+                        <div style={{ height: '300px' }}>
+                          <RowVirtualizerFixed
+                    
+                            itemRenderer={text => (
+                              <FilterItem
+                                checked={filterStore.includes(`${filter.translated_name}=${text}`)}
+                                text={text}
+                                filterCategory={filter.translated_name}
+                                onChange={checkFilter}
+                              />
+                            )}
+                            data={filter.attribute_values}
+                          />
+                        </div>
+                        {/* <List
                             header={<FilterSearchWrpapper>
                               <CustomInput style={{}} placeholder="Введите название фильтра" name="filter-input" onChange={() => { }} value="" />
                             </FilterSearchWrpapper>}
@@ -161,94 +188,89 @@ const MaterialCardsPage = () => {
                             dataSource={filter.attribute_values}
                             renderItem={(item) => (
                               <List.Item>
-                                {/* <Checkbox value={""} onChange={CheckFilter} /> */}
+                                
                                 <FilterItem filterCategory={filter.translated_name} onChange={CheckFilter} text={item} />
                               </List.Item>
                             )}
-                          />
-                        </div>
-                    }]
-                    return <CollapseBlock items={items} />
-                  })
-                }
-              </div>
-            </Sider>
-            <Layout style={{ padding: '24px 24px 24px' }} >
-              {/* <Breadcrumb style={{ margin: '16px 0' }}>
+                          /> */}
+                      </div>
+                    ),
+                  },
+                ];
+                return <CollapseBlock items={items} />;
+              })}
+            </div>
+          </Sider>
+          <Layout style={{ padding: '24px 24px 24px' }}>
+            {/* <Breadcrumb style={{ margin: '16px 0' }}>
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>List</Breadcrumb.Item>
                 <Breadcrumb.Item>App</Breadcrumb.Item>
               </Breadcrumb> */}
 
-              <Content style={{ display: "flex", gap: "20px", flexDirection: "column", height: "100%" }}>
-                <Flex justify="center">
-                  <CustomPagination
-                    hideOnSinglePage={true}
-                    defaultPageSize={15}
-                    showQuickJumper={false}
-                    pageSize={pageSize}
-                    pageSizeOptions={[9, 15, 21]}
-                    onShowSizeChange={onChangeSizePage}
-                    current={page}
-                    simple={true}
-
-                    onChange={onChangePage}
-                    total={total}
-                  />
-                </Flex>
-                <Row wrap={true} gutter={[16, 16]}>
-                  {
-                    materials?.map((material: CardMaterial) => (
-                      <Col
-                        // mobile
-                        xs={{ span: 23 }}
-                        sm={{ span: 24 }}
-                        // 175%
-                        md={{ span: 12 }}
-                        lg={{ span: 6 }}
-                        xl={{ span: 8 }}
-                        xxl={{ span: 6 }}>
-
-                        <MaterialCard2
-                          is_supplier_available={true}
-                          loading={isLoading}
-                          id={material.id}
-                          clickButton={onCardClick}
-                          key={material.id}
-                          name={material.name}
-                          translated_description={material.translated_description}
-                          attributes={material.attributes}
-                        />
-                      </Col>
-                    ))
-                  }
-                </Row>
-                <Flex justify="center">
-                  <CustomPagination
-                    hideOnSinglePage={true}
-                    defaultPageSize={15}
-                    showQuickJumper={false}
-                    pageSize={pageSize}
-                    pageSizeOptions={[9, 15, 21]}
-                    onShowSizeChange={onChangeSizePage}
-                    current={page}
-                    simple={true}
-
-                    onChange={onChangePage}
-                    total={total}
-                  />
-                </Flex>
-              </Content>
-
-            </Layout>
+            <Content style={{ display: 'flex', gap: '20px', flexDirection: 'column', height: '100%' }}>
+              <Flex justify="center">
+                <CustomPagination
+                  hideOnSinglePage={true}
+                  defaultPageSize={15}
+                  showQuickJumper={false}
+                  pageSize={pageSize}
+                  pageSizeOptions={[9, 15, 21]}
+                  onShowSizeChange={onChangeSizePage}
+                  current={page}
+                  simple={true}
+                  onChange={onChangePage}
+                  total={total}
+                />
+              </Flex>
+              <Row wrap={true} gutter={[16, 16]}>
+                {materials?.map((material: CardMaterial) => (
+                  <Col
+                    // mobile
+                    xs={{ span: 23 }}
+                    sm={{ span: 24 }}
+                    // 175%
+                    md={{ span: 12 }}
+                    lg={{ span: 6 }}
+                    xl={{ span: 8 }}
+                    xxl={{ span: 6 }}
+                  >
+                    <MaterialCard2
+                      is_supplier_available={material.is_supplier_available}
+                      loading={isLoading}
+                      id={material.id}
+                      clickButton={onCardClick}
+                      key={material.id}
+                      name={material.name}
+                      translated_description={material.translated_description}
+                      attributes={material.attributes}
+                    />
+                  </Col>
+                ))}
+              </Row>
+              <Flex justify="center">
+                <CustomPagination
+                  hideOnSinglePage={true}
+                  defaultPageSize={15}
+                  showQuickJumper={false}
+                  pageSize={pageSize}
+                  pageSizeOptions={[9, 15, 21]}
+                  onShowSizeChange={onChangeSizePage}
+                  current={page}
+                  simple={true}
+                  onChange={onChangePage}
+                  total={total}
+                />
+              </Flex>
+            </Content>
           </Layout>
-        )
-      }
+        </Layout>
+      )}
 
       {/* <Footer style={{ textAlign: 'center' }}>
         OmniChem ©{new Date().getFullYear()}
       </Footer> */}
-    </Layout >
+    </Layout>
   );
 };
 
@@ -258,24 +280,24 @@ export const FilterSearchWrpapper = styled.div`
   box-sizing: border-box;
   position: sticky;
   top: 0;
-`
+`;
 
 export const MaterialsListWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
-`
+`;
 
 export const AuthContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
-`
+`;
 
 export const HeaderLogo = styled.div`
   width: 170px;
   height: 36px;
-`
+`;
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -292,7 +314,7 @@ export const PageWrapper = styled.div`
     gap: 20px;
 
     max-width: 310px;
-    
+
     .dropDown {
       width: 100%;
     }
