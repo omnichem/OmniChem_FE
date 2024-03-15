@@ -1,17 +1,17 @@
-.suppliers-grid {
-    display: grid;
-    grid-template-columns: 10rem 10rem 10rem 10rem 10rem;
-    place-items: center stretch;
+.suppliers-item {
+	width: 10rem;
+	height: 6rem;
+
+	@media (max-width: 320px) {
+		width: 3rem;
+		height: 1rem;
+	}
 }
 .suppliers-link {
-    cursor: pointer;
+	cursor: pointer;
 }
 .suppliers-logo {
-    width: 70%;
-    height: auto;
+	width: 70%;
+	height: auto;
 }
-@media screen and (max-width: 320px) {
-    .suppliers-grid {
-    grid-template-columns: 9rem 9rem 9rem 9rem 9rem;
-    }
-}
+
