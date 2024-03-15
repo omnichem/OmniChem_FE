@@ -1,24 +1,22 @@
-import React from "react";
-import "./mainContent.css";
+import React from 'react';
 
-import AboutSection from "../about/AboutSection";
-import IndustrySector from "../industries/IndustrySector";
-import WhyUs from "../whyUs/WhyUs";
-import MarketView from "../marketVeiw/MarketView";
-import ForSuppliers from "../forsuppliers/ForSuppliers";
-import PerspectivesBlock from "../perspectivesBlock/PerspectivesBlock";
+
+import AboutSection from '../about/AboutSection';
+import IndustrySector from '../industries/IndustrySector';
+import WhyUs from '../whyUs/WhyUs';
+import MarketView from '../marketVeiw/MarketView';
+
+
 
 const MainContent = () => {
   return (
-    <>
-      <AboutSection />
-      <IndustrySector />
-      <WhyUs />
-      <MarketView />
-      <PerspectivesBlock />
-      <ForSuppliers />
-    </>
-  );
-};
+      <div className="main">
+        <AboutSection/>
+        <IndustrySector />
+        <WhyUs />
+        <MarketView />
+      </div>
+  )
+}
 
-export default MainContent;
+export default MainContent

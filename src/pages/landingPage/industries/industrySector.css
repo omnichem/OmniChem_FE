@@ -1,76 +1,71 @@
 .industrySector {
-	max-width: 1440px;
-	height: auto;
-	padding: 4rem;
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-
-	@media (max-width: 320px) {
-		padding: 2rem;
-	}
+    width: 100%;
+    height: auto;
+    padding: 0 4rem;
 }
-.wrapper {
-	@media (min-width: 1440px) {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	}
-}
-.industrySector-container {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: auto;
-	gap: 2rem;
-
+.industrySector-wrapper {
+    width: 100%;
+    height: auto;
 }
 .industrySector__title {
-	padding-bottom: 1.5625rem;
-}
-.industryCard-items {
-  display: flex;
-  flex-wrap: wrap;
-	gap: 1.26rem;
+    padding-bottom: 1.5625rem;
 }
 .industrySector-suppliers {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-
-	width: 100%;
-
-	@media (min-width: 320px) and (max-width: 768px) {
-		flex-direction: column;
-		gap: 4rem;
-	}
-	@media (max-width: 320px) {
-		flex-direction: column;
-		gap: 2rem;
-	}
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; 
+    padding-top: 4.06rem;
 }
 .supppliers-title {
-	width: 37%;
-	font-size: clamp(1.563rem, 1.473rem + 0.45vw, 1.875rem);
-	font-weight: bold;
-
-	@media (min-width: 320px) and (max-width: 768px) {
-		width: 100%;
-	}
-	@media (max-width: 320px) {
-		width: 100%;
-	}
+    width: 20rem;
+    font-size: clamp(1.563rem, 1.473rem + 0.45vw, 1.875rem);
+    font-weight: bold;
+    padding-top: 2rem;
 }
-.suppliers-list {
-	display: flex;
-	flex-wrap: wrap;
-	width: 80%;
-
-	@media (min-width: 320px) and (max-width: 768px) {
-		width: 80%;
-	}
-	@media (max-width: 320px) {
-		width: 100%;
-		gap: 0.5rem;
-	}
+@media (min-width: 768px) and (max-width:992px) {
+    .industrySector {
+        padding: 0 6rem;
+    }
+    .industrySector-suppliers {
+        flex-direction: column;
+    }
+    .industrySector {
+        padding: 0 6rem;
+    }
+    .supppliers-title {
+        width: 50rem;
+    }
+}
+@media  screen and (min-width: 480px) and (max-width:768px) {
+    .industrySector-suppliers {
+        flex-direction: column;
+    }
+    .industrySector {
+        padding: 0 6rem;
+    }
+    .supppliers-title {
+        width: 50rem;
+    }
+}
+@media screen and (min-width: 320px) and (max-width: 480px) {
+    .industrySector-suppliers {
+        flex-direction: column;
+    }
+    .industrySector {
+        padding: 0 6rem;
+    }
+    .supppliers-title {
+        width: 50rem;
+    }
+}
+@media screen and (max-width: 320px) {
+    .industrySector-suppliers {
+        flex-direction: column;
+    }
+    .industrySector {
+        padding: 0 6rem;
+    }
+    .supppliers-title {
+        width: 50rem;
+    }
 }

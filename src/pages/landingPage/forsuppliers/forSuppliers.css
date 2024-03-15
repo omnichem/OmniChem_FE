@@ -1,47 +1,36 @@
-.forsuppliers {
-	width: 100vw;
-	height: 27rem;
-	background-color: rgb(80, 80, 83);
-	padding: 3rem;
-
-	@media (max-width: 320px) {
-		padding: 2rem;
-	}
-	@media (min-width: 1440px) {
-		display: flex;
-		justify-content: center;
-		}	
+.forSuppliers-wrapper {
+    width: 100%;
 }
-.forSuppliers-inner {
-	max-width: 1440px;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
+.forSuppliers-background {
+    width: 100%;
+    height: auto;
+    background-color: rgb(81, 81, 84);
+    position: static;
 }
-.forSuppliers-inner .mainTitle {
-	color: rgb(255, 255, 255);
+.marketView-forSuppliersBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
-.forSuppliers-link {
-	font-size: clamp(1.375rem, 1.321rem + 0.27vw, 1.563rem);
-	color: rgb(255, 255, 255);
-	display: inline-block;
-	padding: 2rem 5rem;
-	background-color: rgb(4, 156, 142);
-	text-decoration: none;
-	border-radius: 5rem;
-	cursor: pointer;
-
-	@media (max-width: 320px) {
-		padding: 0.6rem 2rem;
-		font-size: 1rem;
-	}
+.forSuppliers-text {
+    width: 74rem;
+    height: 10rem;
+    color: rgb(255, 255, 255);
 }
-.forSuppliers-link:hover {
-	background-color: rgb(255, 255, 255);
-	color: rgb(4, 156, 142);
-	border: 3px solid rgb(4, 156, 142);
+.opportunitiesForSuppliers-btn {
+    font-size: 1.5625rem;
+    color: rgb(255, 255, 255);
+    background-color: rgb(4, 156, 142);
+    border-radius: 5rem;
+    border: none;
+    width: 36.25rem;
+    height: 5.8rem;
+}
+.opportunitiesForSuppliers-btn:hover {
+    color: rgb(4, 156, 142);
+    background-color: rgb(255, 255, 255);
+    border: 2rem solid (4, 156, 142);
 }
 

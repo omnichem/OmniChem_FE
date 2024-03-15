@@ -1,28 +1,69 @@
+.marketNumbers-grid {
+    display: grid;
+    grid-template-columns: 15.625rem 15.625rem 15.625rem 15.625rem;
+    gap: 6.25rem;
+}
 .marketNumbers-item {
-	width: 15.625rem;
-	height: 15.625rem;
-	border: 0.065rem solid rgb(81, 81, 84);
-	border-radius: 2rem;
-	background-color: rgb(255, 255, 255);
-	padding: 1rem;
-
-	@media (max-width: 320px) {
-		width: 10rem;
-		height: 10rem;
-	}
+    width: 15.625rem;
+    height: 15.625rem;
+    border: 0.065rem solid rgb(81, 81, 84);
+    border-radius: 2rem;
+    background-color: rgb(255, 255, 255);
+    padding: 0.5rem;
 }
 .marketNumbers-inner {
-	font-size: clamp(1.563rem, 1.116rem + 2.23vw, 3.125rem);
-	font-weight: bold;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	text-align: center;
-	gap: 0.3rem;
-	width: 100%;
-	height: 80%;
+    font-size: clamp(1.563rem, 1.116rem + 2.23vw, 3.125rem);
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    gap: 0.5rem;
+    width: 95%;
+    height: 95%;
 }
 .marketNumbers-item__description {
-	font-size: clamp(1rem, 0.929rem + 0.36vw, 1.25rem);
-	font-weight: normal;
+    font-size: clamp(1rem, 0.929rem + 0.36vw, 1.25rem);
+    font-weight: normal;
+}
+@media screen and (min-width: 768px) and (max-width:992px) {
+    .marketNumbers-grid {
+        grid-template-columns: 13rem 13rem 13rem 13rem;
+        gap: 1.5rem;
+    }
+    .marketNumbers-item {
+        width: 13rem;
+        height: 13rem;
+    }
+}
+@media screen and (min-width: 480px) and (max-width:768px) {
+    .marketNumbers-grid {
+        grid-template-columns: 14rem 14rem 14rem 14rem;
+        gap: 2rem;
+    }
+    .marketNumbers-item {
+        width: 14rem;
+        height: 14rem;
+    }
+}
+@media screen and (min-width: 320px) and (max-width: 480px){
+    .marketNumbers-grid {
+        grid-template-columns: 13rem 13rem 13rem 13rem;
+        gap: 1rem;
+    }
+    .marketNumbers-item {
+        width: 13rem;
+        height: 13rem;
+    }
+}
+@media (max-width: 320px){
+    .marketNumbers-grid {
+        grid-template-columns: 15.625rem 15.625rem;
+        column-gap: 6rem;
+        row-gap: 3rem;
+    }
+    .marketNumbers-item {
+        width: 13rem;
+        height: 13rem;
+    }
 }
