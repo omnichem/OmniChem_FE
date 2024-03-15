@@ -1,0 +1,39 @@
+.perspectivesBlock {
+	width: 100vw;
+	padding: 4rem 4rem 2.56rem 4rem;
+
+	@media (min-width: 1440px) {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	@media (max-width: 320px) {
+		padding: 2rem;
+	}
+}
+.perspectivesBlock-advantages {
+	max-width: 1440px;
+	display: flex;
+	flex-direction: row;
+	color: rgb(127, 128, 133);
+	gap: 2rem;
+
+	@media (min-width: 1440px) {
+		justify-content: center;
+		align-items: center;
+		gap: 0;
+	}
+	@media (max-width: 320px) {
+		flex-direction: column;
+	}
+}
+.perspectivesBlock-advantages__title {
+	width: 80%;
+	height: auto;
+}
+.perspectivesBlock__advantagesList {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.875rem;
+}

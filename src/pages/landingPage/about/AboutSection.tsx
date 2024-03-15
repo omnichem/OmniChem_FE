@@ -2,6 +2,7 @@
 	@media (min-width: 1440px) {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	}
 }
 .aboutSection {
@@ -387,3 +388,4 @@
 		display: none;
 	}
 }
+

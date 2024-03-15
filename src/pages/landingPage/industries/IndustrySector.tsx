@@ -1,30 +1,35 @@
-import React from 'react';
-import './industrySector.css';
+import React from "react";
+import "./industrySector.css";
 
-import IndustryCard from '../industryCard/IndustryCard';
-import Suppliers from '../suppliers/Suppliers';
-
+import Suppliers from "../suppliers/Suppliers";
+import { industryCards, suppliers } from "../data";
+import IndustryCard from "../industryCard/IndustryCard";
 
 const IndustrySector = () => {
-    return (
-        <div className="industrySector">
-            <div className="industrySector-wrapper">
-                <div className="industrySector__title">
-                    <h2>Тестовое изменение</h2>
-                    <h2 className="mainTitle">
-                        Отрасли с которыми мы работаем:
-                    </h2>
-                </div>
-                <IndustryCard />
-                <div className="industrySector-suppliers">
-                    <div>
-                        <h2 className="supppliers-title">Данные о продуктах от мировых лидеров:</h2>
-                    </div>
-                    <Suppliers />
-                </div>
-            </div>
+  return (
+    <div className="wrapper">
+      <div className="industrySector">
+        <div className="industrySector-container">
+          <h2 className="mainTitle">Отрасли с которыми мы работаем:</h2>
+          <div className="industryCard-items">
+            {industryCards.map((industryCard) => (
+              <IndustryCard key={industryCard.title} {...industryCard} />
+            ))}
+          </div>
         </div>
-    )
-}
+        <div className="industrySector-suppliers">
+          <h2 className="supppliers-title">
+            Данные о продуктах от мировых лидеров:
+          </h2>
+          <div className="suppliers-list">
+            {suppliers.map((supplier) => (
+              <Suppliers key={supplier.name} {...supplier} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default IndustrySector;
