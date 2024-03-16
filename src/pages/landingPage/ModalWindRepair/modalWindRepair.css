@@ -1,0 +1,4 @@
+.pageRepair {
+  display: flex;
+  flex-direction: column;
+}
