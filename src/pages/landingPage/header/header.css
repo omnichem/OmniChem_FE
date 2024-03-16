@@ -4,6 +4,7 @@
   top: 0;
   z-index: 1001;
   width: 100vw;
+  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
 
   @media (min-width: 320px) and (max-width: 768px) {
     display: flex;
@@ -67,10 +68,4 @@
   color: rgb(4, 156, 142);
   font-weight: bold;
   border-bottom: 2px solid rgb(4, 156, 142);
-}
-.ant-divider {
-  border-block-start: 1px solid rgb(127, 128, 133)
-}
-:where(.css-dev-only-do-not-override-1uweeqc).ant-divider-horizontal {
-  margin: 0;
 }

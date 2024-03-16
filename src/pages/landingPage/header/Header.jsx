@@ -14,7 +14,7 @@ const Header = () => {
           <a className="navList-link" href="http://212.233.79.177/materials" target='_blanket' rel="noopener noreferrer">Вход</a>
         </div>
       </div>
-      <Divider className='divider'/>
+      
       </div>
     </div>
   )
