@@ -1,5 +1,5 @@
 import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
-import { PaginationProps, CheckboxProps, Layout, Breadcrumb, Flex, Row, Col, Alert, Spin, List } from 'antd';
+import { PaginationProps, CheckboxProps, Layout, Flex, Row, Col, Alert, Spin } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';

@@ -1,4 +1,4 @@
-/* @import './reset.css';
+@import './reset.css';
 @font-face {
     font-family: 'Inter', sans-serif;
     src: local('Inter'),
@@ -37,7 +37,7 @@ body {
 
 /* mainTitles */
 
-/* .mainTitle {
+.mainTitle {
     font-size: clamp(1.563rem, 1.116rem + 2.23vw, 3.125rem);
     color: rgb(127, 128, 133);
     font-weight: bold;
@@ -67,5 +67,5 @@ body {
 @media (max-width: 375px){
     :root  {
         font-size: 6.2px;
-      } */
-/* } */
+      }
+}
