@@ -1,38 +1,16 @@
-.gridCard-item {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		gap: 1.5rem;
-	
-		width: 11.5rem;
-		height: 11.5rem;
-	
-		background-color: rgb(255, 255, 255);
-		box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);
-		color: inherit;
-		outline: 1px solid transparent;
-		border-radius: 0.25rem;
-		padding: 0.5rem;
-
-		@media (max-width: 320px) {
-			width: 8rem;
-			height: 8rem;
-		}
-}
 .gridCard-item:hover {
-	outline: 1px solid rgb(4, 156, 142);
+  outline: 1px solid rgb(4, 156, 142);
 }
 .gridCard-img {
-	width: 2.5rem;
-	height: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 .gridCard-title {
-	width: 90%;
-	color: rgb(127, 128, 133);
-	font-size: clamp(0.75rem, 0.625rem + 0.63vw, 1.188rem);
-	font-weight: 600;
-	cursor: pointer;
+  color: rgb(127, 128, 133);
+  font-size: clamp(0.75rem, 0.625rem + 0.63vw, 1.188rem);
+  font-weight: 600;
+  cursor: pointer;
 }
 .gridCard-title:hover {
-	color: rgb(4, 156, 142);
+  color: rgb(4, 156, 142);
 }

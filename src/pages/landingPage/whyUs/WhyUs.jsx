@@ -9,12 +9,12 @@ const WhyUs = () => {
 	return (
 		<div className="whyUs">
 				<img
-					className="features-img"
+					className="doodle-img"
 					src={imgFeatures}
 					alt="фон"
 				/>
 				<div className="whyUs-content">
-					<div className="whyUs-content-up">
+					<div className="whyUs-content-title-wrapper">
 						<h2 className="whyUs-content-subtitle">
 							Почему omnichem лучшее привычного поиска:{' '}
 						</h2>

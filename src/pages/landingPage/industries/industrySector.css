@@ -1,76 +1,82 @@
-.industrySector {
-	max-width: 1440px;
-	height: auto;
-	padding: 4rem;
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-
-	@media (max-width: 320px) {
-		padding: 2rem;
-	}
-}
 .wrapper {
-	@media (min-width: 1440px) {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	}
+  max-width: 1440px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  gap: 2rem;
 }
-.industrySector-container {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: auto;
-	gap: 2rem;
 
+/* .industrySector {
+  @media (max-width: 320px) {
+    padding: 2rem;
+  }
+} */
+.ant-card-body {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
 }
-.industrySector__title {
-	padding-bottom: 1.5625rem;
+.industry-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 16px;
+  width: 100%;
 }
+
+.suppliers-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
 .industryCard-items {
   display: flex;
   flex-wrap: wrap;
-	gap: 1.26rem;
+  gap: 1.26rem;
 }
+
 .industrySector-suppliers {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 
-	width: 100%;
+  width: 100%;
 
-	@media (min-width: 320px) and (max-width: 768px) {
-		flex-direction: column;
-		gap: 4rem;
-	}
-	@media (max-width: 320px) {
-		flex-direction: column;
-		gap: 2rem;
-	}
+  @media (min-width: 320px) and (max-width: 768px) {
+    flex-direction: column;
+    gap: 4rem;
+  }
+  @media (max-width: 320px) {
+    flex-direction: column;
+    gap: 2rem;
+  }
 }
 .supppliers-title {
-	width: 37%;
-	font-size: clamp(1.563rem, 1.473rem + 0.45vw, 1.875rem);
-	font-weight: bold;
+  width: 37%;
+  font-size: clamp(1.563rem, 1.473rem + 0.45vw, 1.875rem);
+  font-weight: bold;
 
-	@media (min-width: 320px) and (max-width: 768px) {
-		width: 100%;
-	}
-	@media (max-width: 320px) {
-		width: 100%;
-	}
+  @media (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
+  @media (max-width: 320px) {
+    width: 100%;
+  }
 }
-.suppliers-list {
-	display: flex;
-	flex-wrap: wrap;
-	width: 80%;
 
-	@media (min-width: 320px) and (max-width: 768px) {
-		width: 80%;
-	}
-	@media (max-width: 320px) {
-		width: 100%;
-		gap: 0.5rem;
-	}
+.suppliers-list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    width: 80%;
+  }
+  @media (max-width: 320px) {
+    width: 100%;
+    gap: 0.5rem;
+  }
 }

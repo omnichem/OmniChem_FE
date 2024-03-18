@@ -4,36 +4,49 @@ import './industrySector.css';
 import Suppliers from '../suppliers/Suppliers';
 import { industryCards, suppliers } from '../data';
 import IndustryCard from '../industryCard/IndustryCard';
+import { Card } from 'antd';
 
 const IndustrySector = () => {
 	return (
 		<div className="wrapper">	
-		<div className="industrySector">
-			<div className="industrySector-container">
-					<h2 className="mainTitle">Отрасли с которыми мы работаем:</h2>
-				<div className="industryCard-items">
-					{industryCards.map((industryCard) => (
-						<IndustryCard
+					<h2>Отрасли с которыми мы работаем:</h2>
+					<div>
+						<div className='industry-cards-wrapper'>
+						{industryCards.map((industryCard) => (
+						
+						<Card style={{height: '200px'}}
+							hoverable
 							key={industryCard.title}
-							{...industryCard}
-						/>
+							// {...industryCard}
+							
+						>
+							<img alt='' className='gridCard-img' src={industryCard.image}/>
+							<div card-body>
+							<p className='gridCard-title'>{industryCard.title}</p>
+							</div>
+							
+						</Card>
 					))}
-				</div>
-			</div>
+						</div>
+					
+					</div>
+			
 			<div className="industrySector-suppliers">
 						<h2 className="supppliers-title">
 							Данные о продуктах от мировых лидеров:
 						</h2>
-						<div className="suppliers-list">
-							{suppliers.map((supplier) => (
+						<div className='suppliers-cards-wrapper'>
+						{suppliers.map((supplier) => (	
 								<Suppliers
 									key={supplier.name}
 									{...supplier}
 								/>
 							))}
 						</div>
+							
+							
 			</div>
-		</div>
+	
 		</div>
 	);
 };

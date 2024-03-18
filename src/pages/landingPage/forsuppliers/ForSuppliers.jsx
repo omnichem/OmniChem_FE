@@ -3,8 +3,6 @@ import './forSuppliers.css';
 
 const ForSuppliers = () => {
 	return (
-
-		<div className="wrapper"> 
 		<div className="forsuppliers">
 			<div className="forSuppliers-inner">
 				<p className="forSuppliers-inner mainTitle">
@@ -20,7 +18,6 @@ const ForSuppliers = () => {
 					Узнать о возможностях для поставщиков
 				</a>
 			</div>
-	</div>
 	</div>
 	);
 };

@@ -1,5 +1,5 @@
 import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
-import { PaginationProps, CheckboxProps, Layout, Flex, Row, Col, Alert, Spin } from 'antd';
+import { PaginationProps, CheckboxProps, Layout, Flex, Row, Col, Alert, Spin, Collapse } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -7,7 +7,7 @@ import { http } from '../const/http';
 import useDebounce from '../hooks/useDebounce';
 import { CardMaterial, CardMaterialResponse, Filter } from '../types/pagesTypes';
 import { Logo } from '../components/Logo';
-import { CollapseBlock, CustomButton, CustomInput } from '../components';
+import { CustomButton, CustomInput } from '../components';
 import { CustomPagination } from '../components/CustomPagination';
 import '../styles/loading.css';
 import { Content, Header } from 'antd/es/layout/layout';
@@ -17,8 +17,7 @@ import { CustomModal } from '../components/CustomModal';
 import { RegisterForm } from './authModalContent/registerPages/RegisterForm';
 import { LoginForm } from './authModalContent/loginPages/LoginForm';
 import { MaterialCard2 } from '../components/MaterialCard/MaterialCard2';
-import { FilterItem } from '../components/FilterItem';
-import { RowVirtualizerFixed } from '../components/RowVirtualizerFixed';
+import { MaterialsFilter } from '../components/filters/MaterialsFilter';
 
 const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>();
@@ -50,7 +49,7 @@ const MaterialCardsPage = () => {
     return '';
   });
   const debouncedSearchMaterial = useDebounce(searchMaterial, 200);
-  const [filtersResponse, setFiltersResponse] = useState<Filter[]>();
+  const [filtersResponse, setFiltersResponse] = useState<Filter[]>([]);
   const [userFilters, setUserFilters] = useState('');
   const [filterStore, setFilterStore] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -61,16 +60,20 @@ const MaterialCardsPage = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      const response = await http.get<CardMaterialResponse>(
-        `/API/v2/wiki/materials/?${userFilters}&search=${encodeURI(
-          debouncedSearchMaterial
-        )}&page=${page}&page_size=${pageSize}`
-      );
-      // /API/v2/wiki/materials/?company=Franklin Fibre&company=SIRG
-      const filtersResponseReq = await http.get('/API/v2/wiki/filters/');
-      setFiltersResponse(filtersResponseReq.data);
-      setTotal(response.data.count);
-      setMaterials(response.data.results);
+      const response = await http
+        .get<CardMaterialResponse>(
+          `/API/v2/wiki/materials/?${userFilters}&search=${encodeURI(
+            debouncedSearchMaterial
+          )}&page=${page}&page_size=${pageSize}`
+        )
+        .then(materials => {
+          setTotal(materials.data.count);
+          setMaterials(materials.data.results);
+        });
+      const filtersResponseReq = await http.get('/API/v2/wiki/filters/').then(filters => {
+        setFiltersResponse(filters.data);
+      });
+
       setIsLoading(false);
       setUserFilters(filterStore.join('&'));
       setFirstLoading(false);
@@ -153,51 +156,10 @@ const MaterialCardsPage = () => {
           <Sider
             breakpoint="xl"
             collapsedWidth="0"
-            width={250}
+            width={300}
             style={{ backgroundColor: '#f5f5f5', padding: '97px 0 10px 20px' }}
           >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '10px',
-                position: 'sticky',
-                top: '77px',
-                backgroundColor: '#ffffff',
-                padding: '10px',
-                borderRadius: '8px',
-                boxShadow:
-                  '0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09)',
-              }}
-            >
-              <Alert style={{ fontSize: '21px', borderRadius: '4px' }} message="Фильтры" />
-              {filtersResponse?.map(filter => {
-                const items = [
-                  {
-                    key: `filter${filter.translated_name}`,
-                    label: filter.translated_name,
-                    children: (
-                      <div>
-                        <div style={{ height: '300px' }}>
-                          <RowVirtualizerFixed
-                            itemRenderer={text => (
-                              <FilterItem
-                                checked={filterStore.includes(`${filter.translated_name}=${text}`)}
-                                text={text}
-                                filterCategory={filter.translated_name}
-                                onChange={checkFilter}
-                              />
-                            )}
-                            data={filter.attribute_values}
-                          />
-                        </div>
-                      </div>
-                    ),
-                  },
-                ];
-                return <CollapseBlock items={items} />;
-              })}
-            </div>
+            <MaterialsFilter checkFilter={checkFilter} filterData={filtersResponse} filterStore={filterStore} />
           </Sider>
           <Layout style={{ padding: '24px 24px 24px', height: '100%' }}>
             {/* <Breadcrumb style={{ margin: '16px 0' }}>
@@ -247,20 +209,6 @@ const MaterialCardsPage = () => {
                   </Col>
                 ))}
               </Row>
-              <Flex justify="center">
-                <CustomPagination
-                  hideOnSinglePage={true}
-                  defaultPageSize={15}
-                  showQuickJumper={false}
-                  pageSize={pageSize}
-                  pageSizeOptions={[9, 15, 21]}
-                  onShowSizeChange={onChangeSizePage}
-                  current={page}
-                  simple={true}
-                  onChange={onChangePage}
-                  total={total}
-                />
-              </Flex>
             </Content>
           </Layout>
         </Layout>

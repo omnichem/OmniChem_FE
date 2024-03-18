@@ -3,8 +3,8 @@ import './industryCard.css';
 
 const IndustryCard = ({ image, title }) => {
 	return (
-		<div className="gridCard-container">
-			<div className="gridCard-items">
+		<div>
+			<div>
 				<div className="gridCard-item">
 					<img
 						className="gridCard-img"

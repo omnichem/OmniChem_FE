@@ -1,47 +1,45 @@
 .forsuppliers {
-	width: 100vw;
-	height: 27rem;
-	background-color: rgb(80, 80, 83);
-	padding: 3rem;
+  width: 100%;
+  height: 27rem;
+  background-color: rgb(80, 80, 83);
+  padding: 3rem 0;
 
-	@media (max-width: 320px) {
-		padding: 2rem;
-	}
-	@media (min-width: 1440px) {
-		display: flex;
-		justify-content: center;
-		}	
+  @media (max-width: 320px) {
+    padding: 2rem;
+  }
+  @media (min-width: 1440px) {
+    display: flex;
+    justify-content: center;
+  }
 }
 .forSuppliers-inner {
-	max-width: 1440px;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .forSuppliers-inner .mainTitle {
-	color: rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
 }
 .forSuppliers-link {
-	font-size: clamp(1.375rem, 1.321rem + 0.27vw, 1.563rem);
-	color: rgb(255, 255, 255);
-	display: inline-block;
-	padding: 2rem 5rem;
-	background-color: rgb(4, 156, 142);
-	text-decoration: none;
-	border-radius: 5rem;
-	cursor: pointer;
+  font-size: clamp(1.375rem, 1.321rem + 0.27vw, 1.563rem);
+  color: rgb(255, 255, 255);
+  display: inline-block;
+  padding: 2rem 5rem;
+  background-color: rgb(4, 156, 142);
+  text-decoration: none;
+  border-radius: 5rem;
+  cursor: pointer;
 
-	@media (max-width: 320px) {
-		padding: 0.6rem 2rem;
-		font-size: 1rem;
-	}
+  @media (max-width: 320px) {
+    padding: 0.6rem 2rem;
+    font-size: 1rem;
+  }
 }
 .forSuppliers-link:hover {
-	background-color: rgb(255, 255, 255);
-	color: rgb(4, 156, 142);
-	border: 3px solid rgb(4, 156, 142);
+  background-color: rgb(255, 255, 255);
+  color: rgb(4, 156, 142);
+  border: 3px solid rgb(4, 156, 142);
 }
-

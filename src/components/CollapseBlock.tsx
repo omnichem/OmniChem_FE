@@ -15,7 +15,7 @@ export const CollapseBlock: React.FC<CollapseBlockProps> = ({ items, ghost, chil
   };
 
   return (
-    <StyledCollapse items={items} ghost={ghost} onChange={onChange}>
+    <StyledCollapse accordion items={items} ghost={ghost} onChange={onChange}>
       {children}
     </StyledCollapse>
   );
