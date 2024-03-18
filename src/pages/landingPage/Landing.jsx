@@ -17,16 +17,10 @@ export const Landing=()=> {
 					<AboutSection />
 					<IndustrySector />
 					<WhyUs />
-					
-					<div>
 					<MarketView />
-					</div>
 					<MarketViewFeaturesBlock/>
 					<PerspectivesBlock />
-					<div>
 					<ForSuppliers/>
-					</div>
-					
 				</div>
 			<Footer />	
 		</div>
