@@ -1,7 +1,9 @@
 import React from 'react';
 import './industryCard.css';
+import { useNavigate } from 'react-router';
 
 const IndustryCard = ({ image, title }) => {
+	const navigate = useNavigate();
 	return (
 		<div>
 			<div>
@@ -13,7 +15,7 @@ const IndustryCard = ({ image, title }) => {
 					/>
 					<a
 						className="gridCard-item__link"
-						href="http://212.233.79.177/materials/"
+						onClick={() => navigate('/materials')}
 						target="_blanket"
 						rel="noopener noreferrer"
 					>

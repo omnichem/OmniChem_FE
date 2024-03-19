@@ -28,7 +28,6 @@
   align-items: center;
 
   width: 100%;
-  padding: auto;
 
   @media (min-width: 320px) and (max-width: 768px) {
     padding: 0;
