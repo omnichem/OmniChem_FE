@@ -1,9 +1,11 @@
 .landing-page-wrapper {
   display: flex;
   flex-direction: column;
+  width: 100vw;
 }
 
 .landing-page-content-wrapper {
+  width: 100vw;
   display: flex;
   flex-direction: column;
   gap: 30px;

@@ -1,8 +1,10 @@
 import React from 'react';
 import './aboutSection.css';
 import bigLogo from './images/bigLogo.png';
+import { useNavigate } from 'react-router';
 
 const AboutSection = () => {
+	const navigate = useNavigate();
 	return (
 		<div className='wrapper'>	
 			<div className="aboutSection">
@@ -24,7 +26,7 @@ const AboutSection = () => {
 					<div>
 						<a
 							className="toCatalogBtn"
-							href="http://212.233.79.177/materials/"
+							onClick={() => navigate('/materials')}
 							target="_blanket"
 							rel="noopener noreferrer"
 						>

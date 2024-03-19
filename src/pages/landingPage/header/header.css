@@ -27,7 +27,7 @@
   justify-content: space-between;
   align-items: center;
 
-  width: 95%;
+  width: 100%;
 
   @media (min-width: 320px) and (max-width: 768px) {
     padding: 0;
@@ -43,7 +43,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 100%;
+  width: 100vw;
 }
 .header-logo {
   width: 12rem;
@@ -63,6 +63,10 @@
   text-align: center;
   width: auto;
   font-size: clamp(1rem, 0.839rem + 0.8vw, 1.563rem);
+
+  text-decoration: none;
+  outline: none;
+  color: inherit;
 }
 .navList-link:hover {
   color: rgb(4, 156, 142);
