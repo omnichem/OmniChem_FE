@@ -9,7 +9,7 @@ const IndustryCard = ({ image, title }) => {
 					<img
 						className="gridCard-img"
 						src={image}
-						alt="Косметика"
+						alt="рынок"
 					/>
 					<a
 						className="gridCard-item__link"
