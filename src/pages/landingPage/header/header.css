@@ -21,13 +21,11 @@
     box-sizing: border-box;
   }
 }
-
 .header-items {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
 
   width: 100%;
 
@@ -65,7 +63,6 @@
   text-align: center;
   width: auto;
   font-size: clamp(1rem, 0.839rem + 0.8vw, 1.563rem);
-  padding-right: 20px;
 
   text-decoration: none;
   outline: none;

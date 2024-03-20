@@ -5,10 +5,8 @@ import Suppliers from '../suppliers/Suppliers';
 import { industryCards, suppliers } from '../data';
 import IndustryCard from '../industryCard/IndustryCard';
 import { Card } from 'antd';
-import { useNavigate } from 'react-router';
 
 const IndustrySector = () => {
-	const navigate = useNavigate();
 	return (
 		
 		<div className="industrySector">
@@ -18,7 +16,7 @@ const IndustrySector = () => {
 							<div className='industry-cards-wrapper'>
 							{industryCards.map((industryCard) => (
 							
-							<Card onClick={() => navigate('/materials')} style={{height: '250px', lineWidth: '24', padding: '20'}}
+							<Card style={{height: '250px', lineWidth: '24', padding: '20'}}
 								hoverable
 								key={industryCard.title}
 								// {...industryCard}
