@@ -61,6 +61,7 @@
   @media (max-width: 320px) {
     flex-direction: column;
     gap: 2rem;
+    padding: 0 0.5rem;
   }
 }
 .supppliers-title {
