@@ -6,12 +6,17 @@
 	background-color: rgb(255, 255, 255);
 	padding: 1rem;
 
+	@media (min-width: 768px) and (max-width: 1280px) {
+		width: 12rem;
+		height: 12rem;
+  }
 	@media (max-width: 320px) {
 		width: 10rem;
 		height: 10rem;
 	}
 }
 .marketNumbers-inner {
+	color: rgb(127, 128, 133);
 	font-size: clamp(1.563rem, 1.116rem + 2.23vw, 3.125rem);
 	font-weight: bold;
 	display: flex;
@@ -23,6 +28,7 @@
 	height: 80%;
 }
 .marketNumbers-item__description {
+	color: rgb(127, 128, 133);
 	font-size: clamp(1rem, 0.929rem + 0.36vw, 1.25rem);
 	font-weight: normal;
 }

@@ -1,6 +1,8 @@
-import React from 'react';
 import './marketView.css';
+import { marketNumbers, advantages } from '../data';
+
 import ellips21 from './Ellipse 21.png';
+import MarketNumbersBlock from '../marketNumbersBlock/MarketNumbersBlock';
 
 
 const MarketView = () => {
@@ -45,9 +47,21 @@ const MarketView = () => {
 							</div>
 						</div>
 					</div>
-					
+					<div className="marketView-featuresBlock">
+						<h2 className="mainTitle">Рынок химии в России это:</h2>
+						<div className="marketNumbers-list">
+							{marketNumbers.map((marketNumber) => (
+								<MarketNumbersBlock
+									className="MarketNumbersBlock"
+									key={marketNumber.figure}
+									{...marketNumber}
+								/>
+							))}
+						</div>
+					</div>
 				</div>
-		</div>
+			</div>
+
 
 	);
 };

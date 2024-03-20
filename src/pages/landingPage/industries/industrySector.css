@@ -1,22 +1,30 @@
-.wrapper {
-  max-width: 1440px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: auto;
-  gap: 2rem;
-}
+.industrySector {
+  padding: 4rem;
 
-/* .industrySector {
-  @media (max-width: 320px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     padding: 2rem;
   }
-} */
+  @media (max-width: 320px) {
+    padding: 0.5rem;
+  }
+}
+.industrySector-wrapper {
+  width: 100%;
+}
+.industrySector-title {
+    font-size: clamp(1.563rem, 1.116rem + 2.23vw, 3.125rem);
+    color: rgb(127, 128, 133);
+    font-weight: bold;
+}
 .ant-card-body {
   display: flex;
   flex-direction: column;
 
   height: 100%;
+  
+  @media (max-width: 320px) {
+    height: 90%;
+  }
 }
 .industry-cards-wrapper {
   display: grid;
@@ -42,6 +50,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  padding-top: 4rem;
 
   width: 100%;
 
@@ -52,12 +61,14 @@
   @media (max-width: 320px) {
     flex-direction: column;
     gap: 2rem;
+    padding: 0 0.5rem;
   }
 }
 .supppliers-title {
   width: 37%;
   font-size: clamp(1.563rem, 1.473rem + 0.45vw, 1.875rem);
   font-weight: bold;
+  color: rgb(127, 128, 133);
 
   @media (min-width: 320px) and (max-width: 768px) {
     width: 100%;

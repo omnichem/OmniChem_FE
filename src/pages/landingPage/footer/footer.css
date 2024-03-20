@@ -42,16 +42,15 @@
     display: flex;
     justify-content: center;
   }
-}
-.footer-container {
-  max-width: 1440px;
-
   @media (min-width: 320px) and (max-width: 768px) {
     padding: 0 2rem;
   }
   @media (max-width: 320px) {
-    padding: 0 2rem;
+    padding: 0 0.5rem;
   }
+}
+.footer-container {
+  max-width: 1440px;
 }
 .footerItems-box {
   display: flex;
