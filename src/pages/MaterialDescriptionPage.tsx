@@ -11,12 +11,13 @@ import '../styles/loading.css';
 import { columns } from '../const/tableData';
 import { DataType } from '../types/componentsTypes';
 import { Alert, Input, Modal, Spin } from 'antd';
-import { CustomButton, CustomDrawer, CustomTable, Header, Logo } from '../components';
+import { CustomButton, CustomDrawer, CustomTable, Logo } from '../components';
 import QuoteForm from './DrawerPages/QuoteForm';
 import SamplesForm from './DrawerPages/SamplesForm';
+import { CustomHeader } from '../components/CustomHeader';
 const { TextArea } = Input;
 
-const MaterialDescriptionPage: React.FC = () => {
+export const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false);
   const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([
@@ -126,14 +127,14 @@ const MaterialDescriptionPage: React.FC = () => {
         )}
       </CustomDrawer>
 
-      <Header>
+      <CustomHeader>
         <Logo height={36} width={170} />
 
         {/* <AuthContainer>
           <CustomButton type="text" text="Войти в систему" onClick={() => setIsLogModalOpen(true)} />
           <CustomButton type="primary" text="Зарегистрироваться" onClick={() => setIsReqModalOpen(true)} />
         </AuthContainer> */}
-      </Header>
+      </CustomHeader>
       {isLoading ? (
         <Spin style={{ zIndex: '9' }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
       ) : (
@@ -332,4 +333,3 @@ export const ScrollableList = styled.div`
 
   box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.2) inset;
 `;
-export default MaterialDescriptionPage;

@@ -1,0 +1,67 @@
+.MainContent {
+    width: auto;
+    height: auto;
+}
+.MainContent-container{
+    display: grid;
+    flex-direction: column;
+}
+.menuTabs-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+}
+.menuTabs {
+    font-size: 1rem;
+}
+.DatePicker {
+    padding-left: 18rem;
+}
+.usersStat-Items {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.userStat-item {
+    width: 18.75rem;
+    height: 5rem;
+    border: 1px solid rgb(221, 225, 230);
+    padding: 0.75rem;
+}
+.userStat-item__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: left;
+    align-items: left;
+}
+.usersStat-Name{
+    font-size: 1rem;
+    color: rgb(105, 112, 119);
+}
+.userStat-NumbersBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+
+}
+.usersStat-quantity {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(33, 39, 42);
+}
+.usersStat-percentage {
+    width: 3.8125rem;
+    height: 1.5rem;
+    padding: 0.255rem;
+    background-color: rgb(242, 244, 248);
+    border-radius: 12px;
+}
+.percentage {
+    font-size: 0.875rem;
+    color: rgb(33, 39, 42);
+}

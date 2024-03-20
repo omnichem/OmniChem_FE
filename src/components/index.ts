@@ -7,7 +7,6 @@ export { CustomDrawer } from "./CustomDrawer";
 export { CustomTable } from "./CustomTable";
 export { DropDownMenu } from "./DropDownMenu";
 export { CustomFloatButton } from "./CustomFloatButton";
-export { Header } from "./Header";
 export { Logo } from "./Logo";
 export { CustomSteps } from "./CustomSteps";
 export { SupplierCard } from "./SupplierCard";

@@ -1,0 +1,17 @@
+.btn{
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    width: 300px;
+    height: 50px;
+    background-color: gray;
+}
+
+.btn.active {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    width: 300px;
+    height: 50px;
+    background-color: blue;
+}

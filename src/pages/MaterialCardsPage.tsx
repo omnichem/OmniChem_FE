@@ -1,5 +1,5 @@
 import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
-import { PaginationProps, CheckboxProps, Layout, Flex, Row, Col, Alert, Spin, Collapse } from 'antd';
+import { PaginationProps, CheckboxProps, Layout, Spin, Alert } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -8,19 +8,17 @@ import useDebounce from '../hooks/useDebounce';
 import { CardMaterial, CardMaterialResponse, Filter } from '../types/pagesTypes';
 import { Logo } from '../components/Logo';
 import { CustomButton, CustomInput } from '../components';
-import { CustomPagination } from '../components/CustomPagination';
 import '../styles/loading.css';
-import { Content, Header } from 'antd/es/layout/layout';
-import Sider from 'antd/es/layout/Sider';
+
 import { PersistedKey } from '../const/persistedKey';
 import { CustomModal } from '../components/CustomModal';
 import { RegisterForm } from './authModalContent/registerPages/RegisterForm';
 import { LoginForm } from './authModalContent/loginPages/LoginForm';
-import { MaterialCard2 } from '../components/MaterialCard/MaterialCard2';
-import { MaterialsFilter } from '../components/filters/MaterialsFilter';
+import { MaterialCardsPageContent } from './MaterialCardsPageContent';
+import { CustomHeader } from '../components/CustomHeader';
 
-const MaterialCardsPage = () => {
-  const [materials, setMaterials] = useState<CardMaterial[]>();
+export const MaterialCardsPage = () => {
+  const [materials, setMaterials] = useState<CardMaterial[]>([]);
   const [total, setTotal] = useState(50);
   const [page, setPage] = useState(() => {
     const target = sessionStorage.getItem(PersistedKey.Page);
@@ -60,7 +58,7 @@ const MaterialCardsPage = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      const response = await http
+      await http
         .get<CardMaterialResponse>(
           `/API/v2/wiki/materials/?${userFilters}&search=${encodeURI(
             debouncedSearchMaterial
@@ -70,7 +68,7 @@ const MaterialCardsPage = () => {
           setTotal(materials.data.count);
           setMaterials(materials.data.results);
         });
-      const filtersResponseReq = await http.get('/API/v2/wiki/filters/').then(filters => {
+      await http.get('/API/v2/wiki/filters/').then(filters => {
         setFiltersResponse(filters.data);
       });
 
@@ -123,19 +121,7 @@ const MaterialCardsPage = () => {
       <CustomModal isModalOpen={isLogModalOpen} handleModalCancel={() => setIsLogModalOpen(false)}>
         <LoginForm submitBuyerLogin={() => {}} submitSupplierLogin={() => {}} registerButton={clickRegisterButton} />
       </CustomModal>
-      <Header
-        style={{
-          padding: '10px',
-          display: 'flex',
-          gap: '20px',
-          alignItems: 'center',
-          position: 'sticky',
-          top: '0',
-          zIndex: '10',
-          height: 'auto',
-          backgroundColor: '#ffffff',
-        }}
-      >
+      <CustomHeader>
         <Logo height={36} width={170} />
         <CustomInput
           name="searchMaterialInput"
@@ -148,78 +134,35 @@ const MaterialCardsPage = () => {
           <CustomButton type="text" text="Войти в систему" onClick={() => setIsLogModalOpen(true)} />
           <CustomButton type="primary" text="Зарегистрироваться" onClick={() => setIsReqModalOpen(true)} />
         </AuthContainer>
-      </Header>
+      </CustomHeader>
+
       {firstLoading ? (
         <Spin style={{ zIndex: '9' }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
       ) : (
-        <Layout>
-          <Sider
-            breakpoint="xl"
-            collapsedWidth="0"
-            width={300}
-            style={{ backgroundColor: '#f5f5f5', padding: '97px 0 10px 20px' }}
-          >
-            <MaterialsFilter checkFilter={checkFilter} filterData={filtersResponse} filterStore={filterStore} />
-          </Sider>
-          <Layout style={{ padding: '24px 24px 24px', height: '100%' }}>
-            {/* <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item>List</Breadcrumb.Item>
-                <Breadcrumb.Item>App</Breadcrumb.Item>
-              </Breadcrumb> */}
-
-            <Content style={{ display: 'flex', gap: '20px', flexDirection: 'column', height: '100%' }}>
-              <Flex justify="center" style={{ position: 'sticky', top: '77px', zIndex: 10 }}>
-                <CustomPagination
-                  style={{ borderRadius: '4px', backgroundColor: '#f5f5f5', padding: '10px' }}
-                  hideOnSinglePage={true}
-                  defaultPageSize={15}
-                  showQuickJumper={false}
-                  pageSize={pageSize}
-                  pageSizeOptions={[9, 15, 21]}
-                  onShowSizeChange={onChangeSizePage}
-                  current={page}
-                  simple={true}
-                  onChange={onChangePage}
-                  total={total}
-                />
-              </Flex>
-              <Row wrap={true} gutter={[16, 16]}>
-                {materials?.map((material: CardMaterial) => (
-                  <Col
-                    // mobile
-                    xs={{ span: 23 }}
-                    sm={{ span: 24 }}
-                    // 175%
-                    md={{ span: 12 }}
-                    lg={{ span: 6 }}
-                    xl={{ span: 8 }}
-                    xxl={{ span: 6 }}
-                  >
-                    <MaterialCard2
-                      is_supplier_available={material.is_supplier_available}
-                      loading={isLoading}
-                      id={material.id}
-                      clickButton={onCardClick}
-                      key={material.id}
-                      name={material.name}
-                      translated_description={material.translated_description}
-                      attributes={material.attributes}
-                    />
-                  </Col>
-                ))}
-              </Row>
-            </Content>
-          </Layout>
-        </Layout>
+        <>
+          {materials ? (
+            <MaterialCardsPageContent
+              checkFilter={checkFilter}
+              filtersResponse={filtersResponse}
+              filterStore={filterStore}
+              pageSize={pageSize}
+              onChangeSizePage={onChangeSizePage}
+              onChangePage={onChangePage}
+              page={page}
+              total={total}
+              materials={materials}
+              onCardClick={onCardClick}
+              isLoading={isLoading}
+            />
+          ) : (
+            <Alert message={'Мы ничего не нашли :('} />
+          )}
+        </>
       )}
-
       {/* <Footer style={{ textAlign: 'center' }}>OmniChem ©{new Date().getFullYear()}</Footer> */}
     </Layout>
   );
 };
-
-export default MaterialCardsPage;
 
 export const FilterSearchWrpapper = styled.div`
   box-sizing: border-box;

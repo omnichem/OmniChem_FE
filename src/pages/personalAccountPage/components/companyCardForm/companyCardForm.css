@@ -1,0 +1,21 @@
+.companyDetails-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 700px;
+  height: 500px;
+  outline: 1px solid gray;
+}
+.nameCompany-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.nameCompany-box {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+} 
+.company {
+  width: 300px;
+}

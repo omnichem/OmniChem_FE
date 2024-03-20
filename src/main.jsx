@@ -4,10 +4,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import { theme } from './theme/theme.ts';
 import ErrorPage from './pages/errorPages/ErrorPage.tsx';
-import MaterialCardsPage from './pages/MaterialCardsPage.tsx';
-import MaterialDescriptionPage from './pages/MaterialDescriptionPage.tsx';
+import {MaterialCardsPage} from './pages/MaterialCardsPage.tsx';
+import {MaterialDescriptionPage} from './pages/MaterialDescriptionPage.tsx';
 import ruRU from 'antd/locale/ru_RU';
 import {Landing} from './pages/landingPage/Landing.jsx';
+import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     element: <MaterialDescriptionPage />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: '/profile',
+    element: <SuppliersAccount/>
+  }
 ]);
 
 console.log(import.meta.env);
