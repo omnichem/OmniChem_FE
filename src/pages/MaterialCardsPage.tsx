@@ -12,8 +12,8 @@ import '../styles/loading.css';
 
 import { PersistedKey } from '../const/persistedKey';
 import { CustomModal } from '../components/CustomModal';
-import { RegisterForm } from './authModalContent/registerPages/RegisterForm';
-import { LoginForm } from './authModalContent/loginPages/LoginForm';
+import { AuthForm } from './authModalForm/AuthForm';
+
 import { MaterialCardsPageContent } from './MaterialCardsPageContent';
 import { CustomHeader } from '../components/CustomHeader';
 
@@ -51,8 +51,7 @@ export const MaterialCardsPage = () => {
   const [userFilters, setUserFilters] = useState('');
   const [filterStore, setFilterStore] = useState<string[]>([]);
   const navigate = useNavigate();
-  const [isRegModalOpen, setIsReqModalOpen] = useState(false);
-  const [isLogModalOpen, setIsLogModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsReqModalOpen] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
 
   useEffect(() => {
@@ -103,23 +102,14 @@ export const MaterialCardsPage = () => {
     navigate(`/material/${materialId}`);
   };
 
-  const clickRegisterButton = () => {
-    setIsLogModalOpen(false);
+  const openAuthModal = () => {
     setIsReqModalOpen(true);
-  };
-
-  const clickLoginButton = () => {
-    setIsReqModalOpen(false);
-    setIsLogModalOpen(true);
   };
 
   return (
     <Layout>
-      <CustomModal isModalOpen={isRegModalOpen} handleModalCancel={() => setIsReqModalOpen(false)}>
-        <RegisterForm submitBuyerRegister={() => {}} submitSupplierRegister={() => {}} loginButton={clickLoginButton} />
-      </CustomModal>
-      <CustomModal isModalOpen={isLogModalOpen} handleModalCancel={() => setIsLogModalOpen(false)}>
-        <LoginForm submitBuyerLogin={() => {}} submitSupplierLogin={() => {}} registerButton={clickRegisterButton} />
+      <CustomModal isModalOpen={isAuthModalOpen} handleModalCancel={() => setIsReqModalOpen(false)}>
+        <AuthForm />
       </CustomModal>
       <CustomHeader>
         <Logo height={36} width={170} />
@@ -131,8 +121,7 @@ export const MaterialCardsPage = () => {
           addonBefore={<SearchOutlined />}
         />
         <AuthContainer>
-          <CustomButton type="text" text="Войти в систему" onClick={() => setIsLogModalOpen(true)} />
-          <CustomButton type="primary" text="Зарегистрироваться" onClick={() => setIsReqModalOpen(true)} />
+          <CustomButton type="text" text="Войти в систему" onClick={() => openAuthModal()} />
         </AuthContainer>
       </CustomHeader>
 

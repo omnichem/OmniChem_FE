@@ -7,18 +7,26 @@ import ErrorPage from './pages/errorPages/ErrorPage.tsx';
 import {MaterialCardsPage} from './pages/MaterialCardsPage.tsx';
 import {MaterialDescriptionPage} from './pages/MaterialDescriptionPage.tsx';
 import ruRU from 'antd/locale/ru_RU';
-import {Landing} from './pages/landingPage/Landing.jsx';
 import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
+import TestForm from './pages/TestForm.tsx'
+
+// interface State {
+//   store: Store,
+// }
+
+// const store = new Store()
+
+// export const Context = createContext
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Landing />,
+    path: '/materials',
+    element: <MaterialCardsPage />,
     errorElement: <ErrorPage />,
   },
   {
-    path: '/materials',
-    element: <MaterialCardsPage />,
+    path: '/testform',
+    element: <TestForm/>,
     errorElement: <ErrorPage />,
   },
   {
