@@ -5,7 +5,7 @@ export const http = axios.create({
 });
 // test branch comment
 
-http.interceptors.request.use((config)=> {
-  config.headers.Authorization = `Token ${localStorage.getItem('token')}`
-  return config
-})
+// http.interceptors.request.use((config)=> {
+//   config.headers.Authorization = `Token ${localStorage.getItem('token')}`
+//   return config
+// })
