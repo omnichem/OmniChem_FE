@@ -20,6 +20,8 @@ const { TextArea } = Input;
 export const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false);
+  const [suppliers, setSuppliers] = useState();
+  const [table, setTable] = useState(false);
   const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([
     {
       field_name: '',
@@ -32,12 +34,24 @@ export const MaterialDescriptionPage: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      const response = await http.get<MaterialPageType>(`API/v2/wiki/materials/${id}/`);
+      await http.get<MaterialPageType>(`API/v2/wiki/materials/${id}/`).then(response => {
+        setMaterial(response.data);
+        setMaterialTable(response.data.tables[0].table_rows);
+        if (response.data.tables.length != 0) {
+          setTable(true);
+          if (table) {
+          }
+        }
+        console.log(response.data.tables.length);
+      });
+      const suppliersResponse = await http.get(`API/v1/commerce/materials/${id}/distributors/`);
 
-      setMaterial(response.data);
-      setMaterialTable(response.data.tables[0].table_rows);
+      setSuppliers(suppliersResponse.data);
+
       setIsLoading(false);
+      console.log(suppliersResponse);
     };
+
     fetchData();
   }, [id]);
 
@@ -185,7 +199,7 @@ export const MaterialDescriptionPage: React.FC = () => {
           </PageWrapper>
           <FullSpecsBG>
             <FullSpecsWrapper>
-              {material?.attributes.map(attribute => (
+              {material?.attributes?.map(attribute => (
                 <>
                   <FeatureWrapper>
                     <FeatureNameContainer>

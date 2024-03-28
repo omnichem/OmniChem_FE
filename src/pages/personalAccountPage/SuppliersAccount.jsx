@@ -8,29 +8,32 @@ import AnalyticsСontent from './components/analyticsСontent/AnalyticsСontent'
 import { Layout, Menu, Button, theme } from 'antd';
 import CompanyCard from './components/companyCardForm/CompanyCardForm';
 import TableSupplierCatalog from './components/TableSupplierCatalog/TableSupplierCatalog';
+import { ThemConfig } from './Theme';
 
 const { Header, Sider, Content, Footer } = Layout;
 
 const SuppliersAccount = () => {
-  const [supplierMaterials, setSupplierMaterials] = useState();
+  const [supplierMaterials, setSupplierMaterials] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    axios
-      .get('http://212.233.79.177/API/v1/commerce/products/')
+    setTimeout(() => {
+      axios
+      .get('http://localhost:8000/API/v1/commerce/products/')
       .then(response => {
         if (response.data && Array.isArray(response.data.results)) {
           setSupplierMaterials(response.data.results);
-          console.log(supplierMaterials);
+          
         } else {
           console.error('Invalid response data format');
         }
       })
       .catch(error => {
         console.error(error);
-      });
+      })
+    }, "5000");
   }, [supplierMaterials]);
-
+  console.log(supplierMaterials);
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -132,17 +135,11 @@ const SuppliersAccount = () => {
               {/* <Testnew /> */}
               <Row>
                 <Col xs={24} md={24}>
-                  <TableSupplierCatalog
-                    supplierMaterials={supplierMaterials?.map(material => {
+                  <TableSupplierCatalog 
+                    supplierMaterials={supplierMaterials.map(material => {
                       const data = {
-                        id: material.id,
-                        distributor_id: material.distributor_id,
-                        product_name: material.product_name,
-                        manufacturer: material.manufacturer,
-                        article: material.article,
-                        availability_status: material.availability_status,
-                        is_relationship: material.is_relationship,
-                        raw_material: material.raw_material,
+                        key: material.id,
+                        ...material
                       };
                       return data;
                     })}

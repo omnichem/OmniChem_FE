@@ -1,3 +1,4 @@
+import { Space, Table, Tag } from 'antd';
 export const columns = [
   {
     title: 'Наименование сырья',
@@ -30,19 +31,28 @@ export const columns = [
   {
     title: 'Статус сопоставления',
     dataIndex: 'is_relationship',
-    render: (_, { tags }) => (
-      <>
-        {tags.map(tag => {
-          // if (tag === true) {
-          //   color = 'green';
-          // }
-          return (
-            <Tag color={tag == true ? 'green' : 'red'} key={tag}>
-              {(tag = true ? <p>Сопоставлено</p> : <p>Не сопоставлено</p>)}
-            </Tag>
-          );
-        })}
-      </>
-    ),
+    render: (_, {tags}) => 
+      {
+        if(tags) {
+          return <Tag color={'green'}><p>Сопоставлено</p></Tag>   
+        } else {
+          return <Tag color={'red'}><p>Не Сопоставлено</p></Tag>  
+        }
+      }
+    
+    // render: (_, { tags }) => (
+    //   <>
+    //     {tags.map(tag => {
+    //       // if (tag === true) {
+    //       //   color = 'green';
+    //       // }
+    //       return (
+    //         <Tag color={tag == true ? 'green' : 'red'} key={tag}>
+    //           {(tag = true ? <p>Сопоставлено</p> : <p>Не сопоставлено</p>)}
+    //         </Tag>
+    //       );
+    //     })}
+    //   </>
+    // ),
   },
 ];
