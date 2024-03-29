@@ -29,5 +29,5 @@ export interface FilterType {
 
 export enum CardWrapperStyle {
   LOADED,
-  LOADING
+  LOADING,
 }

@@ -7,7 +7,6 @@ import WhyUs from './whyUs/WhyUs';
 import MarketView from './marketVeiw/MarketView';
 import ForSuppliers from './forsuppliers/ForSuppliers';
 import PerspectivesBlock from './perspectivesBlock/PerspectivesBlock';
-import MarketViewFeaturesBlock from './marketVeiw/MarketViewFeaturesBlock';
 
 export const Landing=()=> {
 	return (
@@ -18,7 +17,6 @@ export const Landing=()=> {
 					<IndustrySector />
 					<WhyUs />
 					<MarketView />
-					<MarketViewFeaturesBlock/>
 					<PerspectivesBlock />
 					<ForSuppliers/>
 				</div>
