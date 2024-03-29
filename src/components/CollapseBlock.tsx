@@ -7,15 +7,16 @@ interface CollapseBlockProps {
   items: CollapseProps['items'];
   ghost?: boolean;
   children?: React.ReactNode;
+  collapsible?: 'header' | 'icon' | 'disabled';
 }
 
-export const CollapseBlock: React.FC<CollapseBlockProps> = ({ items, ghost, children }) => {
+export const CollapseBlock: React.FC<CollapseBlockProps> = ({ items, ghost, children, collapsible }) => {
   const onChange = (key: string | string[]) => {
     console.log(key);
   };
 
   return (
-    <StyledCollapse accordion items={items} ghost={ghost} onChange={onChange}>
+    <StyledCollapse collapsible={collapsible} accordion items={items} ghost={ghost} onChange={onChange}>
       {children}
     </StyledCollapse>
   );
