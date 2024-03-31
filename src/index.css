@@ -55,10 +55,6 @@ body {
   display: none;
 }
 
-.ant-card-loading {
-  border-radius: 4px;
-}
-
 .ant-spin-fullscreen {
   background: linear-gradient(100deg, #eceff1 30%, #f6f7f8 50%, #eceff1 70%);
   animation: loading 1.2s ease-in-out infinite;
@@ -97,9 +93,6 @@ body {
 .ant-collapse .ant-collapse-content > .ant-collapse-content-box {
   padding: 0;
 }
-.ant-collapse > .ant-collapse-item:last-child {
-  border-radius: 4px;
-}
 
 .ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline {
   max-height: 300px;
@@ -118,7 +111,3 @@ body {
 .ant-layout.ant-layout-has-sider {
   height: 100%;
 }
-
-/* .ant-layout-content {
-  width: 100vh;
-} */

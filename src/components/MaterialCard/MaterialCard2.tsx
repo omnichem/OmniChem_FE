@@ -180,6 +180,7 @@ const StyledCard = styled(Card)`
   width: 100%;
   height: 500px;
   border: none;
+  overflow: hidden;
   &:hover {
     border: none;
   }
@@ -200,7 +201,6 @@ const ManufacturerImage = styled.div`
   width: 100%;
   height: 90px;
 
-  border-radius: 5px 5px 0 0;
   background-color: #00a99d;
 `;
 
