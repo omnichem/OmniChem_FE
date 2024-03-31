@@ -9,10 +9,6 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.ant-popover .ant-popover-inner {
-  margin-right: 20px;
-}
-
 .ant-drawer .ant-drawer-title {
   font-size: 20px;
 }
@@ -47,13 +43,6 @@ body {
   display: flex;
   align-items: baseline;
 }
-:where(.css-dev-only-do-not-override-9dgqwo).ant-card .ant-card-body::before {
-  display: none;
-}
-
-:where(.css-dev-only-do-not-override-9dgqwo).ant-card .ant-card-body::after {
-  display: none;
-}
 
 .ant-spin-fullscreen {
   background: linear-gradient(100deg, #eceff1 30%, #f6f7f8 50%, #eceff1 70%);
@@ -81,33 +70,11 @@ body {
   padding: 0 20px;
 }
 
-.ant-form-vertical .ant-form-item-label > label,
-.ant-col-24.ant-form-item-label > label,
-.ant-col-xl-24.ant-form-item-label > label {
-  display: flex;
-}
-
-.ant-select-dropdown {
-  width: 300px !important;
-}
 .ant-collapse .ant-collapse-content > .ant-collapse-content-box {
   padding: 0;
-}
-
-.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline {
-  max-height: 300px;
-  overflow-y: scroll;
-}
-
-.ant-menu-item .ant-menu-item-only-child {
-  padding-left: 10px;
 }
 
 .ant-alert-content {
   display: flex;
   justify-content: center;
-}
-
-.ant-layout.ant-layout-has-sider {
-  height: 100%;
 }
