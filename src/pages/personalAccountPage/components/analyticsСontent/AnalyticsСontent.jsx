@@ -1,8 +1,9 @@
 import { Divider, Row } from "antd";
 import PickerDate from "../pickerDate/PickerDate";
 import "./analyticsСontent.css";
-import TabMenu from "../tabMenu/TabMenu";
-import GridStatistics from "../GridStatistics/GridStatistics";
+import StatisticsBlock from "../StatisticsBlock/StatisticsBlock";
+import { statiscticData } from "../StatisticsBlock/statisticData";
+
 
 function AnalyticsСontent() {
  
@@ -10,12 +11,15 @@ function AnalyticsСontent() {
     <div className="AnalyticsСontent">
       <div className="AnalyticsСontent-container">
         <div className="menuTabs-wrapper">
-          <TabMenu/>
-          <PickerDate/>
+          <PickerDate />
         </div>
         <Divider/>
         <div className="usersStat-container">
-          <GridStatistics  />
+        <Row gutter={[10, 10]}>
+          {statiscticData.map((userItemData) => (
+            <StatisticsBlock key={statiscticData.statisticName} {...userItemData} />
+        ))}
+        </Row>
         </div>
       </div>
     </div>

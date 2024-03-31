@@ -1,7 +1,9 @@
 import React from 'react';
 import './forSuppliers.css';
+import { useNavigate } from 'react-router';
 
 const ForSuppliers = () => {
+	const navigate = useNavigate();
 	return (
 		<div className="forsuppliers">
 			<div className="forSuppliers-inner">
@@ -11,7 +13,7 @@ const ForSuppliers = () => {
 				</p>
 				<a
 					className="forSuppliers-link"
-					href="http://212.233.79.177/materials/"
+					onClick={() => navigate('/materials')}
 					target="_blanket"
 					rel="noopener noreferrer"
 				>

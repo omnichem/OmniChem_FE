@@ -1,6 +1,5 @@
 .perspectivesBlock {
   width: 100%;
-  padding: 64px 0;
   box-sizing: border-box;
 
   @media (min-width: 1440px) {
@@ -8,24 +7,27 @@
     justify-content: center;
     align-items: center;
   }
-  @media (max-width: 320px) {
-    padding: 2rem;
-  }
 }
 .perspectivesBlock-advantages {
   display: flex;
   flex-direction: row;
   color: rgb(127, 128, 133);
   gap: 2rem;
+  padding: 4rem;
 
   @media (min-width: 1440px) {
     justify-content: center;
     align-items: center;
     gap: 0;
+    padding: 0;
+  }
+  @media (min-width: 320px) and (max-width: 768px) {
+    flex-direction: column;
+    padding: 2rem;
   }
   @media (max-width: 320px) {
     flex-direction: column;
-    padding: 0;
+    padding: 0.5rem;
   }
 }
 .perspectivesBlock-advantages__title {

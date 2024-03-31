@@ -3,37 +3,47 @@ import React from 'react';
 import { CustomButton } from './CustomButton';
 
 import { CollapseBlock } from './CollapseBlock';
-import { CollapseProps } from 'antd';
+import { Alert, CollapseProps, Flex } from 'antd';
 
 import styled from 'styled-components';
 import { CustomCard } from './MaterialCard/CustomCard';
 
 interface MaterialCardProps {
-  items: CollapseProps['items'];
+  // items: CollapseProps['items'];
+  cardTittle: string;
   sampleRequest: () => void;
   quoteRequest: () => void;
   informationRequest: () => void;
+  availability: string;
 }
 
 export const SupplierCard: React.FC<MaterialCardProps> = ({
-  items,
+  cardTittle,
   sampleRequest,
   quoteRequest,
   informationRequest,
+  availability,
 }) => {
   return (
     <CustomCard>
-      <CollapseBlock items={items} />
-      <div>
-        <p>Цена</p>
-        <p style={{ fontSize: '15px', color: '#505050' }}>Доступна по ценовому предложению</p>
-      </div>
+      {/* <CollapseBlock collapsible={'disabled'} items={items} /> */}
 
-      <RequestWrapper>
-        <CustomButton type="default" text="Запросить ценовое предложение" onClick={quoteRequest} />
-        <CustomButton type="primary" text="Запросить образец" onClick={sampleRequest} />
-        <CustomButton type="text" text="Дополнительная информация" onClick={informationRequest} />
-      </RequestWrapper>
+      <Flex vertical gap={'middle'}>
+        <Alert style={{ fontSize: '20px' }} message={cardTittle} />
+        <div>
+          {availability.length == 0 ? (
+            <p>Не доступно для заказа</p>
+          ) : (
+            <p style={{ fontSize: '15px', color: '#505050' }}>Как купить: {availability}</p>
+          )}
+        </div>
+
+        <RequestWrapper>
+          <CustomButton type="default" text="Запросить ценовое предложение" onClick={quoteRequest} />
+          <CustomButton type="primary" text="Запросить образец" onClick={sampleRequest} />
+          <CustomButton type="text" text="Дополнительная информация" onClick={informationRequest} />
+        </RequestWrapper>
+      </Flex>
     </CustomCard>
   );
 };

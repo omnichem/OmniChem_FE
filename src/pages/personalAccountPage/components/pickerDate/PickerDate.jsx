@@ -5,11 +5,12 @@ const { RangePicker } = DatePicker;
 const PickerDate = () => {
   return (
     <div className='PickerDate'>
-      <span>Период с</span>
-      <Space direction="vertical" size={14}>
+      <Space direction="horizontal" size={14} align="center">
+        <span className='periodTxt'>Период с</span>
         <RangePicker />
       </Space>
     </div>
+  );
+};
 
-  )};
 export default PickerDate;

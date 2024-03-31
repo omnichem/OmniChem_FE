@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import SupplierCard from '../components/SupplierCard';
-import { suppliersData } from '../const/data';
+
 import { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
@@ -17,9 +17,17 @@ import SamplesForm from './DrawerPages/SamplesForm';
 import { CustomHeader } from '../components/CustomHeader';
 const { TextArea } = Input;
 
+interface Supplier {
+  id: number;
+  name: string;
+  availability_status: string;
+}
+
 export const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [table, setTable] = useState(false);
   const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([
     {
       field_name: '',
@@ -32,15 +40,26 @@ export const MaterialDescriptionPage: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      const response = await http.get<MaterialPageType>(`API/v2/wiki/materials/${id}/`);
+      await http.get<MaterialPageType>(`API/v2/wiki/materials/${id}/`).then(response => {
+        setMaterial(response.data);
+        setMaterialTable(response.data.tables[0].table_rows);
+        if (response.data.tables.length != 0) {
+          setTable(true);
+          if (table) {
+          }
+        }
+        console.log(response.data.tables.length);
+      });
+      const suppliersResponse = await http.get(`API/v1/commerce/materials/${id}/distributors/`);
 
-      setMaterial(response.data);
-      setMaterialTable(response.data.tables[0].table_rows);
+      setSuppliers(suppliersResponse.data);
+
       setIsLoading(false);
     };
+
     fetchData();
   }, [id]);
-
+  console.log(suppliers);
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
   const [openSampleRequest, setOpenSampleRequest] = useState(false);
@@ -139,7 +158,7 @@ export const MaterialDescriptionPage: React.FC = () => {
         <Spin style={{ zIndex: '9' }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
       ) : (
         <div>
-          <PageWrapper style={{ alignItems: 'flex-start' }}>
+          <PageWrapper style={{ alignItems: 'flex-start', paddingTop: '40px' }}>
             <MaterialHeader>
               <CustomButton
                 type="primary"
@@ -156,25 +175,24 @@ export const MaterialDescriptionPage: React.FC = () => {
             <Line />
             <h2>Поставщики:</h2>
             <ScrollableList>
-              {suppliersData.map(supplier => {
-                const items = [
-                  {
-                    key: supplier.supplierName,
-                    label: supplier.supplierName,
-                    children: (
-                      <div>
-                        <p>Seller city: {supplier.city}</p>
-                        <p>Legal entity: {supplier.legalEntity}</p>
-                        <p>Main advantages: {supplier.mainAdvantages}</p>
-                        <p>Brief description:{supplier.briefDescription}</p>
-                      </div>
-                    ),
-                  },
-                ];
+              {suppliers?.map(supplier => {
+                // const items = [
+                //   {
+                //     key: supplier.id,
+                //     label: supplier.name,
+                //     // children: (
+                //     //   <div>
+                //     //     <p>{supplier.availability_status}</p>
+                //     //   </div>
+                //     // ),
+                //   },
+                // ];
                 return (
                   <SupplierCard
+                    availability={supplier.availability_status}
                     key={supplier.id}
-                    items={items}
+                    // items={items}
+                    cardTittle={supplier.name}
                     sampleRequest={showSampleRequest}
                     quoteRequest={showQuoteRequest}
                     informationRequest={openReqModal}
@@ -185,7 +203,7 @@ export const MaterialDescriptionPage: React.FC = () => {
           </PageWrapper>
           <FullSpecsBG>
             <FullSpecsWrapper>
-              {material?.attributes.map(attribute => (
+              {material?.attributes?.map(attribute => (
                 <>
                   <FeatureWrapper>
                     <FeatureNameContainer>
@@ -317,8 +335,7 @@ const FeatureName = styled.span`
 
 export const ScrollableList = styled.div`
   width: 100%;
-  margin-bottom: 30px;
-  padding: 10px;
+  padding: 10px 10px 50px 10px;
 
   display: flex;
   flex-direction: row;

@@ -181,7 +181,6 @@ export const PageWrapper = styled.div`
   flex-direction: column;
   gap: 30px;
   align-items: center;
-  padding-bottom: 50px;
   margin: 0 auto;
   max-width: 1440px;
 
