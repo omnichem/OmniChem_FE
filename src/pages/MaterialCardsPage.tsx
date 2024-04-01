@@ -16,6 +16,9 @@ import { AuthForm } from './authModalForm/AuthForm';
 
 import { MaterialCardsPageContent } from './MaterialCardsPageContent';
 import { CustomHeader } from '../components/CustomHeader';
+import { logoutUser } from '../functions/logoutUser';
+import { loginUser } from '../functions/loginUser';
+import { useAuth } from '../contexts/authContext';
 
 export const MaterialCardsPage = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>([]);
@@ -46,6 +49,7 @@ export const MaterialCardsPage = () => {
     }
     return '';
   });
+
   const debouncedSearchMaterial = useDebounce(searchMaterial, 200);
   const [filtersResponse, setFiltersResponse] = useState<Filter[]>([]);
   const [userFilters, setUserFilters] = useState('');
@@ -106,6 +110,8 @@ export const MaterialCardsPage = () => {
     setIsReqModalOpen(true);
   };
 
+  const { isAuthorized, logOut } = useAuth();
+
   return (
     <Layout>
       <CustomModal isModalOpen={isAuthModalOpen} handleModalCancel={() => setIsReqModalOpen(false)}>
@@ -121,7 +127,14 @@ export const MaterialCardsPage = () => {
           addonBefore={<SearchOutlined />}
         />
         <AuthContainer>
-          <CustomButton type="text" text="Войти в систему" onClick={() => openAuthModal()} />
+          {isAuthorized ? (
+            <>
+              <CustomButton type="text" text="Профиль" onClick={() => navigate('/profile')} />
+              <CustomButton type="primary" text="Выйти из системы" onClick={logOut} />
+            </>
+          ) : (
+            <CustomButton type="text" text="Войти в систему" onClick={() => openAuthModal()} />
+          )}
         </AuthContainer>
       </CustomHeader>
 

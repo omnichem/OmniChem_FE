@@ -8,6 +8,7 @@ dotenv.config({ path: '.env' });
 export default defineConfig({
   envPrefix: 'APP_',
   plugins: [react()],
+  base: "/materials",
   server: {
     host: true,
     port: 6688,

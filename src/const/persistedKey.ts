@@ -1,5 +1,6 @@
 export const PersistedKey = {
   Page: "page",
   PageSize: "pageSize",
-  SearchMaterial: "searchMaterial"
+  SearchMaterial: "searchMaterial",
+  Token: "token"
 } as const

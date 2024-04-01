@@ -19,19 +19,18 @@ const SuppliersAccount = () => {
   useEffect(() => {
     setTimeout(() => {
       axios
-      .get('http://localhost:8000/API/v1/commerce/products/')
-      .then(response => {
-        if (response.data && Array.isArray(response.data.results)) {
-          setSupplierMaterials(response.data.results);
-          
-        } else {
-          console.error('Invalid response data format');
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      })
-    }, "5000");
+        .get('http://localhost:8000/API/v1/commerce/products/')
+        .then(response => {
+          if (response.data && Array.isArray(response.data.results)) {
+            setSupplierMaterials(response.data.results);
+          } else {
+            console.error('Invalid response data format');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }, 5000);
   }, [supplierMaterials]);
   console.log(supplierMaterials);
   const [collapsed, setCollapsed] = useState(false);
@@ -135,11 +134,11 @@ const SuppliersAccount = () => {
               {/* <Testnew /> */}
               <Row>
                 <Col xs={24} md={24}>
-                  <TableSupplierCatalog 
+                  <TableSupplierCatalog
                     supplierMaterials={supplierMaterials.map(material => {
                       const data = {
                         key: material.id,
-                        ...material
+                        ...material,
                       };
                       return data;
                     })}

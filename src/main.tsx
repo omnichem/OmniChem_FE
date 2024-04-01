@@ -9,18 +9,8 @@ import { MaterialDescriptionPage } from './pages/MaterialDescriptionPage.tsx';
 import ruRU from 'antd/locale/ru_RU';
 // import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
 import TestForm from './pages/TestForm.tsx';
-import { createContext } from 'react';
-import Store from './store/store.ts';
-
-interface State {
-  store: Store;
-}
-
-const store = new Store();
-
-export const Context = createContext<State>({
-  store,
-});
+import TestSuppliersAccountPage from './pages/TestSuppliersAccountPage.tsx';
+import { AuthProvider } from './contexts/authContext.tsx';
 
 const router = createBrowserRouter([
   {
@@ -38,18 +28,18 @@ const router = createBrowserRouter([
     element: <MaterialDescriptionPage />,
     errorElement: <ErrorPage />,
   },
-  // {
-  //   path: '/profile',
-  //   element: <SuppliersAccount />,
-  // },
+  {
+    path: '/profile',
+    element: <TestSuppliersAccountPage />,
+  },
 ]);
 
 console.log(import.meta.env);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ConfigProvider theme={theme} locale={ruRU}>
-    <Context.Provider value={{ store }}>
+    <AuthProvider>
       <RouterProvider router={router} />
-    </Context.Provider>
+    </AuthProvider>
   </ConfigProvider>
 );
