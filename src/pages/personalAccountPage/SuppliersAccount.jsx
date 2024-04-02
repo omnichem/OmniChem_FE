@@ -4,12 +4,13 @@ import { Row, Col } from 'antd';
 import './components/suppliersAccount/suppliersAccount.css';
 import { MenuFoldOutlined, MenuUnfoldOutlined, CopyOutlined, HomeOutlined, BarChartOutlined } from '@ant-design/icons';
 import AnalyticsСontent from './components/analyticsСontent/AnalyticsСontent';
-
-import { Layout, Menu, Button, theme } from 'antd';
+import { Layout, Menu, Button, theme, Avatar, Popover } from 'antd';
 import CompanyCard from './components/companyCardForm/CompanyCardForm';
 import TableSupplierCatalog from './components/TableSupplierCatalog/TableSupplierCatalog';
-import { ThemConfig } from './Theme';
-
+import { CustomHeader } from '../../components/CustomHeader'
+import { Logo } from '../../components/Logo';
+import {AuthContainer} from '../MaterialCardsPage'
+import { LoadingOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 const { Header, Sider, Content, Footer } = Layout;
 
 const SuppliersAccount = () => {
@@ -59,6 +60,15 @@ const SuppliersAccount = () => {
   }
 
   return (
+    <>
+    <CustomHeader>
+        <Logo height={36} width={170} />
+        <AuthContainer>
+              <Popover content={content} trigger="click">
+                <Avatar size={39} icon={<UserOutlined />} />
+              </Popover>
+        </AuthContainer>
+      </CustomHeader>
     <Layout
       style={{
         height: '100vh',
@@ -161,7 +171,8 @@ const SuppliersAccount = () => {
         </Footer>
       </Layout>
     </Layout>
+    </>
   );
 };
 
-export default SuppliersAccount;
+export default SuppliersAccount

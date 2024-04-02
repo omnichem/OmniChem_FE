@@ -1,5 +1,5 @@
-import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
-import { PaginationProps, CheckboxProps, Layout, Spin, Alert } from 'antd';
+import { LoadingOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { PaginationProps, CheckboxProps, Layout, Spin, Alert, Avatar, Popover, Flex } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -16,11 +16,11 @@ import { AuthForm } from './authModalForm/AuthForm';
 
 import { MaterialCardsPageContent } from './MaterialCardsPageContent';
 import { CustomHeader } from '../components/CustomHeader';
-import { logoutUser } from '../functions/logoutUser';
-import { loginUser } from '../functions/loginUser';
+
 import { useAuth } from '../contexts/authContext';
 
 export const MaterialCardsPage = () => {
+  const { isAuthorized, logOut } = useAuth();
   const [materials, setMaterials] = useState<CardMaterial[]>([]);
   const [total, setTotal] = useState(50);
   const [page, setPage] = useState(() => {
@@ -110,7 +110,17 @@ export const MaterialCardsPage = () => {
     setIsReqModalOpen(true);
   };
 
-  const { isAuthorized, logOut } = useAuth();
+  const content = (
+    <Flex vertical>
+      <CustomButton
+        style={{ flexBasis: 'flexStart' }}
+        type="text"
+        text="Профиль"
+        onClick={() => navigate('/profile')}
+      />
+      <CustomButton type="text" text="Выйти из системы" onClick={logOut} />
+    </Flex>
+  );
 
   return (
     <Layout>
@@ -120,6 +130,8 @@ export const MaterialCardsPage = () => {
       <CustomHeader>
         <Logo height={36} width={170} />
         <CustomInput
+          size="large"
+          style={{ maxWidth: '600px' }}
           name="searchMaterialInput"
           placeholder="Введите то, что вы хотите найти"
           onChange={setSearchMaterial}
@@ -129,8 +141,9 @@ export const MaterialCardsPage = () => {
         <AuthContainer>
           {isAuthorized ? (
             <>
-              <CustomButton type="text" text="Профиль" onClick={() => navigate('/profile')} />
-              <CustomButton type="primary" text="Выйти из системы" onClick={logOut} />
+              <Popover content={content} trigger="click">
+                <Avatar size={39} icon={<UserOutlined />} />
+              </Popover>
             </>
           ) : (
             <CustomButton type="text" text="Войти в систему" onClick={() => openAuthModal()} />

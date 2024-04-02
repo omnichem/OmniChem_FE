@@ -73,13 +73,14 @@ export const MaterialCardsPageContent: React.FC<MaterialCardsPageContentProps> =
                 lg={{ span: 6 }}
                 xl={{ span: 8 }}
                 xxl={{ span: 6 }}
+                key={`column${material.id}`}
               >
                 <MaterialCard2
                   is_supplier_available={material.is_supplier_available}
                   loading={isLoading}
                   id={material.id}
+                  key={`cardKey${material.id}`}
                   clickButton={onCardClick}
-                  key={material.id}
                   name={material.name}
                   translated_description={material.translated_description}
                   attributes={material.attributes}

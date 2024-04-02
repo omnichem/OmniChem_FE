@@ -7,20 +7,19 @@ import ErrorPage from './pages/errorPages/ErrorPage.tsx';
 import { MaterialCardsPage } from './pages/MaterialCardsPage.tsx';
 import { MaterialDescriptionPage } from './pages/MaterialDescriptionPage.tsx';
 import ruRU from 'antd/locale/ru_RU';
-// import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
-import TestForm from './pages/TestForm.tsx';
-import TestSuppliersAccountPage from './pages/TestSuppliersAccountPage.tsx';
 import { AuthProvider } from './contexts/authContext.tsx';
+import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
+import { CustomHeader } from './components/CustomHeader.tsx';
 
 const router = createBrowserRouter([
   {
-    path: '/materials',
-    element: <MaterialCardsPage />,
+    path: '/',
+    element: <CustomHeader />,
     errorElement: <ErrorPage />,
   },
   {
-    path: '/testform',
-    element: <TestForm />,
+    path: '/materials',
+    element: <MaterialCardsPage />,
     errorElement: <ErrorPage />,
   },
   {
@@ -30,7 +29,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/profile',
-    element: <TestSuppliersAccountPage />,
+    element: <SuppliersAccount />,
   },
 ]);
 

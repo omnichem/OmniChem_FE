@@ -11,6 +11,7 @@ interface InputProps {
   style?: React.CSSProperties;
   status?: 'error' | 'warning' | '';
   name: string;
+  size?: 'large' | 'middle' | 'small';
 }
 
 export const CustomInput: React.FC<InputProps> = ({
@@ -23,6 +24,7 @@ export const CustomInput: React.FC<InputProps> = ({
   style,
   status,
   name,
+  size,
 }) => {
   return (
     <Input
@@ -35,6 +37,7 @@ export const CustomInput: React.FC<InputProps> = ({
       addonBefore={addonBefore}
       status={status}
       name={name}
+      size={size}
     />
   );
 };

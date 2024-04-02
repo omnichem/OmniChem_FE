@@ -3,7 +3,7 @@ import React from 'react';
 const { Header } = Layout;
 
 interface HeaderProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const CustomHeader: React.FC<HeaderProps> = ({ children }) => {
@@ -13,6 +13,7 @@ export const CustomHeader: React.FC<HeaderProps> = ({ children }) => {
         padding: '10px',
         display: 'flex',
         gap: '20px',
+        justifyContent: 'space-around',
         alignItems: 'center',
         position: 'sticky',
         top: '0',

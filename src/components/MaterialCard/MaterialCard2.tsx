@@ -71,10 +71,11 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({
         <MaterialName>{name}</MaterialName>
         <Divider style={{ margin: 0 }} />
         {attributes.map(attribute => (
-          <div>
+          <div key={attribute.attribute_name}>
             <MaterialAttributeName>{attribute.attribute_name}:</MaterialAttributeName>
-            <MaterialAttributeValue>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px' }}>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px' }}>
+              <MaterialAttributeValue>
                 {attribute.attribute_values.map((value, index) => {
                   if (index === attribute.attribute_values.length - 1) {
                     return value;
@@ -82,8 +83,9 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({
                     return value.concat(' / ');
                   }
                 })}
-              </div>
-            </MaterialAttributeValue>
+              </MaterialAttributeValue>
+            </div>
+
             {/* <Divider/> */}
           </div>
         ))}
@@ -110,11 +112,11 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({
           is_supplier_available ? (
             <Popover
               content={
-                <p>
+                <div>
                   "У этого сырья есть поставщик!"
                   <br />
                   Напишите в чат: <a href="https://t.me/omnichem">OmniChem</a>
-                </p>
+                </div>
               }
             >
               <div>
