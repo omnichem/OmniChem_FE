@@ -27,26 +27,16 @@ export const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [table, setTable] = useState(false);
-  const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([
-    {
-      field_name: '',
-      field_value: '',
-      units: '',
-      test_method: null,
-    },
-  ]);
+  const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([]);
   const { id } = useParams();
+
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
       await http.get<MaterialPageType>(`API/v2/wiki/materials/${id}/`).then(response => {
         setMaterial(response.data);
-        setMaterialTable(response.data.tables[0].table_rows);
-        if (response.data.tables.length != 0) {
-          setTable(true);
-          if (table) {
-          }
+        if (material?.tables) {
+          setMaterialTable(response.data.tables[0].table_rows);
         }
         console.log(response.data.tables.length);
       });
@@ -173,6 +163,8 @@ export const MaterialDescriptionPage: React.FC = () => {
               <FeatureLine>{material?.translated_description}</FeatureLine>
             </DescriptionBlock>
             <Line />
+            <h2>Документы:</h2>
+            <Line />
             <h2>Поставщики:</h2>
             <ScrollableList>
               {suppliers?.map(supplier => {
@@ -218,20 +210,24 @@ export const MaterialDescriptionPage: React.FC = () => {
                   <Line />
                 </>
               ))}
-              <CustomTable
-                size="large"
-                columns={columns}
-                data={materialTable?.map(tableRow => {
-                  const data: DataType = {
-                    key: tableRow.field_name,
-                    name: tableRow.field_name,
-                    value: tableRow.field_value,
-                    unit: tableRow.units,
-                    method: tableRow.test_method,
-                  };
-                  return data;
-                })}
-              />
+              {materialTable.length == 0 ? (
+                <></>
+              ) : (
+                <CustomTable
+                  size="large"
+                  columns={columns}
+                  data={materialTable?.map(tableRow => {
+                    const data: DataType = {
+                      key: tableRow.field_name,
+                      name: tableRow.field_name,
+                      value: tableRow.field_value,
+                      unit: tableRow.units,
+                      method: tableRow.test_method,
+                    };
+                    return data;
+                  })}
+                />
+              )}
               <Line />
             </FullSpecsWrapper>
           </FullSpecsBG>
