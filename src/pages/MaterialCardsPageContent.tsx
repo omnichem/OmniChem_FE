@@ -10,14 +10,14 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 interface MaterialCardsPageContentProps {
   checkFilter: (e: CheckboxChangeEvent) => void;
-  filtersResponse: Filter[];
+  filtersResponse?: Filter[];
   filterStore: string[];
   pageSize: number;
   onChangeSizePage: (current: number, size: number) => void;
   onChangePage: (page: number, pageSize: number) => void;
   page: number;
-  total: number;
-  materials: CardMaterial[];
+  total?: number;
+  materials?: CardMaterial[];
   isLoading: boolean;
   onCardClick: (materialId: number) => void;
 }
@@ -63,7 +63,7 @@ export const MaterialCardsPageContent: React.FC<MaterialCardsPageContentProps> =
             />
           </Flex>
           <Row wrap={true} gutter={[16, 16]}>
-            {materials.map((material: CardMaterial) => (
+            {materials?.map((material: CardMaterial) => (
               <Col
                 // mobile
                 xs={{ span: 23 }}

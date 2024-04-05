@@ -1,20 +1,18 @@
 import styled from 'styled-components';
 import SupplierCard from '../components/SupplierCard';
-
 import { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
-import { PageWrapper } from './MaterialCardsPage';
 import { http } from '../const/http';
 import { MaterialPageType, MaterialTableRows } from '../types/pagesTypes';
 import '../styles/loading.css';
 import { columns } from '../const/tableData';
 import { DataType } from '../types/componentsTypes';
-import { Alert, Input, Modal, Spin } from 'antd';
-import { CustomButton, CustomDrawer, CustomTable, Logo } from '../components';
+import { Alert, Input, Modal, Spin, notification } from 'antd';
+import { CustomButton, CustomDrawer, CustomTable } from '../components';
 import QuoteForm from './DrawerPages/QuoteForm';
 import SamplesForm from './DrawerPages/SamplesForm';
-import { CustomHeader } from '../components/CustomHeader';
+import { useAuth } from '../contexts/authContext';
 const { TextArea } = Input;
 
 interface Supplier {
@@ -24,6 +22,7 @@ interface Supplier {
 }
 
 export const MaterialDescriptionPage: React.FC = () => {
+  const { isAuthorized } = useAuth();
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
@@ -53,12 +52,29 @@ export const MaterialDescriptionPage: React.FC = () => {
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
   const [openSampleRequest, setOpenSampleRequest] = useState(false);
+
+  const openNotification = () => {
+    notification.open({
+      message: 'Только авторизованные пользователи могут взаимодействовать с поставщиками',
+      description: 'Пожалуйста, зарегистрируйтесь на сайте или войдите со своими учетными данными',
+      placement: 'topRight',
+    });
+  };
+
   const showQuoteRequest = () => {
-    setOpenQuoteRequest(true);
+    if (!isAuthorized) {
+      openNotification();
+    } else {
+      setOpenQuoteRequest(true);
+    }
   };
 
   const showSampleRequest = () => {
-    setOpenSampleRequest(true);
+    if (!isAuthorized) {
+      openNotification();
+    } else {
+      setOpenSampleRequest(true);
+    }
   };
 
   const onCloseQuoteRequest = () => {
@@ -82,7 +98,11 @@ export const MaterialDescriptionPage: React.FC = () => {
 
   const [isOpenInfReqModal, setIsOpenInfReqModal] = useState(false);
   const openReqModal = () => {
-    setIsOpenInfReqModal(true);
+    if (!isAuthorized) {
+      openNotification();
+    } else {
+      setIsOpenInfReqModal(true);
+    }
   };
 
   const closeReqModal = () => {
@@ -135,15 +155,6 @@ export const MaterialDescriptionPage: React.FC = () => {
           </div>
         )}
       </CustomDrawer>
-
-      <CustomHeader>
-        <Logo height={36} width={170} />
-
-        {/* <AuthContainer>
-          <CustomButton type="text" text="Войти в систему" onClick={() => setIsLogModalOpen(true)} />
-          <CustomButton type="primary" text="Зарегистрироваться" onClick={() => setIsReqModalOpen(true)} />
-        </AuthContainer> */}
-      </CustomHeader>
       {isLoading ? (
         <Spin style={{ zIndex: '9' }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
       ) : (
@@ -168,22 +179,10 @@ export const MaterialDescriptionPage: React.FC = () => {
             <h2>Поставщики:</h2>
             <ScrollableList>
               {suppliers?.map(supplier => {
-                // const items = [
-                //   {
-                //     key: supplier.id,
-                //     label: supplier.name,
-                //     // children: (
-                //     //   <div>
-                //     //     <p>{supplier.availability_status}</p>
-                //     //   </div>
-                //     // ),
-                //   },
-                // ];
                 return (
                   <SupplierCard
                     availability={supplier.availability_status}
                     key={supplier.id}
-                    // items={items}
                     cardTittle={supplier.name}
                     sampleRequest={showSampleRequest}
                     quoteRequest={showQuoteRequest}
@@ -236,7 +235,26 @@ export const MaterialDescriptionPage: React.FC = () => {
     </div>
   );
 };
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1440px;
 
+  @media (min-width: 320px) and (max-width: 768px) {
+    display: flex;
+
+    gap: 20px;
+
+    max-width: 310px;
+
+    .dropDown {
+      width: 100%;
+    }
+  }
+`;
 const FeatureNameContainer = styled.div`
   width: 360px;
 `;

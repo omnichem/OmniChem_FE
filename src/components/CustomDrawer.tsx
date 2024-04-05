@@ -13,7 +13,14 @@ interface DivederProps {
 
 export const CustomDrawer: React.FC<DivederProps> = ({ open, onClose, children, size, placement, title }) => {
   return (
-    <StyledDrawer title={title} placement={placement} size={size} onClose={onClose} open={open}>
+    <StyledDrawer
+      style={{ borderRadius: '10px 0 0 10px' }}
+      title={title}
+      placement={placement}
+      size={size}
+      onClose={onClose}
+      open={open}
+    >
       {children}
     </StyledDrawer>
   );

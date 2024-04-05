@@ -5,7 +5,7 @@ import './customPaginationStyle.css';
 import styled from 'styled-components';
 
 interface CustomPaginationProps {
-  total: number;
+  total?: number;
   current: number;
   onChange: PaginationProps['onChange'];
   defaultPage?: number;
@@ -22,7 +22,7 @@ interface CustomPaginationProps {
 export const CustomPagination: React.FC<CustomPaginationProps> = ({
   defaultPage,
   simple,
-  total,
+  total = 0,
   current,
   onChange,
   onShowSizeChange,

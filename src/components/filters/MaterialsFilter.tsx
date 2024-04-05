@@ -1,4 +1,4 @@
-import { Alert, CheckboxProps } from 'antd';
+import { Alert } from 'antd';
 import { CollapseBlock, CustomButton } from '..';
 import { RowVirtualizerFixed } from '../RowVirtualizerFixed';
 import { FilterItem } from './FilterItem';
@@ -6,13 +6,13 @@ import { Filter } from '../../types/pagesTypes';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 interface FilterProps {
-  filterData: Filter[];
+  filterData?: Filter[];
   filterStore: string[];
   checkFilter: (e: CheckboxChangeEvent) => void;
 }
 
 export const MaterialsFilter: React.FC<FilterProps> = ({ filterData, filterStore, checkFilter }) => {
-  const filterRender = filterData.map(filter => {
+  const filterRender = filterData?.map(filter => {
     return {
       key: `filter${filter.translated_name}`,
       label: filter.translated_name,

@@ -9,36 +9,46 @@ import { MaterialDescriptionPage } from './pages/MaterialDescriptionPage.tsx';
 import ruRU from 'antd/locale/ru_RU';
 import { AuthProvider } from './contexts/authContext.tsx';
 import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
-import { CustomHeader } from './components/CustomHeader.tsx';
+import { HeaderLayout } from './components/HeaderLayout.tsx';
+import { GlobalSearchProvider } from './contexts/globalSearchContext.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <CustomHeader />,
+    element: <HeaderLayout />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: '/materials',
-    element: <MaterialCardsPage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: `/material/:id`,
-    element: <MaterialDescriptionPage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: '/profile',
-    element: <SuppliersAccount />,
+    children: [
+      {
+        path: '/materials',
+        element: <MaterialCardsPage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: `/material/:id`,
+        element: <MaterialDescriptionPage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: '/profile',
+        element: <SuppliersAccount />,
+      },
+    ],
   },
 ]);
 
 console.log(import.meta.env);
 
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ConfigProvider theme={theme} locale={ruRU}>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <GlobalSearchProvider>
+          <RouterProvider router={router} />
+        </GlobalSearchProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   </ConfigProvider>
 );
