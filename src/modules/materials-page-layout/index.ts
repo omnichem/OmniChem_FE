@@ -1,0 +1,1 @@
+export {MaterialsPageLayout} from './materials-page-layout.module'

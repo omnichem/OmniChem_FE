@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useState } from 'react';
-import { http } from '../const/http';
-import { UserResponse } from '../types/user';
+import { http } from '../shared/const/http';
+import { UserResponse } from '../shared/types/user';
 
 type AuthContextType = {
   token: string | undefined;

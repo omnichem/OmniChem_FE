@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Select } from 'antd';
 import isInn from 'is-inn-js';
-import { CustomButton, CustomInput } from '../../components';
+import { CustomButton, CustomInput } from '../../shared/components';
 
 interface QuoteFormProps {
   onQuoteSubmit: () => void;
@@ -13,8 +13,6 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
   const [inn, setINN] = useState('');
   const [comments, setComments] = useState('');
   const [volume, setVolume] = useState('');
-
-  
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Form, InputNumber, Select } from 'antd';
 import isInn from 'is-inn-js';
-import { customizeRequiredMark } from '../../const/const';
-import { CustomButton, CustomInput } from '../../components';
+import { CustomInput, CustomButton } from '../../shared/components';
 
 interface SamplesFormProps {
   onSamplesSubmit: () => void;

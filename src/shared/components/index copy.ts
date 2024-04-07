@@ -10,4 +10,4 @@ export { CustomFloatButton } from "./CustomFloatButton";
 export { Logo } from "./Logo";
 export { CustomSteps } from "./CustomSteps";
 export { SupplierCard } from "./SupplierCard";
-export { HeaderLayout } from './HeaderLayout'
+export { HeaderLayout } from '../../modules/header-layout/header.layout.module'

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationProps } from 'antd';
-import './customPaginationStyle.css';
+import '../styles/customPaginationStyle.css';
 
 import styled from 'styled-components';
 

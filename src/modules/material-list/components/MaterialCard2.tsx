@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Card, Divider, Popover } from 'antd';
+import { Divider, Popover, Card } from 'antd';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { CustomButton } from '..';
-import { CardAttributes } from '../../types/pagesTypes';
-import { CardLogo } from './CardLogo';
+import { CustomButton } from '../../../shared/components';
+import { CardLogo } from '../../../shared/components/MaterialCard/CardLogo';
+import { CardAttributes } from '../../../shared/types/pagesTypes';
 
 const tabList = [
   {

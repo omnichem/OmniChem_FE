@@ -1,9 +1,9 @@
 import { Alert } from 'antd';
-import { CollapseBlock, CustomButton } from '..';
-import { RowVirtualizerFixed } from '../RowVirtualizerFixed';
-import { FilterItem } from './FilterItem';
-import { Filter } from '../../types/pagesTypes';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { CollapseBlock, CustomButton } from '../../../shared/components';
+import { RowVirtualizerFixed } from '../../../shared/components/RowVirtualizerFixed';
+import { FilterItem } from './FilterItem';
+import { Filter } from '../../../shared/types/pagesTypes';
 
 interface FilterProps {
   filterData?: Filter[];

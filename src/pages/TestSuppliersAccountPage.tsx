@@ -2,7 +2,7 @@ import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { Popover, Avatar, Flex } from 'antd';
 import { Logo, CustomInput, CustomButton } from '../components';
 import { CustomHeader } from '../components/CustomHeader';
-import { AuthContainer } from './MaterialCardsPage';
+import { AuthContainer } from '../modules/material-list/material-list.module';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../contexts/authContext';
 

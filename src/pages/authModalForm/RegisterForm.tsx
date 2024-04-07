@@ -2,7 +2,6 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
 import { useState } from 'react';
 import { AuthFormWrapper } from './AuthForm';
-import { registerUser } from '../../functions/registerUser';
 
 interface RegisterFormProps {}
 
@@ -26,7 +25,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
         value={password}
         onChange={e => setPassword(e.target.value)}
       />
-      <Button onClick={() => registerUser(email, password)} type="primary">
+      <Button onClick={() => {}} type="primary">
         Зарегистрироваться
       </Button>
     </AuthFormWrapper>

@@ -1,5 +1,5 @@
 import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useState } from 'react';
-import { PersistedKey } from '../const/persistedKey';
+import { PersistedKey } from '../shared/const/persistedKey';
 
 type GlobalSearchContextType = [value: string, setValue: Dispatch<SetStateAction<string>>];
 

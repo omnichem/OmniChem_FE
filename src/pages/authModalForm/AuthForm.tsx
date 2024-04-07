@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { Flex, Tabs } from 'antd';
 import styled from 'styled-components';
-import { Logo } from '../../components';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
+import { Logo } from '../../shared/components';
 
 interface AuthFormProps {}
 

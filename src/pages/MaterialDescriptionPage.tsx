@@ -1,18 +1,19 @@
 import styled from 'styled-components';
-import SupplierCard from '../components/SupplierCard';
+
 import { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
-import { http } from '../const/http';
-import { MaterialPageType, MaterialTableRows } from '../types/pagesTypes';
+import { http } from '../shared/const/http';
+import { MaterialPageType, MaterialTableRows } from '../shared/types/pagesTypes';
 import '../styles/loading.css';
-import { columns } from '../const/tableData';
-import { DataType } from '../types/componentsTypes';
+import { columns } from '../shared/const/tableData';
+import { DataType } from '../shared/types/componentsTypes';
 import { Alert, Input, Modal, Spin, notification } from 'antd';
-import { CustomButton, CustomDrawer, CustomTable } from '../components';
+
 import QuoteForm from './DrawerPages/QuoteForm';
 import SamplesForm from './DrawerPages/SamplesForm';
 import { useAuth } from '../contexts/authContext';
+import { CustomButton, CustomDrawer, SupplierCard, CustomTable } from '../shared/components';
 const { TextArea } = Input;
 
 interface Supplier {
