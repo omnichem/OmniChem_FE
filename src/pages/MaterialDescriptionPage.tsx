@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { useEffect, useState } from 'react';
-import { ArrowLeftOutlined, LoadingOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, FilePdfOutlined, FileWordOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
 import { http } from '../shared/const/http';
 import { MaterialPageType, MaterialTableRows } from '../shared/types/pagesTypes';
@@ -176,22 +176,54 @@ export const MaterialDescriptionPage: React.FC = () => {
             </DescriptionBlock>
             <Line />
             <h2>Документы:</h2>
-            <Line />
+            {isAuthorized ? (
+              <div>
+                {material?.documents.map(document => {
+                  return (
+                    <div>
+                      {document.name.substring(document.name.length - 3) == 'pdf' ? (
+                        <DocumentWrapper>
+                          <FilePdfOutlined style={{ fontSize: '30px' }} />
+
+                          <a style={{ fontSize: '20px' }} href={document.document}>
+                            {document.name}
+                          </a>
+                        </DocumentWrapper>
+                      ) : (
+                        <DocumentWrapper>
+                          <FileWordOutlined />
+                          <a href={document.document}>{document.name}</a>
+                        </DocumentWrapper>
+                      )}
+                    </div>
+                  );
+                })}
+                <Line />
+              </div>
+            ) : (
+              <Alert message="Только зарегистрированные пользователи могут видеть документы по сырью" />
+            )}
             <h2>Поставщики:</h2>
-            <ScrollableList>
-              {suppliers?.map(supplier => {
-                return (
-                  <SupplierCard
-                    availability={supplier.availability_status}
-                    key={supplier.id}
-                    cardTittle={supplier.name}
-                    sampleRequest={showSampleRequest}
-                    quoteRequest={showQuoteRequest}
-                    informationRequest={openReqModal}
-                  />
-                );
-              })}
-            </ScrollableList>
+            {isAuthorized ? (
+              <div>
+                <ScrollableList>
+                  {suppliers?.map(supplier => {
+                    return (
+                      <SupplierCard
+                        availability={supplier.availability_status}
+                        key={supplier.id}
+                        cardTittle={supplier.name}
+                        sampleRequest={showSampleRequest}
+                        quoteRequest={showQuoteRequest}
+                        informationRequest={openReqModal}
+                      />
+                    );
+                  })}
+                </ScrollableList>
+              </div>
+            ) : (
+              <Alert message="Только зарегистрированные пользователи могут видеть поставщиков сырья" />
+            )}
           </PageWrapper>
           <FullSpecsBG>
             <FullSpecsWrapper>
@@ -236,12 +268,22 @@ export const MaterialDescriptionPage: React.FC = () => {
     </div>
   );
 };
+
+const DocumentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  height: 50px;
+`;
+
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
   align-items: center;
   margin: 0 auto;
+
   max-width: 1440px;
 
   @media (min-width: 320px) and (max-width: 768px) {
@@ -281,6 +323,7 @@ const FeatureWrapper = styled.div`
 const FullSpecsBG = styled.div`
   background-color: #fbfbfb;
   width: 100%;
+  margin-top: 40px;
 `;
 
 const MaterialHeader = styled.div`

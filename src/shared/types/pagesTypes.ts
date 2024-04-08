@@ -3,10 +3,16 @@ export interface CardAttributes {
   attribute_values: string[];
 }
 
+export interface Company {
+  name: string;
+  logo: string;
+}
+
 export interface CardMaterial {
   id: number;
   name: string;
   translated_description: string;
+  company: Company
   is_supplier_available: boolean;
   attributes: CardAttributes[];
 }
@@ -38,6 +44,12 @@ export interface MaterialTable {
   table_rows: MaterialTableRows[];
 }
 
+export interface Document {
+  name: string;
+  doc_type: string;
+  document: string;
+}
+
 export interface MaterialPageType {
   id: number;
   name: string;
@@ -47,6 +59,7 @@ export interface MaterialPageType {
   brand: string;
   attributes: MaterialPageAttributes[];
   tables: MaterialTable[];
+  documents: Document[]
 }
 
 export interface PageSize {

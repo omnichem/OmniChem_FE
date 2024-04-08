@@ -4,9 +4,8 @@ import { CardMaterial, CardMaterialResponse } from '../../shared/types/pagesType
 import { useGlobalSearch } from '../../contexts/globalSearchContext';
 import { useNavigate } from 'react-router';
 import { http } from '../../shared/const/http';
-import { Col, Layout, Row, Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import { Content } from 'antd/es/layout/layout';
+import { Col, Row } from 'antd';
+
 import { MaterialCard2 } from './components/MaterialCard2';
 import { usePagination } from '../../contexts/paginationContext';
 import { useFilter } from '../../contexts/filterContext';
@@ -21,7 +20,6 @@ export const MaterialList = () => {
 
   const [filterStore] = useFilter();
   const navigate = useNavigate();
-  const [firstLoading, setFirstLoading] = useState(true);
 
   useEffect(() => {
     const materialsController = new AbortController();
@@ -39,7 +37,6 @@ export const MaterialList = () => {
       setMaterials(materials.data.results);
 
       setIsLoading(false);
-      setFirstLoading(false);
       console.log(filterStore);
       // открывает страницу -) отлетает запрос -) пользователь меняет страницу (размонтирует целевой компонент) -) приходит ответ и пытаемся установить состояние
       return () => {
@@ -55,44 +52,32 @@ export const MaterialList = () => {
   };
 
   return (
-    <Layout>
-      {firstLoading ? (
-        <Spin style={{ zIndex: '9' }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
-      ) : (
-        <Layout>
-          <Layout style={{ height: '100%' }}>
-            <Content style={{ display: 'flex', gap: '20px', flexDirection: 'column', height: '100%' }}>
-              <Row wrap={true} gutter={[16, 16]}>
-                {materials?.map((material: CardMaterial) => (
-                  <Col
-                    // mobile
-                    xs={{ span: 23 }}
-                    sm={{ span: 24 }}
-                    // 175%
-                    md={{ span: 12 }}
-                    lg={{ span: 6 }}
-                    xl={{ span: 8 }}
-                    xxl={{ span: 6 }}
-                    key={`column${material.id}`}
-                  >
-                    <MaterialCard2
-                      is_supplier_available={material.is_supplier_available}
-                      loading={isLoading}
-                      id={material.id}
-                      key={`cardKey${material.id}`}
-                      clickButton={onCardClick}
-                      name={material.name}
-                      translated_description={material.translated_description}
-                      attributes={material.attributes}
-                    />
-                  </Col>
-                ))}
-              </Row>
-            </Content>
-          </Layout>
-        </Layout>
-      )}
-      {/* <Footer style={{ textAlign: 'center' }}>OmniChem ©{new Date().getFullYear()}</Footer> */}
-    </Layout>
+    <Row wrap={true} gutter={[16, 16]}>
+      {materials?.map((material: CardMaterial) => (
+        <Col
+          // mobile
+          xs={{ span: 23 }}
+          sm={{ span: 24 }}
+          // 175%
+          md={{ span: 12 }}
+          lg={{ span: 6 }}
+          xl={{ span: 8 }}
+          xxl={{ span: 6 }}
+          key={`column${material.id}`}
+        >
+          <MaterialCard2
+            company={material.company}
+            is_supplier_available={material.is_supplier_available}
+            loading={isLoading}
+            id={material.id}
+            key={`cardKey${material.id}`}
+            clickButton={onCardClick}
+            name={material.name}
+            translated_description={material.translated_description}
+            attributes={material.attributes}
+          />
+        </Col>
+      ))}
+    </Row>
   );
 };
