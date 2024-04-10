@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, FilePdfOutlined, FileWordOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
 import { http } from '../shared/const/http';
-import { MaterialPageType, MaterialTableRows } from '../shared/types/pagesTypes';
+import { MaterialPageType, MaterialTable, MaterialTableRows } from '../shared/types/pagesTypes';
 import '../styles/loading.css';
 import { columns } from '../shared/const/tableData';
 import { DataType } from '../shared/types/componentsTypes';
-import { Alert, Input, Modal, Spin, notification } from 'antd';
+import { Alert, Divider, Input, Modal, Spin, notification } from 'antd';
 
 import QuoteForm from './DrawerPages/QuoteForm';
 import SamplesForm from './DrawerPages/SamplesForm';
@@ -27,21 +27,16 @@ export const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [materialTable, setMaterialTable] = useState<MaterialTableRows[]>([]);
+  const [tables, setTables] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      await http.get<MaterialPageType>(`API/v2/wiki/materials/${id}/`).then(response => {
-        setMaterial(response.data);
-        if (material?.tables) {
-          setMaterialTable(response.data.tables[0].table_rows);
-        }
-        console.log(response.data.tables.length);
-      });
-      const suppliersResponse = await http.get(`API/v1/commerce/materials/${id}/distributors/`);
+      const materialDescription = await http.get<MaterialPageType>(`API/v2/wiki/materials/${id}/`);
 
+      const suppliersResponse = await http.get(`API/v1/commerce/materials/${id}/distributors/`);
+      setMaterial(materialDescription.data);
       setSuppliers(suppliersResponse.data);
 
       setIsLoading(false);
@@ -49,7 +44,6 @@ export const MaterialDescriptionPage: React.FC = () => {
 
     fetchData();
   }, [id]);
-  console.log(suppliers);
   const navigate = useNavigate();
   const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
   const [openSampleRequest, setOpenSampleRequest] = useState(false);
@@ -162,12 +156,7 @@ export const MaterialDescriptionPage: React.FC = () => {
         <div>
           <PageWrapper style={{ alignItems: 'flex-start', paddingTop: '40px' }}>
             <MaterialHeader>
-              <CustomButton
-                type="primary"
-                shape="round"
-                icon={<ArrowLeftOutlined />}
-                onClick={() => navigate('/materials')}
-              />
+              <CustomButton type="primary" shape="round" icon={<ArrowLeftOutlined />} onClick={() => navigate('/')} />
               <h2>{material?.name}</h2>
             </MaterialHeader>
 
@@ -242,24 +231,19 @@ export const MaterialDescriptionPage: React.FC = () => {
                   <Line />
                 </>
               ))}
-              {materialTable.length == 0 ? (
-                <></>
-              ) : (
-                <CustomTable
-                  size="large"
-                  columns={columns}
-                  data={materialTable?.map(tableRow => {
-                    const data: DataType = {
-                      key: tableRow.field_name,
-                      name: tableRow.field_name,
-                      value: tableRow.field_value,
-                      unit: tableRow.units,
-                      method: tableRow.test_method,
-                    };
-                    return data;
-                  })}
-                />
-              )}
+              {material?.tables.map((table: MaterialTable) => {
+                const tableData = table.table_rows.map((table_row: MaterialTableRows) => {
+                  const rowData: DataType = {
+                    key: table_row.field_name,
+                    name: table_row.field_name,
+                    value: table_row.field_value,
+                    unit: table_row.units,
+                    method: table_row.test_method,
+                  };
+                  return rowData;
+                });
+                return <CustomTable size="large" columns={columns} data={tableData} />;
+              })}
               <Line />
             </FullSpecsWrapper>
           </FullSpecsBG>

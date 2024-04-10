@@ -15,8 +15,12 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
+    
     // proxy: {
     //   "/API": "212.233.79.177:8000",
     // },
+  },
+  preview: {
+    port: 6688,
   },
 });

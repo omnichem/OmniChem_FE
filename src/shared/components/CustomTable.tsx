@@ -7,7 +7,7 @@ import { TableProps } from 'antd/es/table';
 interface CustomTableProps {
   size: 'large' | 'middle' | 'small';
   columns: TableProps<DataType>['columns'];
-  data: DataType[];
+  data: DataType[] | undefined;
 }
 
 export const CustomTable: React.FC<CustomTableProps> = ({ size, columns, data }) => (

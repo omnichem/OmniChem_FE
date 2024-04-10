@@ -7,27 +7,22 @@ import ruRU from 'antd/locale/ru_RU';
 import { AuthProvider } from './contexts/authContext.tsx';
 
 import { GlobalSearchProvider } from './contexts/globalSearchContext.tsx';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { router } from './router.tsx';
 import { PaginationProvider } from './contexts/paginationContext.tsx';
 import { GlobalFilterProvider } from './contexts/filterContext.tsx';
 
 console.log(import.meta.env);
 
-const queryClient = new QueryClient();
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ConfigProvider theme={theme} locale={ruRU}>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <GlobalSearchProvider>
-          <PaginationProvider>
-            <GlobalFilterProvider>
-              <RouterProvider router={router} />
-            </GlobalFilterProvider>
-          </PaginationProvider>
-        </GlobalSearchProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <AuthProvider>
+      <GlobalSearchProvider>
+        <PaginationProvider>
+          <GlobalFilterProvider>
+            <RouterProvider router={router} />
+          </GlobalFilterProvider>
+        </PaginationProvider>
+      </GlobalSearchProvider>
+    </AuthProvider>
   </ConfigProvider>
 );

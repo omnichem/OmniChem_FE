@@ -1,9 +1,7 @@
 import React from 'react';
 
 import { CustomButton } from './CustomButton';
-
-import { CollapseBlock } from './CollapseBlock';
-import { Alert, CollapseProps, Flex } from 'antd';
+import { Alert, Flex } from 'antd';
 
 import styled from 'styled-components';
 import { CustomCard } from './MaterialCard/CustomCard';

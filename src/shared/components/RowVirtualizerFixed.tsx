@@ -46,7 +46,7 @@ export const RowVirtualizerFixed: React.FC<RowVirtualizerProps> = ({ data, itemR
             height: `${virtualizer.getTotalSize()}px`,
           }}
         >
-          {virtualizer.getVirtualItems().map((virtualRow, i) => (
+          {virtualizer.getVirtualItems().map((virtualRow, _) => (
             <div
               key={virtualRow.key}
               data-index={virtualRow.index}
