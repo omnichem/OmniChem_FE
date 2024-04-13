@@ -7,13 +7,24 @@ on:
     branches: [ "main" ]
 
 jobs:
-  linter-action:
+  build:
     runs-on: ubuntu-latest
-    name: Linter action
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Prepare
-        run: npm ci # you can use any custom command, just be sure it includes npm install
-      - name: Linter action
-        id: linter
-        uses: AntonKornus/TypeScript-Linter@1.0.0
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npx tsc --moduleResolution node --jsx react
