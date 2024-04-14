@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, FilePdfOutlined, FileWordOutlined, LoadingOutlined } from '@ant-design/icons';
-import { matchRoutes, useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { http } from '../shared/const/http';
 import { MaterialPageType, MaterialTable, MaterialTableRows } from '../shared/types/pagesTypes';
 import '../styles/loading.css';

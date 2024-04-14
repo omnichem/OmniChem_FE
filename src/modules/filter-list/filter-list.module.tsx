@@ -37,9 +37,18 @@ export const FilterList = () => {
     }
   };
 
+  const deleteFilters = () => {
+    setFilterStore([]);
+  };
+
   return (
     <Sider breakpoint="xl" collapsedWidth="0" width={300} style={{ backgroundColor: '#f5f5f5' }}>
-      <MaterialsFilter checkFilter={checkFilter} filterData={filtersResponse} filterStore={filterStore} />
+      <MaterialsFilter
+        deleteFilters={deleteFilters}
+        checkFilter={checkFilter}
+        filterData={filtersResponse}
+        filterStore={filterStore}
+      />
     </Sider>
   );
 };

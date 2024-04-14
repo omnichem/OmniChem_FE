@@ -9,9 +9,10 @@ interface FilterProps {
   filterData?: Filter[];
   filterStore: string[];
   checkFilter: (e: CheckboxChangeEvent) => void;
+  deleteFilters: () => void;
 }
 
-export const MaterialsFilter: React.FC<FilterProps> = ({ filterData, filterStore, checkFilter }) => {
+export const MaterialsFilter: React.FC<FilterProps> = ({ filterData, filterStore, checkFilter, deleteFilters }) => {
   const filterRender = filterData?.map(filter => {
     return {
       key: `filter${filter.translated_name}`,
@@ -53,7 +54,7 @@ export const MaterialsFilter: React.FC<FilterProps> = ({ filterData, filterStore
     >
       <Alert style={{ fontSize: '21px' }} message="Фильтры" />
       <CollapseBlock items={filterRender} />
-      <CustomButton text="Сбросить фильтры" type="primary" onClick={() => {}} />
+      <CustomButton text="Сбросить фильтры" type="primary" onClick={deleteFilters} />
     </div>
   );
 };
