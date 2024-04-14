@@ -1,11 +1,12 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useState } from 'react';
 import { http } from '../shared/const/http';
-import { UserResponse } from '../shared/types/user';
+import { UserLoginResponse, UserRegisterResponse } from '../shared/types/user';
 
 type AuthContextType = {
   token: string | undefined;
   isAuthorized: boolean;
   login: (email: string, password: string) => void;
+  register: (email: string, password: string) => void;
   logOut: () => void;
   isLoading: boolean;
 };
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       try {
         setIsLoading(true);
         await http
-          .post<UserResponse>('/API/v1/commerce/auth/token/login/', {
+          .post<UserLoginResponse>('/API/v1/commerce/auth/token/login/', {
             email,
             password,
           })
@@ -56,6 +57,26 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       }
     };
     innerLogin();
+  }, []);
+  const register = useCallback((email: string, password: string) => {
+    const innerRegister = async () => {
+      try {
+        setIsLoading(true);
+        await http
+          .post<UserRegisterResponse>('/API/v1/commerce/auth/users/', {
+            email,
+            password,
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    innerRegister();
   }, []);
   const logOut = useCallback(() => {
     const innerLogOut = async () => {
@@ -86,6 +107,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   //   if (!token) return;
   // }, []);
   return (
-    <AuthContext.Provider value={{ token, isAuthorized, isLoading, login, logOut }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ register, token, isAuthorized, isLoading, login, logOut }}>
+      {children}
+    </AuthContext.Provider>
   );
 };

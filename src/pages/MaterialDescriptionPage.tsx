@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, FilePdfOutlined, FileWordOutlined, LoadingOutlined } from '@ant-design/icons';
-import { useNavigate, useParams } from 'react-router';
+import { matchRoutes, useNavigate, useParams } from 'react-router';
 import { http } from '../shared/const/http';
 import { MaterialPageType, MaterialTable, MaterialTableRows } from '../shared/types/pagesTypes';
 import '../styles/loading.css';
@@ -27,7 +27,6 @@ export const MaterialDescriptionPage: React.FC = () => {
   const [material, setMaterial] = useState<MaterialPageType>();
   const [isLoading, setIsLoading] = useState(false);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [tables, setTables] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
@@ -163,7 +162,7 @@ export const MaterialDescriptionPage: React.FC = () => {
             <DescriptionBlock>
               <FeatureLine>{material?.translated_description}</FeatureLine>
             </DescriptionBlock>
-            <Line />
+            <Divider style={{ margin: 0 }} />
             <h2>Документы:</h2>
             {isAuthorized ? (
               <div>
@@ -187,11 +186,11 @@ export const MaterialDescriptionPage: React.FC = () => {
                     </div>
                   );
                 })}
-                <Line />
               </div>
             ) : (
               <Alert message="Только зарегистрированные пользователи могут видеть документы по сырью" />
             )}
+            <Divider style={{ margin: 0 }} />
             <h2>Поставщики:</h2>
             {isAuthorized ? (
               <div>
@@ -228,7 +227,7 @@ export const MaterialDescriptionPage: React.FC = () => {
                       ))}
                     </FeatureLineContainer>
                   </FeatureWrapper>
-                  <Line />
+                  <Divider style={{ margin: 0 }} />
                 </>
               ))}
               {material?.tables.map((table: MaterialTable) => {

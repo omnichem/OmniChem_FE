@@ -10,14 +10,13 @@ export default defineConfig({
   plugins: [react()],
   base: "/",
   server: {
-    host: true,
     port: 6688,
     watch: {
       usePolling: true,
     },
     
     // proxy: {
-    //   "/API": "212.233.79.177:8000",
+    //   "/API": " https://omnichem.store",
     // },
   },
   preview: {
