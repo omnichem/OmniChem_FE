@@ -20,6 +20,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
           label="Email"
           name="email"
           tooltip="Введите адрес электронной почты, который вы указывали при регистрации"
+          rules={[
+            {
+              type: 'email',
+              message: 'Пожалуйста, введите корректный email',
+            },
+            {
+              required: true,
+              message: 'Пожалуйста, введите ваш email',
+            },
+          ]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}

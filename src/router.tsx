@@ -3,7 +3,7 @@ import ErrorPage from './pages/errorPages/ErrorPage';
 import { MaterialDescriptionPage } from './pages/MaterialDescriptionPage';
 import { HeaderLayout } from './shared/components';
 import { MaterialsPageLayout } from './modules/materials-page-layout';
-// import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
+import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -21,11 +21,11 @@ export const router = createBrowserRouter([
         element: <MaterialDescriptionPage />,
         errorElement: <ErrorPage />,
       },
-      // {
-      //   path: `/profile`,
-      //   element: <SuppliersAccount />,
-      //   errorElement: <ErrorPage />,
-      // },
+      {
+        path: `/profile`,
+        element: <SuppliersAccount />,
+        errorElement: <ErrorPage />,
+      },
     ],
   },
 ]);
