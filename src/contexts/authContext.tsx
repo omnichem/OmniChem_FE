@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       }
     };
     innerRegister();
+    console.log(innerRegister);
   }, []);
   const logOut = useCallback(() => {
     const innerLogOut = async () => {

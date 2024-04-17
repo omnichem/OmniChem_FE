@@ -141,7 +141,14 @@ export const MaterialDescriptionPage: React.FC = () => {
         title="Запрос образца"
       >
         {samplesFormStage == 1 ? (
-          <SamplesForm onSamplesSubmit={() => submitSamples()} />
+          <SamplesForm
+            onSamplesSubmit={() => submitSamples()}
+            product={''}
+            address={''}
+            market={''}
+            comment={''}
+            product_info={''}
+          />
         ) : (
           <div>
             <p>Ваш запрос был отправлен поставщику</p>

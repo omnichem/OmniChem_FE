@@ -1,35 +1,47 @@
 import { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, CopyOutlined, HomeOutlined, BarChartOutlined } from '@ant-design/icons';
-import { Layout, Menu, Button, theme, Row, Col } from 'antd';
+import { Layout, Menu, Button, theme, Row, Col, MenuProps } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import AnalyticsСontent from './components/analyticsСontent/AnalyticsСontent';
 import TableSupplierCatalog from './components/TableSupplierCatalog/TableSupplierCatalog';
-import axios from 'axios';
+
 import CompanyCardForm from './components/companyCardForm/CompanyCardForm';
-import { MenuInfo } from 'antd/lib/menu';
+
+import { http } from '../../shared/const/http';
 
 const { Header, Sider, Content } = Layout;
 
+export interface Card {
+  tags: boolean;
+  id: number;
+  distributor_id: number;
+  product_name: string;
+  manufacturer: string;
+  article: unknown;
+  availability_status: string;
+  is_relationship: boolean;
+  raw_material: null;
+}
+
+interface comparisonTableResponse {
+  countProductsWithRelationship: number;
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Card[];
+}
+
 const SuppliersAccount: React.FC = () => {
-  const [supplierMaterials, setSupplierMaterials] = useState<Material[]>([]);
+  const [comparisonTable, setComparisonTable] = useState<comparisonTableResponse>();
 
   useEffect(() => {
-    setTimeout(() => {
-      axios
-        .get('http://localhost:8000/API/v1/commerce/products/')
-        .then(response => {
-          if (response.data && Array.isArray(response.data.results)) {
-            setSupplierMaterials(response.data.results);
-          } else {
-            console.error('Invalid response data format');
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }, 3000);
-  }, [supplierMaterials]);
-  console.log(supplierMaterials);
+    const comparisonTable = async () => {
+      const response = await http.get<comparisonTableResponse>('/API/v1/commerce/products/');
+      setComparisonTable(response.data);
+    };
+    comparisonTable();
+  }, []);
+
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -48,21 +60,10 @@ const SuppliersAccount: React.FC = () => {
     { key: '3', icon: <CopyOutlined />, label: navName[2] },
   ];
 
-  const onSelect = (info: MenuInfo) => {
-    setCurrent(info.key as string);
+  const onClick: MenuProps['onClick'] = e => {
+    console.log('click ', e);
+    setCurrent(e.key);
   };
-
-  interface Material {
-    loading: boolean;
-    id: string;
-    distributor_id: string;
-    product_name: string;
-    manufacturer: string;
-    article: string;
-    availability_status: string;
-    is_relationship: boolean;
-    raw_material: string;
-  }
 
   return (
     <>
@@ -82,7 +83,7 @@ const SuppliersAccount: React.FC = () => {
           }}
         >
           <div className="demo-logo-vertical" />
-          <Menu onSelect={onSelect} theme="light" mode="inline" defaultSelectedKeys={['1']} items={items} />
+          <Menu onClick={onClick} theme="light" mode="inline" defaultSelectedKeys={['1']} items={items} />
         </Sider>
         <Layout>
           <Header
@@ -147,18 +148,20 @@ const SuppliersAccount: React.FC = () => {
                 <Row>
                   <Col xs={24} md={24}>
                     <TableSupplierCatalog
-                      supplierMaterials={supplierMaterials.map((material: any) => ({
-                        tags: true,
-                        id: material.id,
-                        distributor_id: material.distributor_id,
-                        product_name: material.product_name,
-                        manufacturer: material.manufacturer,
-                        article: material.article,
-                        availability_status: material.availability_status,
-                        is_relationship: material.is_relationship,
-                        raw_material: material.raw_material,
-                      }))}
-                      loading
+                      supplierMaterials={comparisonTable?.results.map((material: Card) => {
+                        const data = {
+                          tags: material.is_relationship,
+                          id: material.id,
+                          distributor_id: material.distributor_id,
+                          product_name: material.product_name,
+                          manufacturer: material.manufacturer,
+                          article: material.article,
+                          availability_status: material.availability_status,
+                          is_relationship: material.is_relationship,
+                          raw_material: material.raw_material,
+                        };
+                        return data;
+                      })}
                     />
                   </Col>
                 </Row>

@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { Table } from 'antd';
 import './TableSupplierCatalog.css';
 
-import { columns } from '../accountData';
 import { Key } from 'antd/lib/table/interface';
+import { Card } from '../../SuppliersAccount';
+import { columns } from '../accountData';
 
 interface Props {
-  supplierMaterials: any[];
-  loading: boolean;
+  supplierMaterials: Card[] | undefined;
+  loading?: boolean;
 }
 
-const TableSupplierCatalog = (props: Props) => {
+const TableSupplierCatalog: React.FC<Props> = ({ supplierMaterials, loading }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
   const onSelectChange = (newSelectedRowKeys: Key[]) => {
@@ -29,8 +30,8 @@ const TableSupplierCatalog = (props: Props) => {
       className="table"
       rowSelection={rowSelection}
       columns={columns}
-      dataSource={props.supplierMaterials}
-      loading={props.loading}
+      dataSource={supplierMaterials}
+      loading={loading}
     />
   );
 };
