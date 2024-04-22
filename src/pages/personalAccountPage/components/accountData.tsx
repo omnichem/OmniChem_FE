@@ -1,10 +1,35 @@
+interface ISAccountData {
+  id: number;
+  title: string;
+  dataIndex: string;
+  tags?: boolean;
+}
+
 import { Tag } from 'antd';
 
-export const columns = [
+export const columns: Array<{
+  id: number;
+  title: string;
+  dataIndex: string;
+  sorter?: ((a: any, b: any) => number) | undefined;
+  render?: ((text: any, record: ISAccountData) => React.ReactNode) | undefined;
+}> = [
   {
     id: 1,
     title: 'Наименование сырья',
     dataIndex: 'product_name',
+    sorter: (a, b) => {
+      const nameA = a.product_name.toUpperCase();
+      const nameB = b.product_name.toUpperCase();
+
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    },
   },
   {
     id: 2,
@@ -25,7 +50,7 @@ export const columns = [
     id: 5,
     title: 'Статус сопоставления',
     dataIndex: 'is_relationship',
-    render: (tags: string) => {
+    render: (_, { tags }) => {
       if (tags) {
         return (
           <Tag color={'green'}>
@@ -42,13 +67,3 @@ export const columns = [
     },
   },
 ];
-
-// export const columns: Array<{
-//   id: number;
-//   title: string;
-//   dataIndex: string;
-//   sorter?: ((a: any, b: any) => number) | undefined;
-//   render?: ((text: any, record: ISAccountData) => React.ReactNode) | undefined;
-// }> = [
-
-// ];
