@@ -1,7 +1,7 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { AuthFormWrapper } from './AuthForm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/authContext';
 
 interface LoginFormProps {}
@@ -10,7 +10,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log(email, password);
+  const [formIsValided, setFormIsValided] = useState<boolean>(false);
+
+  useEffect(() => {
+    setFormIsValided(email && password); // Здесь была ошибка, теперь правильно
+  }, [email, password]);
 
   return (
     <AuthFormWrapper vertical gap={10}>
@@ -44,7 +48,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
           name="password"
           tooltip="Введите пароль, который вы указывали при регистрации"
         >
-          <Input
+          <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             placeholder="Пароль"
@@ -53,7 +57,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
           />
         </Form.Item>
       </Form>
-      <Button onClick={() => login(email, password)} type="primary">
+      <Button onClick={() => login(email, password)} type="primary" disabled={!formIsValided}>
         Войти
       </Button>
     </AuthFormWrapper>

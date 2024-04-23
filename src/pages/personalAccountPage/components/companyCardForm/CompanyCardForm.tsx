@@ -1,8 +1,8 @@
 import './companyCardForm.css';
 import { Button, Form, Input, Select } from 'antd';
 import { useState } from 'react';
-import isInn from 'is-inn-js';
 import axios from 'axios';
+import { UserOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 
@@ -40,13 +40,21 @@ const CompanyCardForm: React.FC = () => {
   const [organization_structure, setOrganization_structure] = useState('ООО');
   const [company_name_shortened, setCompany_name_shortened] = useState('');
   const [about, setAbout] = useState('');
+  const INN_REGEX = /^(\d{10}|\d{12})$/;
 
   return (
     <div className="supplierAccountForm-wrapper">
       <Form className="supplierDetailForm" layout="vertical" onFinish={onFinish}>
         <div className="nameCompany-wrapper">
-          <Form.Item label="Краткое наименование" name="companyName">
+          <Form.Item
+            label="Краткое наименование"
+            name="companyName"
+            required={true}
+            tooltip="Введите юридическое наименование вашей компании"
+            hasFeedback
+          >
             <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
               className="companyNameInput"
               placeholder="Введите краткое наименование компании"
               value={company_name_shortened}
@@ -54,7 +62,7 @@ const CompanyCardForm: React.FC = () => {
               required
             />
           </Form.Item>
-          <Form.Item label="Организационная форма" name="organizationForm" required>
+          <Form.Item label="Организационная форма" name="organizationForm" required={true} hasFeedback>
             <Select
               className="companyNameInput"
               placeholder="Например ООО"
@@ -69,8 +77,24 @@ const CompanyCardForm: React.FC = () => {
             </Select>
           </Form.Item>
         </div>
-        <Form.Item label="ИНН" name="INN">
+        <Form.Item
+          label="ИНН"
+          name="INN"
+          tooltip="ИНН содержит 12 цифр"
+          rules={[
+            {
+              validator: (_, value) => {
+                if (!INN_REGEX.test(value)) {
+                  return Promise.reject('ИНН должен содержать 10 или 12 символов');
+                }
+                return Promise.resolve();
+              },
+            },
+          ]}
+          hasFeedback
+        >
           <Input
+            prefix={<UserOutlined className="site-form-item-icon" />}
             className="detailsInput"
             maxLength={12}
             placeholder="Укажите ИНН вашей компании"
@@ -81,15 +105,6 @@ const CompanyCardForm: React.FC = () => {
             onChange={e => setInn(e.target.value)}
             required
           />
-          {inn.length == 12 ? (
-            isInn(inn) ? (
-              <p style={{ color: '#52c41a' }}>ИНН валиден</p>
-            ) : (
-              <p style={{ color: '#ff4d4f' }}>ИНН не валиден</p>
-            )
-          ) : (
-            <p style={{ color: '#ff8800' }}>Поле ИНН должно содержать 12 цифр</p>
-          )}
         </Form.Item>
         <Form.Item label="Описание компании" name="companyDescription">
           <TextArea

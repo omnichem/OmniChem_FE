@@ -123,7 +123,11 @@ const SuppliersAccount: React.FC = () => {
                   borderRadius: borderRadiusLG,
                 }}
               >
-                <CompanyCardForm />
+                <Row>
+                  <Col xs={20} md={20}>
+                    <CompanyCardForm />
+                  </Col>
+                </Row>
               </div>
             ) : current == '2' ? (
               <div
@@ -134,7 +138,11 @@ const SuppliersAccount: React.FC = () => {
                   borderRadius: borderRadiusLG,
                 }}
               >
-                <AnalyticsСontent />
+                <Row>
+                  <Col xs={20} md={20}>
+                    <AnalyticsСontent />
+                  </Col>
+                </Row>
               </div>
             ) : current == '3' ? (
               <div
@@ -146,7 +154,7 @@ const SuppliersAccount: React.FC = () => {
                 }}
               >
                 <Row>
-                  <Col xs={24} md={24}>
+                  <Col xs={1} md={19}>
                     <TableSupplierCatalog
                       supplierMaterials={comparisonTable?.results.map((material: Card) => {
                         const data = {

@@ -1,6 +1,6 @@
 import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AuthFormWrapper } from './AuthForm';
 import { useAuth } from '../../contexts/authContext';
 
@@ -15,9 +15,15 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
   const [confirmation, setConfirmation] = useState('');
   console.log(email, password);
 
+  const [formIsValid, setFormIsValid] = useState<boolean>(false);
+
+  useEffect(() => {
+    setFormIsValid(email && password && confirmation);
+  }, [email, password, confirmation]);
+
   return (
     <AuthFormWrapper vertical gap={10}>
-      <Form layout="vertical">
+      <Form autoComplete="off" layout="vertical">
         <Form.Item
           required={true}
           name="email"
@@ -26,13 +32,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
           rules={[
             {
               type: 'email',
-              message: 'Пожалуйста, введите корректный email',
-            },
-            {
               required: true,
-              message: 'Пожалуйста, введите ваш email',
+              message: 'Вы ввели некорректный email',
             },
           ]}
+          hasFeedback
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -48,13 +52,23 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
           tooltip="Введите пароль, который будет использоваться при в ходе в учетную запись"
           rules={[
             {
-              required: true,
-              message: 'Пожалуйста, введите ваш пароль. Длина пароля должна быть не менее 8 символов',
-              min: 8,
+              validator: (_, value) => {
+                if (value.length < 8) {
+                  return Promise.reject('Пароль должен содержать не менее 8 символов');
+                }
+                if (/[a-z]/.test(value) === false || /[A-Z]/.test(value) === false) {
+                  return Promise.reject('Пароль должен содержать хотя бы одну букву в нижнем и верхнем регистре');
+                }
+                if (!/[0-9]/.test(value)) {
+                  return Promise.reject('Пароль должен содержать хотя бы одну цифру');
+                }
+                return Promise.resolve();
+              },
             },
           ]}
+          hasFeedback
         >
-          <Input
+          <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             placeholder="Пароль"
@@ -64,26 +78,36 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
           />
         </Form.Item>
         <Form.Item
-          name="password"
+          label="Подтвердите пароль"
+          name="confirm"
+          dependencies={['password']}
+          tooltip="Введите пароль повторно"
           rules={[
             {
               required: true,
-              message: 'Пожалуйста, введите ваш пароль. Длина пароля должна быть не меенее 8 символов',
             },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('Не совпадает'));
+              },
+            }),
           ]}
+          hasFeedback
         >
-          <Input
+          <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
-            placeholder="Подтверждение пароля"
+            placeholder="Подтвердите пароль"
             value={confirmation}
             onChange={e => setConfirmation(e.target.value)}
-            minLength={10}
           />
         </Form.Item>
       </Form>
 
-      <Button onClick={() => register(email, password)} type="primary">
+      <Button onClick={() => register(email, password)} type="primary" disabled={!formIsValid}>
         Зарегистрироваться
       </Button>
     </AuthFormWrapper>
