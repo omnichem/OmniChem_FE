@@ -7,7 +7,7 @@ interface DivederProps {
   onClose: () => void;
   children: React.ReactNode;
   size: 'default' | 'large';
-  placement: 'top' | 'right' | 'bottom' | 'left';
+  placement?: 'top' | 'right' | 'bottom' | 'left';
   title: string;
 }
 

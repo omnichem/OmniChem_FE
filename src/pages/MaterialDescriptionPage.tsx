@@ -8,13 +8,12 @@ import { MaterialPageType, MaterialTable, MaterialTableRows } from '../shared/ty
 import '../styles/loading.css';
 import { columns } from '../shared/const/tableData';
 import { DataType } from '../shared/types/componentsTypes';
-import { Alert, Divider, Input, Modal, Spin, notification } from 'antd';
+import { Alert, Divider, Spin } from 'antd';
 
-import QuoteForm from './DrawerPages/QuoteForm';
-import SamplesForm from './DrawerPages/SamplesForm';
 import { useAuth } from '../contexts/authContext';
-import { CustomButton, CustomDrawer, SupplierCard, CustomTable } from '../shared/components';
-const { TextArea } = Input;
+import { CustomButton, SupplierCard, CustomTable } from '../shared/components';
+import { MaterialRequestForm } from '../modules/material-request-layout';
+import { RequestFormType } from '../modules/material-request-layout/types';
 
 interface Supplier {
   id: number;
@@ -44,67 +43,30 @@ export const MaterialDescriptionPage: React.FC = () => {
     fetchData();
   }, [id]);
   const navigate = useNavigate();
-  const [openQuoteRequest, setOpenQuoteRequest] = useState(false);
-  const [openSampleRequest, setOpenSampleRequest] = useState(false);
 
-  const openNotification = () => {
-    notification.open({
-      message: 'Только авторизованные пользователи могут взаимодействовать с поставщиками',
-      description: 'Пожалуйста, зарегистрируйтесь на сайте или войдите со своими учетными данными',
-      placement: 'topRight',
-    });
-  };
+  // const [isOpenInfReqModal, setIsOpenInfReqModal] = useState(false);
+  // const openReqModal = () => {
+  //   if (!isAuthorized) {
+  //     openNotification();
+  //   } else {
+  //     setIsOpenInfReqModal(true);
+  //   }
+  // };
 
-  const showQuoteRequest = () => {
-    if (!isAuthorized) {
-      openNotification();
-    } else {
-      setOpenQuoteRequest(true);
-    }
-  };
+  // const closeReqModal = () => {
+  //   setIsOpenInfReqModal(false);
+  // };
 
-  const showSampleRequest = () => {
-    if (!isAuthorized) {
-      openNotification();
-    } else {
-      setOpenSampleRequest(true);
-    }
-  };
+  const [isOpenRequestForm, setIsOpenRequestForm] = useState(false);
+  const [requestType, setRequestType] = useState<RequestFormType>('quote');
 
-  const onCloseQuoteRequest = () => {
-    setOpenQuoteRequest(false);
-  };
-
-  const onCloseSampleRequest = () => {
-    setOpenSampleRequest(false);
-  };
-
-  const [quoteFormStage, setQuoteFormStage] = useState(1);
-  const [samplesFormStage, setSamplesFormStage] = useState(1);
-
-  const submitQuote = () => {
-    setQuoteFormStage(2);
-  };
-
-  const submitSamples = () => {
-    setSamplesFormStage(2);
-  };
-
-  const [isOpenInfReqModal, setIsOpenInfReqModal] = useState(false);
-  const openReqModal = () => {
-    if (!isAuthorized) {
-      openNotification();
-    } else {
-      setIsOpenInfReqModal(true);
-    }
-  };
-
-  const closeReqModal = () => {
-    setIsOpenInfReqModal(false);
+  const openRequestForm = (requestType: RequestFormType) => {
+    setIsOpenRequestForm(true);
+    setRequestType(requestType);
   };
   return (
     <div>
-      <Modal
+      {/* <Modal
         open={isOpenInfReqModal}
         title="Напишите интересующий вас вопрос сдесь"
         onCancel={closeReqModal}
@@ -114,48 +76,14 @@ export const MaterialDescriptionPage: React.FC = () => {
           <TextArea rows={4} />
           <Alert message="Помимо вашего вопроса, мы отправим поставщику данные о вас: имя, фамилия и ИНН. Предоставление этих данных при запросе к поставщику поможет обеспечить более качественное обслуживание и улучшить коммуникацию." />
           <CustomButton text="Отправить" type="primary"></CustomButton>
-        </div>
-        {/* В дальнейшем при клике в модалке должен быть получен id поставщика что бы отправить ему запрос, получить его надо из карточки */}
-      </Modal>
-      <CustomDrawer
-        open={openQuoteRequest}
-        onClose={onCloseQuoteRequest}
-        size="default"
-        placement="right"
-        title="Запрос ценового предложения"
-      >
-        {quoteFormStage == 1 ? (
-          <QuoteForm onQuoteSubmit={() => submitQuote()} />
-        ) : (
-          <div>
-            <p>Ваш запрос был отправлен поставщику</p>
-            <CustomButton type="default" onClick={() => location.reload()} text="Продолжить" />
-          </div>
-        )}
-      </CustomDrawer>
-      <CustomDrawer
-        open={openSampleRequest}
-        onClose={onCloseSampleRequest}
-        size="default"
-        placement="right"
-        title="Запрос образца"
-      >
-        {samplesFormStage == 1 ? (
-          <SamplesForm
-            onSamplesSubmit={() => submitSamples()}
-            product={''}
-            address={''}
-            market={''}
-            comment={''}
-            product_info={''}
-          />
-        ) : (
-          <div>
-            <p>Ваш запрос был отправлен поставщику</p>
-            <CustomButton type="default" onClick={() => location.reload()} text="Продолжить" />
-          </div>
-        )}
-      </CustomDrawer>
+        </div> */}
+      {/* В дальнейшем при клике в модалке должен быть получен id поставщика что бы отправить ему запрос, получить его надо из карточки */}
+      {/* </Modal> */}
+      <MaterialRequestForm
+        closeForm={() => setIsOpenRequestForm(false)}
+        isOpenedForm={isOpenRequestForm}
+        requestType={requestType}
+      />
       {isLoading ? (
         <Spin style={{ zIndex: '9' }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
       ) : (
@@ -208,9 +136,9 @@ export const MaterialDescriptionPage: React.FC = () => {
                         availability={supplier.availability_status}
                         key={supplier.id}
                         cardTittle={supplier.name}
-                        sampleRequest={showSampleRequest}
-                        quoteRequest={showQuoteRequest}
-                        informationRequest={openReqModal}
+                        sampleRequest={() => openRequestForm('sample')}
+                        quoteRequest={() => openRequestForm('quote')}
+                        informationRequest={() => {}}
                       />
                     );
                   })}

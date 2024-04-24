@@ -1,39 +1,29 @@
 import React, { useState } from 'react';
 import { Form, InputNumber, Select } from 'antd';
-import isInn from 'is-inn-js';
+// import isInn from 'is-inn-js';
 import { CustomInput, CustomButton } from '../../shared/components';
-import axios from 'axios';
 import { http } from '../../shared/const/http';
 
-interface SamplesFormProps {
-  onSamplesSubmit: () => void;
-  product: string;
-  address: string;
-  market: string;
-  comment: string;
-  product_info: string;
-}
-
-const SamplesForm: React.FC<SamplesFormProps> = ({ onSamplesSubmit }) => {
+const SamplesForm: React.FC = () => {
   const [market, setMarket] = useState('');
   const [volumeRequest, setVolumeRequest] = useState('1');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
-  const [inn, setInn] = useState('');
+  // const [inn, setInn] = useState('');
   const [comments, setComments] = useState('');
   const [contactPerson, setContactPerson] = useState('');
   const [productInfo, setProductInfo] = useState('');
 
-  const sendSamples = async () => {
+  const sendSamplesRequest = async () => {
     await http.post(
-      '/API/v1/commerce/samplerequest/',
+      'http://212.233.79.177/API/v1/commerce/samplerequest/',
       {
-        product: volumeRequest,
-        volume_request: volumeRequest,
-        address: address,
-        market: market,
-        comment: comments,
-        product_info: productInfo,
+        product: 13004,
+        year_volume: 2147483647,
+        market: 12,
+        address: 'string',
+        comment: 'string',
+        volume_request: 10,
       },
       {
         headers: {
@@ -109,7 +99,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSamplesSubmit }) => {
           <p style={{ color: '#52c41a' }}>Телефон валиден</p>
         )}
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         required
         tooltip="Укажите ваш ИНН для оформления документов и соблюдения налоговых требований."
         label="ИНН"
@@ -125,7 +115,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSamplesSubmit }) => {
         ) : (
           <p style={{ color: '#ff8800' }}>Поле ИНН должно содержать 12 цифр</p>
         )}
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item
         required={false}
@@ -154,7 +144,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSamplesSubmit }) => {
           name="comments"
         />
       </Form.Item>
-      <CustomButton type="primary" text="Отправить" onClick={onSamplesSubmit} />
+      <CustomButton type="primary" text="Отправить" onClick={sendSamplesRequest} />
     </Form>
   );
 };
