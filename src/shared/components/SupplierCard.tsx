@@ -24,8 +24,6 @@ export const SupplierCard: React.FC<MaterialCardProps> = ({
 }) => {
   return (
     <CustomCard>
-      {/* <CollapseBlock collapsible={'disabled'} items={items} /> */}
-
       <Flex vertical gap={'middle'}>
         <Alert style={{ fontSize: '20px' }} message={cardTittle} />
         <div>
@@ -35,7 +33,6 @@ export const SupplierCard: React.FC<MaterialCardProps> = ({
             <p style={{ fontSize: '15px', color: '#505050' }}>Как купить: {availability}</p>
           )}
         </div>
-
         <RequestWrapper>
           <CustomButton type="default" text="Запросить ценовое предложение" onClick={quoteRequest} />
           <CustomButton type="primary" text="Запросить образец" onClick={sampleRequest} />

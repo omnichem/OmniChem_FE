@@ -3,11 +3,7 @@ import { Form, Select } from 'antd';
 import isInn from 'is-inn-js';
 import { CustomButton, CustomInput } from '../../shared/components';
 
-interface QuoteFormProps {
-  onQuoteSubmit: () => void;
-}
-
-const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
+const QuoteForm: React.FC = () => {
   const [marketName, setMarketName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
@@ -121,7 +117,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onQuoteSubmit }) => {
         />
       </Form.Item>
       <Form.Item>
-        <CustomButton text="Отправить" type="primary" onClick={onQuoteSubmit} />
+        <CustomButton text="Отправить" type="primary" onClick={() => {}} />
       </Form.Item>
     </Form>
   );

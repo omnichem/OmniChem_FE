@@ -13,7 +13,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
   const [formIsValided, setFormIsValided] = useState<boolean>(false);
 
   useEffect(() => {
-    setFormIsValided(email && password); // Здесь была ошибка, теперь правильно
+    setFormIsValided(!!email && !!password); // Здесь была ошибка, теперь правильно. upd: Теперь правильно
   }, [email, password]);
 
   return (
