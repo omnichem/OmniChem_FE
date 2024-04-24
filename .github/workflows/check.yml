@@ -9,12 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+         node-version: ["18.x"]
+    steps:
 
-#    strategy:
-#      matrix:
- #       node-version: [18.x]
-#
- #   steps:
+
   #  - name: Checkout code
    #   uses: actions/checkout@v2
 #
@@ -28,3 +29,13 @@ jobs:
 #
  #   - name: Build
   #    run: npx tsc --moduleResolution node --jsx react
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+  
+      - name: Build and push Docker image
+        run: |
+           docker build -t omnichem/OmniChem_FE .
+           docker push omnichem/OmniChem_FE:latest
