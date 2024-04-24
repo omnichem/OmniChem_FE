@@ -18,7 +18,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
 
   useEffect(() => {
-    setFormIsValid(email && password && confirmation);
+    setFormIsValid(!!email && !!password && !!confirmation);
   }, [email, password, confirmation]);
 
   return (

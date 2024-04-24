@@ -3,6 +3,7 @@ import { Form, InputNumber, Select } from 'antd';
 import isInn from 'is-inn-js';
 import { CustomInput, CustomButton } from '../../shared/components';
 import axios from 'axios';
+import { http } from '../../shared/const/http';
 
 interface SamplesFormProps {
   onSamplesSubmit: () => void;
@@ -24,37 +25,26 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSamplesSubmit }) => {
   const [productInfo, setProductInfo] = useState('');
 
   const sendSamples = async () => {
-    await axios
-      .post(
-        'http://localhost:8000/API/v1/commerce/samplerequest/',
-        {
-          product: volumeRequest,
-          volume_request: volumeRequest,
-          address: address,
-          market: market,
-          comment: comments,
-          product_info: productInfo,
+    await http.post(
+      '/API/v1/commerce/samplerequest/',
+      {
+        product: volumeRequest,
+        volume_request: volumeRequest,
+        address: address,
+        market: market,
+        comment: comments,
+        product_info: productInfo,
+      },
+      {
+        headers: {
+          Authorization: `Token ${localStorage.getItem('token')}`,
         },
-        {
-          headers: {
-            Authorization: `Token ${localStorage.getItem('token')}`,
-          },
-        }
-      )
-      .then(response => {
-        console.log('Ответ сервера:', response.data);
-      })
-      .catch(error => {
-        console.error('Ошибка при отправке запроса:', error);
-      });
-  };
-
-  const formData = () => {
-    sendSamples();
+      }
+    );
   };
 
   return (
-    <Form layout="vertical" onFinish={formData}>
+    <Form layout="vertical">
       <Form.Item
         name="market"
         tooltip="Укажите название вашего магазина или предприятия, где будет осуществляться заказ сырья."
@@ -164,10 +154,7 @@ const SamplesForm: React.FC<SamplesFormProps> = ({ onSamplesSubmit }) => {
           name="comments"
         />
       </Form.Item>
-
-      <Form.Item>
-        <CustomButton type="primary" text="Отправить" onClick={onSamplesSubmit} />
-      </Form.Item>
+      <CustomButton type="primary" text="Отправить" onClick={onSamplesSubmit} />
     </Form>
   );
 };
