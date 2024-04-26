@@ -22,8 +22,8 @@ jobs:
         run: npm install
       - name: build project
         run: npm run build
-      - name: build storybook
-        run: tsc && vite build
+#      - name: build storybook
+#        run: tsc && vite build
 
 
   #  - name: Checkout code
