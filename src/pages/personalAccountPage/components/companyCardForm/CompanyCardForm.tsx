@@ -1,50 +1,38 @@
 import './companyCardForm.css';
 import { Button, Form, Input, Select } from 'antd';
 import { useState } from 'react';
-import axios from 'axios';
 import { UserOutlined } from '@ant-design/icons';
+import { http } from '../../../../shared/const/http';
 
 const { TextArea } = Input;
 
 const CompanyCardForm: React.FC = () => {
   const sendData = async () => {
-    await axios
-      .post(
-        'http://localhost:8000/API/v1/commerce/distributors/',
-        {
-          inn: inn,
-          organization_structure: organization_structure,
-          company_name_shortened: company_name_shortened,
-          about: about,
+    await http.post(
+      '/API/v1/commerce/distributors/',
+      {
+        inn: inn,
+        organization_structure: organization_structure,
+        company_name_shortened: company_name_shortened,
+        about: about,
+      },
+      {
+        headers: {
+          Authorization: `Token ${localStorage.getItem('token')}`,
         },
-        {
-          headers: {
-            Authorization: `Token ${localStorage.getItem('token')}`,
-          },
-        }
-      )
-      .then(response => {
-        console.log('Ответ сервера:', response.data);
-      })
-      .catch(error => {
-        console.error('Ошибка при отправке запроса:', error);
-      });
-  };
-
-  const onFinish = (values: any) => {
-    sendData();
-    console.log('Success:', values);
+      }
+    );
   };
 
   const [inn, setInn] = useState('');
-  const [organization_structure, setOrganization_structure] = useState('ООО');
+  const [organization_structure, setOrganization_structure] = useState('ooo');
   const [company_name_shortened, setCompany_name_shortened] = useState('');
   const [about, setAbout] = useState('');
   const INN_REGEX = /^(\d{10}|\d{12})$/;
 
   return (
     <div className="supplierAccountForm-wrapper">
-      <Form className="supplierDetailForm" layout="vertical" onFinish={onFinish}>
+      <Form className="supplierDetailForm" layout="vertical">
         <div className="nameCompany-wrapper">
           <Form.Item
             label="Краткое наименование"
@@ -117,12 +105,7 @@ const CompanyCardForm: React.FC = () => {
             onChange={e => setAbout(e.target.value)}
           />
         </Form.Item>
-        <Button
-          className="supplierFormBtn"
-          type="primary"
-          htmlType="submit"
-          style={{ width: '100%', maxWidth: '100px' }}
-        >
+        <Button type="primary" onClick={sendData} style={{ width: '100%', maxWidth: '100px' }}>
           Сохранить
         </Button>
       </Form>

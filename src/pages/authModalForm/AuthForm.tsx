@@ -7,9 +7,7 @@ import { RegisterForm } from './RegisterForm';
 import { Logo } from '../../shared/components';
 import { useAuth } from '../../contexts/authContext';
 
-interface AuthFormProps {}
-
-export const AuthForm: React.FC<AuthFormProps> = ({}) => {
+export const AuthForm: React.FC = () => {
   const { isAuthorized } = useAuth();
   const [items] = useState([
     {

@@ -4,9 +4,7 @@ import { AuthFormWrapper } from './AuthForm';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/authContext';
 
-interface LoginFormProps {}
-
-export const LoginForm: React.FC<LoginFormProps> = ({}) => {
+export const LoginForm: React.FC = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

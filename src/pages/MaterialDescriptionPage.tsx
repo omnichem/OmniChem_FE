@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 import { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, FilePdfOutlined, FileWordOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
@@ -9,16 +8,18 @@ import '../styles/loading.css';
 import { columns } from '../shared/const/tableData';
 import { DataType } from '../shared/types/componentsTypes';
 import { Alert, Divider, Spin } from 'antd';
-
 import { useAuth } from '../contexts/authContext';
 import { CustomButton, SupplierCard, CustomTable } from '../shared/components';
-import { MaterialRequestForm } from '../modules/material-request-layout';
-import { RequestFormType } from '../modules/material-request-layout/types';
+import { MaterialRequestForm } from '../modules/material-request-form';
+import { RequestFormType } from '../modules/material-request-form/types';
+import { Market } from '../modules/material-request-form/material-request-form.module';
 
 interface Supplier {
-  id: number;
-  name: string;
+  distributor_id: number;
+  distributor_name: string;
   availability_status: string;
+  product_id: number;
+  product_name: string;
 }
 
 export const MaterialDescriptionPage: React.FC = () => {
@@ -27,21 +28,34 @@ export const MaterialDescriptionPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const { id } = useParams();
-
+  const [markets, setMarkets] = useState<Market[]>([]);
+  const [product, setProduct] = useState();
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
       const materialDescription = await http.get<MaterialPageType>(`API/v2/wiki/materials/${id}/`);
 
-      const suppliersResponse = await http.get(`API/v1/commerce/materials/${id}/distributors/`);
+      const suppliersResponse = await http.get<Supplier[]>(`API/v1/commerce/materials/${id}/distributors/`);
       setMaterial(materialDescription.data);
       setSuppliers(suppliersResponse.data);
 
       setIsLoading(false);
+      console.log(suppliersResponse.data);
     };
 
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+    const fetchMarkets = async () => {
+      const marketsResponse = await http.get<Market[]>(`/API/v1/commerce/markets/`);
+      setMarkets(marketsResponse.data);
+      console.log(marketsResponse.data);
+    };
+
+    fetchMarkets();
+  }, []);
+
   const navigate = useNavigate();
 
   // const [isOpenInfReqModal, setIsOpenInfReqModal] = useState(false);
@@ -59,10 +73,14 @@ export const MaterialDescriptionPage: React.FC = () => {
 
   const [isOpenRequestForm, setIsOpenRequestForm] = useState(false);
   const [requestType, setRequestType] = useState<RequestFormType>('quote');
+  const [productId, setProductId] = useState<number>(0);
+  const [productName, setProductName] = useState<string>('');
 
-  const openRequestForm = (requestType: RequestFormType) => {
+  const openRequestForm = (requestType: RequestFormType, productId: number, productName: string) => {
     setIsOpenRequestForm(true);
     setRequestType(requestType);
+    setProductId(productId);
+    setProductName(productName);
   };
   return (
     <div>
@@ -83,6 +101,9 @@ export const MaterialDescriptionPage: React.FC = () => {
         closeForm={() => setIsOpenRequestForm(false)}
         isOpenedForm={isOpenRequestForm}
         requestType={requestType}
+        markets={markets}
+        productName={productName}
+        productId={productId}
       />
       {isLoading ? (
         <Spin style={{ zIndex: '9' }} indicator={<LoadingOutlined />} fullscreen={true} size="large" />
@@ -134,10 +155,10 @@ export const MaterialDescriptionPage: React.FC = () => {
                     return (
                       <SupplierCard
                         availability={supplier.availability_status}
-                        key={supplier.id}
-                        cardTittle={supplier.name}
-                        sampleRequest={() => openRequestForm('sample')}
-                        quoteRequest={() => openRequestForm('quote')}
+                        key={supplier.distributor_id}
+                        cardTittle={supplier.distributor_name}
+                        sampleRequest={() => openRequestForm('sample', supplier.product_id, supplier.product_name)}
+                        quoteRequest={() => openRequestForm('quote', supplier.product_id, supplier.product_name)}
                         informationRequest={() => {}}
                       />
                     );

@@ -7,7 +7,7 @@ import { usePagination } from '../../contexts/paginationContext';
 export const Pagination: React.FC = () => {
   const { pageSize, total, onChangePage, onChangeSizePage, page } = usePagination();
   return (
-    <Flex justify="center" style={{ position: 'sticky', top: '77px', zIndex: 10 }}>
+    <Flex justify="center" style={{ position: 'sticky', top: 0, zIndex: 10 }}>
       <CustomPagination
         style={{ borderRadius: '4px', backgroundColor: '#f5f5f5', padding: '10px' }}
         hideOnSinglePage={true}

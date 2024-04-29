@@ -6,9 +6,7 @@ import { useAuth } from '../../contexts/authContext';
 
 const iconRender = (visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />);
 
-interface RegisterFormProps {}
-
-export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
+export const RegisterForm: React.FC = () => {
   const { register } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

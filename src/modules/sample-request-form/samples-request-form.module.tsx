@@ -3,10 +3,17 @@ import { Form, InputNumber, Select } from 'antd';
 // import isInn from 'is-inn-js';
 import { CustomInput, CustomButton } from '../../shared/components';
 import { http } from '../../shared/const/http';
+import { Market } from '../material-request-form/material-request-form.module';
+import axios from 'axios';
 
-const SamplesForm: React.FC = () => {
-  const [market, setMarket] = useState('');
-  const [volumeRequest, setVolumeRequest] = useState('1');
+interface SamplesFormProps {
+  markets: Market[];
+  productId: number;
+}
+
+export const SamplesForm: React.FC<SamplesFormProps> = ({ markets, productId }) => {
+  const [market, setMarket] = useState<number>(0);
+  const [volume_request, setVolumeRequest] = useState<number>(0);
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   // const [inn, setInn] = useState('');
@@ -14,16 +21,24 @@ const SamplesForm: React.FC = () => {
   const [contactPerson, setContactPerson] = useState('');
   const [productInfo, setProductInfo] = useState('');
 
+  const selectMarket = (value: number) => {
+    setMarket(value);
+  };
+
+  const inputVolumeRequest = (value: number) => {
+    setVolumeRequest(value);
+  };
+
   const sendSamplesRequest = async () => {
-    await http.post(
-      'http://212.233.79.177/API/v1/commerce/samplerequest/',
+    await axios.post(
+      '/API/v1/commerce/samplerequest/',
       {
-        product: 13004,
-        year_volume: 2147483647,
-        market: 12,
-        address: 'string',
-        comment: 'string',
-        volume_request: 10,
+        product: productId,
+        volume_request,
+        address,
+        market,
+        comments,
+        productInfo,
       },
       {
         headers: {
@@ -41,20 +56,12 @@ const SamplesForm: React.FC = () => {
         label="Маркет"
         rules={[{ required: true, message: 'Выберите маркет' }]}
       >
-        <Select value={market} onChange={value => setMarket(value)}>
-          <Select.Option value="Industrial">Промышленный</Select.Option>
-          <Select.Option value="auto">Автомобилестроение и транспорт</Select.Option>
-          <Select.Option value="goods">потребительские товары</Select.Option>
-          <Select.Option value="build">Здание и стройка</Select.Option>
-          <Select.Option value="food">Еда и полноценное питание</Select.Option>
-          <Select.Option value="electricity">Электротехника и электроника</Select.Option>
-          <Select.Option value="paint">Краски и покрытия</Select.Option>
-          <Select.Option value="print">Печать и упаковка</Select.Option>
-          <Select.Option value="care">Личная гигиена</Select.Option>
-          <Select.Option value="adhesives">Клеи и герметики</Select.Option>
-          <Select.Option value="household">Бытовая химия</Select.Option>
-          <Select.Option value="pharma">Здравоохранение и фармацевтика</Select.Option>
-          <Select.Option value="agriculture">Сельское хозяйство и корма</Select.Option>
+        <Select value={market} onChange={value => selectMarket(value)}>
+          {markets.map(market => (
+            <Select.Option id={market.id} value={market.id}>
+              {market.market_name}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item
@@ -65,8 +72,8 @@ const SamplesForm: React.FC = () => {
       >
         <InputNumber
           style={{ width: '100%' }}
-          value={volumeRequest}
-          onChange={value => setVolumeRequest(value as string)}
+          value={volume_request}
+          onChange={value => inputVolumeRequest(value as number)}
         />
       </Form.Item>
       <Form.Item
@@ -99,23 +106,6 @@ const SamplesForm: React.FC = () => {
           <p style={{ color: '#52c41a' }}>Телефон валиден</p>
         )}
       </Form.Item>
-      {/* <Form.Item
-        required
-        tooltip="Укажите ваш ИНН для оформления документов и соблюдения налоговых требований."
-        label="ИНН"
-        name="inn"
-      >
-        <CustomInput maxLength={12} placeholder="" onChange={setInn} value={inn} name="INN" />
-        {inn.length == 12 ? (
-          isInn(inn) ? (
-            <p style={{ color: '#52c41a' }}>ИНН валиден</p>
-          ) : (
-            <p style={{ color: '#ff4d4f' }}>ИНН не валиден</p>
-          )
-        ) : (
-          <p style={{ color: '#ff8800' }}>Поле ИНН должно содержать 12 цифр</p>
-        )}
-      </Form.Item> */}
 
       <Form.Item
         required={false}
@@ -148,5 +138,3 @@ const SamplesForm: React.FC = () => {
     </Form>
   );
 };
-
-export default SamplesForm;

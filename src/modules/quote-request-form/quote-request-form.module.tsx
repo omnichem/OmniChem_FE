@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { Form, Select } from 'antd';
 import isInn from 'is-inn-js';
 import { CustomButton, CustomInput } from '../../shared/components';
+import { Market } from '../../modules/material-request-form/material-request-form.module';
 
-const QuoteForm: React.FC = () => {
+interface QuoteFormProps {
+  markets: Market[];
+  productId: number;
+  productName: string;
+}
+
+export const QuoteForm: React.FC<QuoteFormProps> = ({ markets, productId, productName }) => {
   const [marketName, setMarketName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
@@ -29,19 +36,11 @@ const QuoteForm: React.FC = () => {
         rules={[{ required: true, message: 'Пожалуйста выберите маркет' }]}
       >
         <Select value={marketName} onChange={value => setMarketName(value)}>
-          <Select.Option value="Industrial">Промышленный</Select.Option>
-          <Select.Option value="auto">Автомобилестроение и транспорт</Select.Option>
-          <Select.Option value="goods">потребительские товары</Select.Option>
-          <Select.Option value="build">Здание и стройка</Select.Option>
-          <Select.Option value="food">Еда и полноценное питание</Select.Option>
-          <Select.Option value="electricity">Электротехника и электроника</Select.Option>
-          <Select.Option value="paint">Краски и покрытия</Select.Option>
-          <Select.Option value="print">Печать и упаковка</Select.Option>
-          <Select.Option value="care">Личная гигиена</Select.Option>
-          <Select.Option value="adhesives">Клеи и герметики</Select.Option>
-          <Select.Option value="household">Бытовая химия</Select.Option>
-          <Select.Option value="pharma">Здравоохранение и фармацевтика</Select.Option>
-          <Select.Option value="agriculture">Сельское хозяйство и корма</Select.Option>
+          {markets.map(market => (
+            <Select.Option id={market.id} value={market.id}>
+              {market.market_name}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item
@@ -122,5 +121,3 @@ const QuoteForm: React.FC = () => {
     </Form>
   );
 };
-
-export default QuoteForm;
