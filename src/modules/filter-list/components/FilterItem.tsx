@@ -13,7 +13,7 @@ interface FilterItemProps {
 export const FilterItem: React.FC<FilterItemProps> = ({ checked, text, onChange, filterCategory }) => {
   return (
     <StyledItem>
-      <Checkbox defaultChecked={checked} value={`${filterCategory}=${text}`} onChange={onChange} />
+      <Checkbox checked={checked} value={`${filterCategory}=${text}`} onChange={onChange} />
       {text}
     </StyledItem>
   );

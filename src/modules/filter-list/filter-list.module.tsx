@@ -40,7 +40,7 @@ export const FilterList = () => {
   const deleteFilters = () => {
     setFilterStore([]);
   };
-
+  console.log(1);
   return (
     <Sider breakpoint="xl" collapsedWidth="0" width={300} style={{ backgroundColor: '#f5f5f5' }}>
       <MaterialsFilter

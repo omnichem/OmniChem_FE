@@ -24,7 +24,7 @@ export const RowVirtualizerFixed: React.FC<RowVirtualizerProps> = ({ data, itemR
     estimateSize: () => 74,
     overscan: 5,
   });
-
+  console.log(2);
   return (
     <div style={{ height: '100%' }}>
       <div style={{ boxSizing: 'border-box', padding: '10px' }}>
