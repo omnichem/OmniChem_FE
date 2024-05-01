@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Pagination, PaginationProps } from 'antd';
 import '../styles/customPaginationStyle.css';
-
 import styled from 'styled-components';
 
 interface CustomPaginationProps {
@@ -16,7 +15,6 @@ interface CustomPaginationProps {
   defaultPageSize: number;
   pageSize: number;
   hideOnSinglePage: boolean;
-  style?: React.CSSProperties;
 }
 
 export const CustomPagination: React.FC<CustomPaginationProps> = ({
@@ -31,29 +29,9 @@ export const CustomPagination: React.FC<CustomPaginationProps> = ({
   defaultPageSize,
   pageSize,
   hideOnSinglePage,
-  style,
 }) => {
-  const [isSticky, setIsSticky] = useState(false);
-
-  const handleScroll = () => {
-    if (window.scrollY > 100) {
-      setIsSticky(true);
-    } else {
-      setIsSticky(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   return (
     <StyledPagination
-      className={`myStickyComponent ${isSticky ? 'sticky' : ''}`}
-      style={style}
       hideOnSinglePage={hideOnSinglePage}
       defaultPageSize={defaultPageSize}
       simple={simple}
@@ -71,4 +49,9 @@ export const CustomPagination: React.FC<CustomPaginationProps> = ({
   );
 };
 
-const StyledPagination = styled(Pagination)``;
+const StyledPagination = styled(Pagination)`
+  border-radius: 8px;
+  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  background-color: #ffffff;
+  padding: 10px;
+`;

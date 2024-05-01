@@ -4,19 +4,22 @@ import { CardMaterial, CardMaterialResponse } from '../../shared/types/pagesType
 import { useGlobalSearch } from '../../contexts/globalSearchContext';
 import { useNavigate } from 'react-router';
 import { http } from '../../shared/const/http';
-import { Alert, Col, Flex, Row } from 'antd';
+import { Alert, Col, Flex, Row, Spin } from 'antd';
 
-import { MaterialCard2 } from './components/MaterialCard2';
+import { MaterialCard } from './components/MaterialCard';
 import { usePagination } from '../../contexts/paginationContext';
 import { useFilter } from '../../contexts/filterContext';
+import { LoadingOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 
 export const MaterialList = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>([]);
   const { page, pageSize, setTotal } = usePagination();
-  const debouncedMaterial = useDebounce(materials, 600000);
+
   const [isLoading, setIsLoading] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(true);
   const [searchMaterial] = useGlobalSearch();
-  const debouncedSearchMaterial = useDebounce(searchMaterial, 200);
+  const debouncedSearchMaterial = useDebounce(searchMaterial, 250);
 
   const [filterStore] = useFilter();
   const navigate = useNavigate();
@@ -37,6 +40,7 @@ export const MaterialList = () => {
       setMaterials(materials.data.results);
 
       setIsLoading(false);
+      setFirstLoading(false);
       console.log(materials);
       // открывает страницу -) отлетает запрос -) пользователь меняет страницу (размонтирует целевой компонент) -) приходит ответ и пытаемся установить состояние
       return () => {
@@ -45,31 +49,35 @@ export const MaterialList = () => {
       };
     };
     fetchData();
-  }, [page, debouncedMaterial, pageSize, debouncedSearchMaterial, filterStore]);
+  }, [page, pageSize, debouncedSearchMaterial, filterStore]);
 
   const onCardClick = (materialId: number) => {
     navigate(`/material/${materialId}`);
   };
+
+  if (firstLoading) {
+    return (
+      <ListLoadingWrapper vertical gap={30} justify="center" align="center">
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} />}></Spin>
+        <Alert message="Данные о сырье загружаются..." description="Пожалуйста, подождите." type="info" />
+      </ListLoadingWrapper>
+    );
+  }
 
   if (materials.length == 0) {
     return (
       <Flex>
         <Alert
           style={{ height: '60px' }}
-          message={
-            <p>
-              Мы ничего не нашли :( <br />
-              Попробуйте изменить параметры поиска
-            </p>
-          }
-          description=""
+          message={'Мы ничего не нашли :('}
+          description="Попробуйте изменить параметры поиска"
         />
       </Flex>
     );
   }
 
   return (
-    <Row wrap={true} gutter={[16, 16]}>
+    <Row wrap={true} gutter={[16, 16]} justify={'space-evenly'}>
       {materials?.map((material: CardMaterial) => {
         return (
           <Col
@@ -83,7 +91,7 @@ export const MaterialList = () => {
             xxl={{ span: 6 }}
             key={`column${material.id}`}
           >
-            <MaterialCard2
+            <MaterialCard
               company={material.company}
               is_supplier_available={material.is_supplier_available}
               loading={isLoading}
@@ -100,3 +108,26 @@ export const MaterialList = () => {
     </Row>
   );
 };
+
+const ListLoadingWrapper = styled(Flex)`
+  height: calc(100vh - 173px);
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+`;
+
+// const PaginationLoadingWrapper = styled(Flex)`
+//   height: auto;
+//   width: 100%;
+//   background-color: #ffffff;
+//   border-radius: 8px;
+//   box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+//   padding: 20px;
+//   box-sizing: border-box;
+// `;
+
+// const ContentLoadingWrapper = styled(Flex)`
+//   width: 100%;
+//   padding: 20px 0 20px 0;
+// `;

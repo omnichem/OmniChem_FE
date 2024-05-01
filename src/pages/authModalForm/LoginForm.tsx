@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/authContext';
 
 export const LoginForm: React.FC = () => {
-  const { login } = useAuth();
+  const { login, loginError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formIsValided, setFormIsValided] = useState<boolean>(false);
@@ -55,6 +55,9 @@ export const LoginForm: React.FC = () => {
           />
         </Form.Item>
       </Form>
+      {loginError?.map(error => {
+        return <p>{error}</p>;
+      })}
       <Button onClick={() => login(email, password)} type="primary" disabled={!formIsValided}>
         Войти
       </Button>

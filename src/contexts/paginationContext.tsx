@@ -38,8 +38,8 @@ export const PaginationProvider = ({ children }: PropsWithChildren) => {
   const [pageSize, setPageSize] = useState(() => {
     const target = sessionStorage.getItem(PersistedKey.PageSize);
     if (!target) {
-      sessionStorage.setItem(PersistedKey.PageSize, '15');
-      return 15;
+      sessionStorage.setItem(PersistedKey.PageSize, '16');
+      return 16;
     }
     return parseInt(target);
   });

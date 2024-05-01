@@ -29,15 +29,35 @@ const MaterialName = styled.p`
 interface CardHeaderProps {
   manufacturerImage: string;
   manufacturerIcon: string;
+  manufacturerName: string;
   isLoading: boolean;
 }
 
-const CardHeader: React.FC<CardHeaderProps> = ({ manufacturerIcon, manufacturerImage, isLoading }) => {
+const CardHeader: React.FC<CardHeaderProps> = ({
+  manufacturerIcon,
+  manufacturerImage,
+  isLoading,
+  manufacturerName,
+}) => {
+  if (!manufacturerIcon) {
+    return (
+      <StyledCardHeader>
+        <ManufacturerImage>{/* <img src={manufacturerImage} /> */}</ManufacturerImage>
+        <ManufacturerIcon
+          style={{
+            boxShadow:
+              '0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09)',
+          }}
+        >
+          <Skeleton.Image />
+        </ManufacturerIcon>
+      </StyledCardHeader>
+    );
+  }
+
   return (
     <StyledCardHeader>
-      <ManufacturerImage>
-        <img src={manufacturerImage} alt="" />
-      </ManufacturerImage>
+      <ManufacturerImage>{/* <img src={manufacturerImage} /> */}</ManufacturerImage>
       <ManufacturerIcon
         style={{
           boxShadow:
@@ -47,7 +67,11 @@ const CardHeader: React.FC<CardHeaderProps> = ({ manufacturerIcon, manufacturerI
         {isLoading ? (
           <Skeleton.Image active={true} />
         ) : (
-          <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={manufacturerIcon} alt="" />
+          <img
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            src={manufacturerIcon}
+            alt={manufacturerName}
+          />
         )}
       </ManufacturerIcon>
     </StyledCardHeader>
@@ -65,7 +89,7 @@ interface MaterialCard2Props {
   company: Company;
 }
 
-export const MaterialCard2: React.FC<MaterialCard2Props> = ({
+export const MaterialCard: React.FC<MaterialCard2Props> = ({
   is_supplier_available,
   clickButton,
   id,
@@ -144,7 +168,14 @@ export const MaterialCard2: React.FC<MaterialCard2Props> = ({
           )
         }
         loading={loading}
-        title={<CardHeader isLoading={loading} manufacturerIcon={company.logo} manufacturerImage="" />}
+        title={
+          <CardHeader
+            manufacturerName={company.name}
+            isLoading={loading}
+            manufacturerIcon={company.logo}
+            manufacturerImage=""
+          />
+        }
         style={{ width: '100%' }}
         // extra={<a href="#">More</a>}
         tabList={tabList}
