@@ -34,7 +34,7 @@ export const FilterList = () => {
   if (firstLoading) {
     return (
       <SpinWrapper vertical gap={30} justify="center" align="center">
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} />}></Spin>
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} />} size="large"></Spin>
         <Alert message="Фильтры для сырья загружаются..." description="Пожалуйста, подождите." type="info" />
       </SpinWrapper>
     );
@@ -76,7 +76,8 @@ export const FilterList = () => {
 const SpinWrapper = styled(Flex)`
   height: calc(100vh - 133px);
   width: 100%;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  outline: 3px dashed;
   border-radius: 8px;
   box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
   padding: 20px;

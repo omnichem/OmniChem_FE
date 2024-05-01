@@ -11,10 +11,11 @@ import { usePagination } from '../../contexts/paginationContext';
 import { useFilter } from '../../contexts/filterContext';
 import { LoadingOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { CustomPagination } from '../pagination/components/CustomPagination';
 
 export const MaterialList = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>([]);
-  const { page, pageSize, setTotal } = usePagination();
+  const { pageSize, total, onChangePage, onChangeSizePage, page, setTotal } = usePagination();
 
   const [isLoading, setIsLoading] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
@@ -112,8 +113,9 @@ export const MaterialList = () => {
 const ListLoadingWrapper = styled(Flex)`
   height: calc(100vh - 173px);
   width: 100%;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   border-radius: 8px;
+  outline: 3px dashed;
   box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
 `;
 
