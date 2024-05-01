@@ -63,11 +63,11 @@ export const MaterialsFilter: React.FC<FilterProps> = ({ filterData, filterStore
 };
 
 const FilterContainer = styled.div`
+  position: sticky;
+  top: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  position: sticky;
-  top: 77px;
   background-color: #ffffff;
   padding: 10px;
   border-radius: 8px;

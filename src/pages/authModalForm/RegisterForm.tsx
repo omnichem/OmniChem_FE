@@ -7,7 +7,7 @@ import { useAuth } from '../../contexts/authContext';
 const iconRender = (visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />);
 
 export const RegisterForm: React.FC = () => {
-  const { register } = useAuth();
+  const { register, registerError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -104,6 +104,10 @@ export const RegisterForm: React.FC = () => {
           />
         </Form.Item>
       </Form>
+
+      {registerError?.map(error => {
+        return <p>{error}</p>;
+      })}
 
       <Button onClick={() => register(email, password)} type="primary" disabled={!formIsValid}>
         Зарегистрироваться

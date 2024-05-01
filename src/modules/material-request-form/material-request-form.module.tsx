@@ -25,6 +25,12 @@ export const MaterialRequestForm: React.FC<MaterialRequestFormProps> = ({
   productId,
   productName,
 }) => {
+  console.log({
+    requestType: requestType,
+    markets: markets,
+    productId: productId,
+    productName: productName,
+  });
   return (
     <CustomDrawer
       size="large"

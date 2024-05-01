@@ -29,7 +29,6 @@ export const MaterialDescriptionPage: React.FC = () => {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const { id } = useParams();
   const [markets, setMarkets] = useState<Market[]>([]);
-  const [product, setProduct] = useState();
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {

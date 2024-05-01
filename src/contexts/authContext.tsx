@@ -9,6 +9,8 @@ type AuthContextType = {
   register: (email: string, password: string) => void;
   logOut: () => void;
   isLoading: boolean;
+  loginError: string[] | undefined;
+  registerError: string[] | undefined;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -28,6 +30,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const targetToken = localStorage.getItem('token');
     if (targetToken) return targetToken;
   });
+  const [loginError, setLoginError] = useState();
+  const [registerError, setRegisterError] = useState();
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const login = useCallback((email: string, password: string) => {
@@ -48,7 +52,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
           })
           .catch(function (error) {
             setIsAuthorized(false);
-            console.log(error);
+            console.log(error.response.data.non_field_errors);
+            setLoginError(error.response.data.non_field_errors);
           });
       } catch (error) {
         setIsAuthorized(false);
@@ -68,7 +73,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             password,
           })
           .catch(function (error) {
-            console.log(error);
+            console.log(error.response.data);
+            setRegisterError(error.response.data);
           });
       } catch (error) {
         console.log(error);
@@ -108,7 +114,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   //   if (!token) return;
   // }, []);
   return (
-    <AuthContext.Provider value={{ register, token, isAuthorized, isLoading, login, logOut }}>
+    <AuthContext.Provider
+      value={{ register, token, isAuthorized, isLoading, login, logOut, loginError, registerError }}
+    >
       {children}
     </AuthContext.Provider>
   );

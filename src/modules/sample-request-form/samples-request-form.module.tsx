@@ -4,7 +4,6 @@ import { Form, InputNumber, Select } from 'antd';
 import { CustomInput, CustomButton } from '../../shared/components';
 import { http } from '../../shared/const/http';
 import { Market } from '../material-request-form/material-request-form.module';
-import axios from 'axios';
 
 interface SamplesFormProps {
   markets: Market[];
@@ -30,7 +29,7 @@ export const SamplesForm: React.FC<SamplesFormProps> = ({ markets, productId }) 
   };
 
   const sendSamplesRequest = async () => {
-    await axios.post(
+    await http.post(
       '/API/v1/commerce/samplerequest/',
       {
         product: productId,

@@ -8,6 +8,7 @@ import { useGlobalSearch } from '../../contexts/globalSearchContext';
 import { AuthForm } from '../../pages/authModalForm/AuthForm';
 import { CustomButton, Logo, CustomInput } from '../../shared/components';
 import { CustomModal } from '../../shared/components/CustomModal';
+import styled from 'styled-components';
 
 export const CustomHeader = () => {
   const { isAuthorized, logOut } = useAuth();
@@ -28,22 +29,7 @@ export const CustomHeader = () => {
   );
 
   return (
-    <Header
-      style={{
-        padding: '10px',
-        display: 'flex',
-        gap: '20px',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        position: 'sticky',
-        top: '0',
-        zIndex: '10',
-        height: 'auto',
-        backgroundColor: '#ffffff',
-        boxShadow:
-          '0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09)',
-      }}
-    >
+    <StyledHeader>
       <CustomModal isModalOpen={isAuthModalOpen} handleModalCancel={() => setIsRegModalOpen(false)}>
         <AuthForm />
       </CustomModal>
@@ -68,6 +54,21 @@ export const CustomHeader = () => {
           <CustomButton type="text" text="Войти в систему" onClick={() => setIsRegModalOpen(true)} />
         )}
       </Flex>
-    </Header>
+    </StyledHeader>
   );
 };
+
+const StyledHeader = styled(Header)`
+  height: 60px;
+  box-sizing: border-box;
+  padding: 10px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+`;
