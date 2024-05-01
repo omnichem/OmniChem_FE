@@ -5,8 +5,8 @@ import { PaginationProps } from 'antd';
 type PaginationContextType = {
   page: number;
   pageSize: number;
-  total: number;
-  setTotal: Dispatch<SetStateAction<number>>;
+  total: number | undefined;
+  setTotal: Dispatch<SetStateAction<number | undefined>>;
   setPage: Dispatch<SetStateAction<number>>;
   setPageSize: Dispatch<SetStateAction<number>>;
   onChangePage: PaginationProps['onChange'];
@@ -26,7 +26,7 @@ export const usePagination = () => {
 };
 
 export const PaginationProvider = ({ children }: PropsWithChildren) => {
-  const [total, setTotal] = useState(50);
+  const [total, setTotal] = useState<number | undefined>();
   const [page, setPage] = useState(() => {
     const target = sessionStorage.getItem(PersistedKey.Page);
     if (!target) {
