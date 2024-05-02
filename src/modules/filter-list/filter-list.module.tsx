@@ -76,6 +76,8 @@ export const FilterList = () => {
 const SpinWrapper = styled(Flex)`
   height: calc(100vh - 133px);
   width: 100%;
+  position: sticky;
+  top: 20px;
   /* background-color: #ffffff; */
   outline: 3px dashed;
   border-radius: 8px;

@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 
 import { Flex, Tabs } from 'antd';
 import styled from 'styled-components';
-import { LoginForm } from '../../modules/auth/components/LoginForm';
-import { RegisterForm } from '../../modules/auth/components/RegisterForm';
 
 import { useAuth } from '../../contexts/authContext';
 import { UserAddOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginForm } from './components/LoginForm';
+import { RegisterForm } from './components/RegisterForm';
+import { useNavigate } from 'react-router';
 
-export const AuthForm: React.FC = () => {
+export const Auth: React.FC = () => {
   const { isAuthorized } = useAuth();
+  const navigate = useNavigate();
+  if (isAuthorized) {
+    navigate('/');
+  }
+
   const [items] = useState([
     {
       key: 'login',
@@ -24,7 +30,7 @@ export const AuthForm: React.FC = () => {
       icon: <UserAddOutlined />,
     },
   ]);
-  return <Tabs defaultActiveKey="1" type="card" size={'large'} items={items} />;
+  return <Tabs defaultActiveKey="register" type="card" size={'large'} items={items} />;
 };
 
 export const AuthFormWrapper = styled(Flex)`

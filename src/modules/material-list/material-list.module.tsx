@@ -9,7 +9,7 @@ import { Alert, Col, Flex, Row, Spin } from 'antd';
 import { MaterialCard } from './components/MaterialCard';
 import { usePagination } from '../../contexts/paginationContext';
 import { useFilter } from '../../contexts/filterContext';
-import { LoadingOutlined } from '@ant-design/icons';
+import { InboxOutlined, LoadingOutlined, MehOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { CustomPagination } from '../pagination/components/CustomPagination';
 
@@ -67,13 +67,11 @@ export const MaterialList = () => {
 
   if (materials.length == 0) {
     return (
-      <Flex>
-        <Alert
-          style={{ height: '60px' }}
-          message={'Мы ничего не нашли :('}
-          description="Попробуйте изменить параметры поиска"
-        />
-      </Flex>
+      <ListLoadingWrapper justify="center" align="center" vertical gap={40}>
+        {/* <InboxOutlined  /> */}
+        <MehOutlined style={{ fontSize: '100px' }} />
+        <Alert message={'Мы ничего не нашли :('} description="Попробуйте изменить параметры поиска" />
+      </ListLoadingWrapper>
     );
   }
 
@@ -113,6 +111,7 @@ export const MaterialList = () => {
 const ListLoadingWrapper = styled(Flex)`
   height: calc(100vh - 173px);
   width: 100%;
+  height: calc(100vh - 60px);
   /* background-color: #ffffff; */
   border-radius: 8px;
   outline: 3px dashed;
