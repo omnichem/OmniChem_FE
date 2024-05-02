@@ -41,6 +41,14 @@ export const CustomPagination: React.FC<CustomPaginationProps> = ({
       </PaginationLoadingWrapper>
     );
   }
+
+  if (total === undefined) {
+    return (
+      <PaginationLoadingWrapper>
+        <Alert message="Данные о количестве сырья и страниц недоступны" type="info" />
+      </PaginationLoadingWrapper>
+    );
+  }
   return (
     <StyledPagination
       hideOnSinglePage={hideOnSinglePage}
