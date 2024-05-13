@@ -1,0 +1,1 @@
+export {ConfirmProfile} from './confirm-profile.module'

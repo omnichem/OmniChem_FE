@@ -13,6 +13,7 @@ import { CustomButton, SupplierCard, CustomTable } from '../shared/components';
 import { MaterialRequestForm } from '../modules/material-request-form';
 import { RequestFormType } from '../modules/material-request-form/types';
 import { Market } from '../modules/material-request-form/material-request-form.module';
+import SpecsTable from '../shared/components/SpecsTable';
 
 interface Supplier {
   distributor_id: number;
@@ -117,6 +118,7 @@ export const MaterialDescriptionPage: React.FC = () => {
             <DescriptionBlock>
               <FeatureLine>{material?.translated_description}</FeatureLine>
             </DescriptionBlock>
+            {/* <SpecsTable /> */}
             <Divider style={{ margin: 0 }} />
             <h2>Документы:</h2>
             {isAuthorized ? (

@@ -5,6 +5,7 @@ import { HeaderLayout } from './shared/components';
 import { MaterialsPageLayout } from './modules/materials-page-layout';
 import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
 import { AuthLayout } from './modules/auth-layout/';
+import { ConfirmProfile } from './modules/confirm-profile/index.js';
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,11 @@ export const router = createBrowserRouter([
       {
         path: `/auth`,
         element: <AuthLayout />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: `/confirm`,
+        element: <ConfirmProfile />,
         errorElement: <ErrorPage />,
       },
     ],

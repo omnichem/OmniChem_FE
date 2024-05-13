@@ -9,13 +9,12 @@ import { Alert, Col, Flex, Row, Spin } from 'antd';
 import { MaterialCard } from './components/MaterialCard';
 import { usePagination } from '../../contexts/paginationContext';
 import { useFilter } from '../../contexts/filterContext';
-import { InboxOutlined, LoadingOutlined, MehOutlined } from '@ant-design/icons';
+import { LoadingOutlined, MehOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { CustomPagination } from '../pagination/components/CustomPagination';
 
 export const MaterialList = () => {
   const [materials, setMaterials] = useState<CardMaterial[]>([]);
-  const { pageSize, total, onChangePage, onChangeSizePage, page, setTotal } = usePagination();
+  const { pageSize, page, setTotal } = usePagination();
 
   const [isLoading, setIsLoading] = useState(false);
   const [firstLoading, setFirstLoading] = useState(true);
