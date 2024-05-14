@@ -7,13 +7,14 @@ import { MaterialPageType, MaterialTable, MaterialTableRows } from '../shared/ty
 import '../styles/loading.css';
 import { columns } from '../shared/const/tableData';
 import { DataType } from '../shared/types/componentsTypes';
-import { Alert, Divider, Spin } from 'antd';
+import { Alert, Divider, Spin, Typography } from 'antd';
 import { useAuth } from '../contexts/authContext';
 import { CustomButton, SupplierCard, CustomTable } from '../shared/components';
 import { MaterialRequestForm } from '../modules/material-request-form';
 import { RequestFormType } from '../modules/material-request-form/types';
 import { Market } from '../modules/material-request-form/material-request-form.module';
-import SpecsTable from '../shared/components/SpecsTable';
+const { Text, Link } = Typography;
+import Title from 'antd/es/typography/Title';
 
 interface Supplier {
   distributor_id: number;
@@ -112,7 +113,7 @@ export const MaterialDescriptionPage: React.FC = () => {
           <PageWrapper style={{ alignItems: 'flex-start', paddingTop: '40px' }}>
             <MaterialHeader>
               <CustomButton type="primary" shape="round" icon={<ArrowLeftOutlined />} onClick={() => navigate('/')} />
-              <h2>{material?.name}</h2>
+              <Title level={2}>{material?.name}</Title>
             </MaterialHeader>
 
             <DescriptionBlock>
@@ -120,7 +121,7 @@ export const MaterialDescriptionPage: React.FC = () => {
             </DescriptionBlock>
             {/* <SpecsTable /> */}
             <Divider style={{ margin: 0 }} />
-            <h2>Документы:</h2>
+            <Title level={2}>Документы:</Title>
             {isAuthorized ? (
               <div>
                 {material?.documents.map(document => {
@@ -130,14 +131,14 @@ export const MaterialDescriptionPage: React.FC = () => {
                         <DocumentWrapper>
                           <FilePdfOutlined style={{ fontSize: '30px' }} />
 
-                          <a style={{ fontSize: '20px' }} href={document.document}>
+                          <Link style={{ fontSize: '20px' }} href={document.document}>
                             {document.name}
-                          </a>
+                          </Link>
                         </DocumentWrapper>
                       ) : (
                         <DocumentWrapper>
                           <FileWordOutlined />
-                          <a href={document.document}>{document.name}</a>
+                          <Link href={document.document}>{document.name}</Link>
                         </DocumentWrapper>
                       )}
                     </div>
@@ -148,7 +149,7 @@ export const MaterialDescriptionPage: React.FC = () => {
               <Alert message="Только зарегистрированные пользователи могут видеть документы по сырью" />
             )}
             <Divider style={{ margin: 0 }} />
-            <h2>Поставщики:</h2>
+            <Title level={2}>Поставщики:</Title>
             {isAuthorized ? (
               <div>
                 <ScrollableList>
@@ -307,7 +308,7 @@ const FullSpecsWrapper = styled.div`
   background-color: #fbfbfb;
 `;
 
-const DescriptionBlock = styled.p`
+const DescriptionBlock = styled(Text)`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -321,11 +322,11 @@ const DescriptionBlock = styled.p`
   margin: none;
 `;
 
-const FeatureLine = styled.p`
+const FeatureLine = styled(Text)`
   color: #505050;
 `;
 
-const FeatureName = styled.span`
+const FeatureName = styled(Text)`
   font-size: 20px;
   font-weight: 700;
   color: #505050;

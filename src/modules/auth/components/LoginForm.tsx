@@ -5,11 +5,18 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../../contexts/authContext';
 import styled from 'styled-components';
 import Link from 'antd/es/typography/Link';
+import Title from 'antd/es/typography/Title';
+import { CustomButton } from '../../../shared/components';
 const { Text } = Typography;
 
 enum LoginRole {
   BUYER,
   SUPPLIER,
+}
+
+enum Page {
+  First,
+  Second,
 }
 
 export const LoginForm: React.FC = () => {
@@ -18,6 +25,10 @@ export const LoginForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [formIsValided, setFormIsValided] = useState<boolean>(false);
   const [loginAs, setLoginAs] = useState<LoginRole>(LoginRole.SUPPLIER);
+  const [loginFormPage, setLoginFormPage] = useState<Page>(Page.First);
+  const [input2, setInput2] = useState('');
+  console.log(loginFormPage);
+
   useEffect(() => {
     setFormIsValided(!!email && !!password); // Здесь была ошибка, теперь правильно. upd: Теперь правильно
   }, [email, password]);
@@ -30,6 +41,20 @@ export const LoginForm: React.FC = () => {
       </SpinWrapper>
     );
   }
+
+  const checkPrevPage = () => {
+    if (loginFormPage == Page.Second) {
+      setLoginFormPage(Page.First);
+    }
+  };
+
+  const checkNextPage = () => {
+    if (loginFormPage == Page.First) {
+      setLoginFormPage(Page.Second);
+      console.log(loginFormPage);
+    }
+  };
+
   const changeRole = (checked: boolean) => {
     if (checked) {
       setLoginAs(LoginRole.BUYER);
@@ -37,9 +62,8 @@ export const LoginForm: React.FC = () => {
       setLoginAs(LoginRole.SUPPLIER);
     }
   };
-
-  return (
-    <AuthFormWrapper vertical gap={10}>
+  const loginFormContent =
+    loginFormPage == Page.First ? (
       <Form layout="vertical">
         <Form.Item
           required={true}
@@ -84,18 +108,29 @@ export const LoginForm: React.FC = () => {
         <Form.Item>
           <Flex gap={20} justify="center">
             <Text>Поставщик</Text>
-            <Switch onChange={changeRole} />
+            <Switch onChange={() => changeRole} />
             <Text>Покупатель</Text>
           </Flex>
         </Form.Item>
       </Form>
+    ) : (
+      <Flex vertical justify="center" align="center">
+        <Title>Страница 2</Title>
+        <Input value={input2} onChange={e => setInput2(e.target.value)} />
+      </Flex>
+    );
+
+  return (
+    <AuthFormWrapper vertical gap={10}>
       {loginError?.map(error => {
         return <Alert type="warning" message={error} />;
       })}
-
+      {loginFormContent}
       <Button onClick={() => login(email, password)} type="primary" disabled={!formIsValided}>
         {loginAs == LoginRole.BUYER ? 'Войти как покупатель' : 'Войти как поставщик'}
       </Button>
+      <CustomButton text="Предыдущая страница" type="primary" onClick={checkPrevPage} />
+      <CustomButton text="Следующая страница" type="primary" onClick={checkNextPage} />
     </AuthFormWrapper>
   );
 };
