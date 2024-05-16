@@ -321,6 +321,7 @@ export const RegisterForm: React.FC = () => {
           label="ИНН"
           name="INN"
           tooltip="ИНН содержит 10 или 12 цифр в зависимости от организационной формы ЮЛ"
+          required={true}
           rules={[
             {
               validator: (_, value) => {
@@ -343,10 +344,14 @@ export const RegisterForm: React.FC = () => {
             title="Пожалуйста, введите только цифры"
             value={inn}
             onChange={e => setInn(e.target.value)}
-            required
           />
         </Form.Item>
-        <Form.Item name="market" tooltip="Укажите область рынка, в котором работает ваша компания." label="Маркет">
+        <Form.Item
+          name="market"
+          tooltip="Укажите область рынка, в котором работает ваша компания."
+          label="Маркет"
+          required={true}
+        >
           <Select value={marketName} onChange={value => setMarketName(value)}>
             <Select.Option value="Industrial">Промышленный</Select.Option>
             <Select.Option value="auto">Автомобилестроение и транспорт</Select.Option>
