@@ -1,30 +1,48 @@
-# React + TypeScript + Vite
+# OmniChem_FE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+OmniChem_FE - это React - приложение реализующее интерфейс платформы OmniChem.
 
-Currently, two official plugins are available:
+## Настройка OmniChem_FE на локальной машине
+После клонирования репозитория, выполните в корне приложения команду:
+```bash
+   cd OmniChem_FE
+   ```
+```bash
+   npm install
+   ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Переменные окружения для разработки (файл `.env.dev`)
 
-## Expanding the ESLint configuration
+### Настройки Vite
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Для правильной работы вашего React-приложения в режиме разработки, убедитесь, что файл `.env` содержит следующие переменные окружения:
 
-- Configure the top-level `parserOptions` property like this:
+- `APP_API_URL`: Установите значение `localhost`а OmniChem-Backend, чтобы приложение смогло взаимодействовать с `API` сервера.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Использование
+### Запуск с Docker
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Убедитесь, что Docker установлен на вашем компьютере.
+
+2. Клонируйте репозиторий OmniChem_FE:
+
+```bash
+   git clone https://github.com/omnichem/OmniChem_FE.git
+   ```
+
+3. Перейдите в папку OmniChem_FE:
+```bash
+   cd OmniChem_FE
+   ```
+
+4. Создайте файл `.env` в корне приложения и настройте необходимые переменные окружения:
+```bash
+   OmniChem_FE/.env
+   ```
+
+5. Запустите приложение с использованием Docker Compose:
+```bash
+   docker-compose up -d
+   ```
+
+6. Приложение будет доступно по адресу http://localhost:6688/.
