@@ -6,7 +6,14 @@ type AuthContextType = {
   token: string | undefined;
   isAuthorized: boolean;
   login: (email: string, password: string) => void;
-  register: (email: string, password: string) => void;
+  register: (
+    email: string,
+    password: string,
+    phone: string,
+    lastName: string,
+    firstName: string,
+    position: string
+  ) => void;
   logOut: () => void;
   isLoading: boolean;
   loginError: string[] | undefined;
@@ -63,28 +70,36 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     };
     innerLogin();
   }, []);
-  const register = useCallback((email: string, password: string) => {
-    const innerRegister = async () => {
-      try {
-        setIsLoading(true);
-        await http
-          .post<UserRegisterResponse>('/API/v1/commerce/auth/users/', {
-            email,
-            password,
-          })
-          .catch(function (error) {
-            console.log(error.response.data);
-            setRegisterError(error.response.data);
-          });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    innerRegister();
-    console.log(innerRegister);
-  }, []);
+
+  const register = useCallback(
+    (email: string, password: string, phone: string, last_name: string, first_name: string, position: string) => {
+      const innerRegister = async () => {
+        try {
+          setIsLoading(true);
+          await http
+            .post<UserRegisterResponse>('/API/v1/auth/users/', {
+              email,
+              password,
+              phone,
+              first_name,
+              last_name,
+              position,
+            })
+            .catch(function (error) {
+              console.log(error.response.data);
+              setRegisterError(error.response.data);
+            });
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      innerRegister();
+      console.log(innerRegister);
+    },
+    []
+  );
   const logOut = useCallback(() => {
     const innerLogOut = async () => {
       try {

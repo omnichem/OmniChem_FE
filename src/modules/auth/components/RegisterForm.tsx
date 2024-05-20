@@ -1,9 +1,10 @@
 import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Button, Flex, Form, Input, Spin, Switch, Typography } from 'antd';
+import { Alert, Button, Flex, Form, Input, Spin, Switch, Typography, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { AuthFormWrapper } from '../../../pages/authModalForm/AuthForm';
 import { useAuth } from '../../../contexts/authContext';
 import { styled } from 'styled-components';
+import { CustomButton } from '../../../shared/components';
 const { Text } = Typography;
 
 const iconRender = (visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />);
@@ -13,19 +14,39 @@ enum RegisterRole {
   SUPPLIER,
 }
 
+enum Page {
+  Password,
+  Employee,
+}
+
 export const RegisterForm: React.FC = () => {
   const { register, registerError, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
+  const [first_name, setFirst_name] = useState('');
+  const [last_name, setLast_name] = useState('');
+  const [position, setPosition] = useState('');
+  const [phone, setPhone] = useState('');
   const [registerAs, setRegisterAs] = useState<RegisterRole>(RegisterRole.SUPPLIER);
-  console.log(email, password);
+  const [registerForm, setRegisterForm] = useState<Page>(Page.Password);
+
+  console.log(email, password, confirmation);
 
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
 
   useEffect(() => {
-    setFormIsValid(!!email && !!password && !!confirmation);
-  }, [email, password, confirmation]);
+    setFormIsValid(!!email && !!password && !!confirmation && !!first_name && !!last_name && !!position && !!phone);
+  }, [email, password, first_name, last_name, position, phone]);
+
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }} defaultValue="8">
+        <Select.Option value="8">8</Select.Option>
+        <Select.Option value="+7">+7</Select.Option>
+      </Select>
+    </Form.Item>
+  );
 
   if (isLoading) {
     return (
@@ -35,6 +56,18 @@ export const RegisterForm: React.FC = () => {
       </SpinWrapper>
     );
   }
+  const checkRegPrevPage = () => {
+    if (registerForm === Page.Employee) {
+      setRegisterForm(Page.Password);
+    }
+  };
+
+  const checkRegNextPage = () => {
+    if (registerForm === Page.Password) {
+      setRegisterForm(Page.Employee);
+    }
+  };
+
   const changeRole = (checked: boolean) => {
     if (checked) {
       setRegisterAs(RegisterRole.BUYER);
@@ -42,8 +75,23 @@ export const RegisterForm: React.FC = () => {
       setRegisterAs(RegisterRole.SUPPLIER);
     }
   };
-  return (
-    <AuthFormWrapper vertical gap={10}>
+
+  const ConditionalNextButton = () => {
+    if (registerForm !== Page.Employee) {
+      return <CustomButton text="Далее" type="primary" onClick={checkRegNextPage} />;
+    }
+    return null;
+  };
+
+  const ConditionalBackButton = () => {
+    if (registerForm !== Page.Password) {
+      return <CustomButton text="Назад" type="primary" onClick={checkRegPrevPage} />;
+    }
+    return null;
+  };
+
+  const registerFormContent =
+    registerForm == Page.Password ? (
       <Form autoComplete="off" layout="vertical">
         <Form.Item
           required={true}
@@ -100,7 +148,7 @@ export const RegisterForm: React.FC = () => {
         </Form.Item>
         <Form.Item
           label="Подтвердите пароль"
-          name="confirm"
+          name="confirmation"
           dependencies={['password']}
           tooltip="Введите пароль повторно"
           rules={[
@@ -134,14 +182,94 @@ export const RegisterForm: React.FC = () => {
           </Flex>
         </Form.Item>
       </Form>
+    ) : (
+      <Form autoComplete="off" layout="vertical">
+        <Form.Item
+          label="Фамилия"
+          name="last_name"
+          tooltip="Фамилия сотрудника компании"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="text"
+            placeholder="Введите вашу фамилию"
+            value={last_name}
+            onChange={e => setLast_name(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Имя"
+          name="first_name"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="text"
+            placeholder="Введите ваше имя"
+            value={first_name}
+            onChange={e => setFirst_name(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Должность"
+          name="position"
+          tooltip="Занимаемая вами в компании позиция"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="text"
+            placeholder="Укажите вашу должность"
+            value={position}
+            onChange={e => setPosition(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item name="phone" label="Номер телефона" tooltip="Укажите контактный номер телефона для связи." required>
+          <Input
+            addonBefore={prefixSelector}
+            maxLength={10}
+            placeholder="(999) 999 99 99"
+            name="phone"
+            onChange={e => setPhone(e.target.value)}
+            value={phone}
+          />
+          {phone.length < 10 ? (
+            <p style={{ color: '#ff8800' }}>Поле номера телефона должно содержать 10 цифр</p>
+          ) : (
+            <p style={{ color: '#52c41a' }}>Телефон валиден</p>
+          )}
+        </Form.Item>
+      </Form>
+    );
 
+  return (
+    <AuthFormWrapper vertical gap={10}>
       {registerError?.map(error => {
         return <Alert type="warning" message={error} />;
       })}
-
-      <Button onClick={() => register(email, password)} type="primary" disabled={!formIsValid}>
+      {registerFormContent}
+      <Button
+        onClick={() => register(email, password, phone, first_name, last_name, position)}
+        type="primary"
+        disabled={!formIsValid}
+      >
         {registerAs == RegisterRole.BUYER ? 'Зарегистрироваться как покупатель' : 'Зарегистрироваться как поставщик'}
       </Button>
+      <ConditionalNextButton />
+      <ConditionalBackButton />
     </AuthFormWrapper>
   );
 };
