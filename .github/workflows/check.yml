@@ -24,10 +24,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
   
-      - name: Build and push Docker image
+      - name: Build and tag image
         run: |
-           docker build -t omnichem/omnichem-frontend-app .
-           docker push omnichem/omnichem-frontend-app:latest
+          docker build -t omnichem/omnichem-frontend-app:latest .
+          VERSION=$(grep version version.txt | cut -d\" -f2)
+          TAG="${VERSION}"
+          docker tag omnichem/omnichem-frontend-app:latest omnichem/omnichem-frontend-app:${TAG}
+          docker push omnichem/omnichem-frontend-app:latest
+          docker push omnichem/omnichem-frontend-app:${TAG}
           
 #      - name: install modules
 #        run: npm install
