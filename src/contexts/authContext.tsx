@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         try {
           setIsLoading(true);
           await http
-            .post<UserRegisterResponse>('/API/v1/auth/users/', {
+            .post<UserRegisterResponse>('/API/auth/registration/', {
               email,
               password,
               phone,
