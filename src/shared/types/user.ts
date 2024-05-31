@@ -10,3 +10,11 @@ export interface UserRegisterResponse {
   firstName: string;
   position: string;
 }
+export interface CompanyRegisterResponse {
+  email: string;
+  password: string;
+  confirmation: string;
+  lastName: string;
+  firstName: string;
+  position: string;
+}

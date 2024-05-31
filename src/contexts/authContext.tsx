@@ -1,17 +1,19 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, SetStateAction, useCallback, useContext, useState } from 'react';
 import { http } from '../shared/const/http';
 import { UserLoginResponse, UserRegisterResponse } from '../shared/types/user';
+import { ResponseCodeType } from '../shared/types/authResponse';
 
 type AuthContextType = {
   token: string | undefined;
   isAuthorized: boolean;
+  responseCode: SetStateAction<ResponseCodeType | undefined>;
   login: (email: string, password: string) => void;
   register: (
     email: string,
     password: string,
     phone: string,
-    lastName: string,
-    firstName: string,
+    last_name: string,
+    first_name: string,
     position: string
   ) => void;
   logOut: () => void;
@@ -41,6 +43,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [registerError, setRegisterError] = useState();
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [responseCode, setResponseCode] = useState<ResponseCodeType | undefined>(undefined);
+
   const login = useCallback((email: string, password: string) => {
     const innerLogin = async () => {
       try {
@@ -85,7 +89,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
               last_name,
               position,
             })
+            .then(function (response) {
+              setResponseCode(response.status);
+              console.log('Ответ сервера', response);
+              console.log('Статус:', response.status);
+              console.log('statusText', response.statusText);
+            })
             .catch(function (error) {
+              setResponseCode(error.response.status);
               console.log(error.response.data);
               setRegisterError(error.response.data);
             });
@@ -96,10 +107,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         }
       };
       innerRegister();
-      console.log(innerRegister);
     },
     []
   );
+
   const logOut = useCallback(() => {
     const innerLogOut = async () => {
       try {
@@ -125,12 +136,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     };
     innerLogOut();
   }, []);
-  // useEffect(() => {
-  //   if (!token) return;
-  // }, []);
   return (
     <AuthContext.Provider
-      value={{ register, token, isAuthorized, isLoading, login, logOut, loginError, registerError }}
+      value={{ register, token, isAuthorized, isLoading, login, logOut, loginError, registerError, responseCode }}
     >
       {children}
     </AuthContext.Provider>

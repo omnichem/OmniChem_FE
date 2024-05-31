@@ -5,6 +5,7 @@ import { AuthFormWrapper } from '../../../pages/authModalForm/AuthForm';
 import { useAuth } from '../../../contexts/authContext';
 import { styled } from 'styled-components';
 import { CustomButton } from '../../../shared/components';
+import { ResponseCodeType } from '../../../shared/types/authResponse';
 const { Text } = Typography;
 
 const iconRender = (visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />);
@@ -17,10 +18,11 @@ enum RegisterRole {
 enum Page {
   Password,
   Employee,
+  FINAL,
 }
 
 export const RegisterForm: React.FC = () => {
-  const { register, registerError, isLoading } = useAuth();
+  const { register, registerError, isLoading, responseCode } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -31,13 +33,13 @@ export const RegisterForm: React.FC = () => {
   const [registerAs, setRegisterAs] = useState<RegisterRole>(RegisterRole.SUPPLIER);
   const [registerForm, setRegisterForm] = useState<Page>(Page.Password);
 
-  console.log(email, password, confirmation);
+  console.log(email, password);
 
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
 
   useEffect(() => {
-    setFormIsValid(!!email && !!password && !!confirmation && !!first_name && !!last_name && !!position && !!phone);
-  }, [email, password, first_name, last_name, position, phone]);
+    setFormIsValid(!!email && !!password && !!confirmation && !!first_name && !!last_name && !!phone);
+  }, [email, password, first_name, last_name, phone]);
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -57,15 +59,19 @@ export const RegisterForm: React.FC = () => {
     );
   }
   const checkRegPrevPage = () => {
-    if (registerForm === Page.Employee) {
+    if (registerForm == Page.Employee) {
       setRegisterForm(Page.Password);
     }
   };
 
   const checkRegNextPage = () => {
-    if (registerForm === Page.Password) {
+    if (registerForm == Page.Password) {
       setRegisterForm(Page.Employee);
     }
+  };
+
+  const checkFinallPage = () => {
+    setRegisterForm(Page.FINAL);
   };
 
   const changeRole = (checked: boolean) => {
@@ -76,21 +82,13 @@ export const RegisterForm: React.FC = () => {
     }
   };
 
-  const ConditionalNextButton = () => {
-    if (registerForm !== Page.Employee) {
-      return <CustomButton text="Далее" type="primary" onClick={checkRegNextPage} />;
-    }
-    return null;
-  };
+  const nextButton =
+    registerForm == Page.Password ? <CustomButton text="Далее" type="primary" onClick={checkRegNextPage} /> : null;
 
-  const ConditionalBackButton = () => {
-    if (registerForm !== Page.Password) {
-      return <CustomButton text="Назад" type="primary" onClick={checkRegPrevPage} />;
-    }
-    return null;
-  };
+  const backButton =
+    registerForm == Page.Employee ? <CustomButton text="Назад" type="primary" onClick={checkRegPrevPage} /> : null;
 
-  const registerFormContent =
+  const inputUserData =
     registerForm == Page.Password ? (
       <Form autoComplete="off" layout="vertical">
         <Form.Item
@@ -174,15 +172,11 @@ export const RegisterForm: React.FC = () => {
             onChange={e => setConfirmation(e.target.value)}
           />
         </Form.Item>
-        <Form.Item>
-          <Flex gap={20} justify="center">
-            <Text>Поставщик</Text>
-            <Switch onChange={changeRole} />
-            <Text>Покупатель</Text>
-          </Flex>
-        </Form.Item>
       </Form>
-    ) : (
+    ) : null;
+
+  const inputPersonalUserData =
+    registerForm == Page.Employee ? (
       <Form autoComplete="off" layout="vertical">
         <Form.Item
           label="Фамилия"
@@ -219,18 +213,8 @@ export const RegisterForm: React.FC = () => {
             onChange={e => setFirst_name(e.target.value)}
           />
         </Form.Item>
-        <Form.Item
-          label="Должность"
-          name="position"
-          tooltip="Занимаемая вами в компании позиция"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Должность" name="position" tooltip="Занимаемая вами в компании позиция">
           <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
             type="text"
             placeholder="Укажите вашу должность"
             value={position}
@@ -252,24 +236,64 @@ export const RegisterForm: React.FC = () => {
             <p style={{ color: '#52c41a' }}>Телефон валиден</p>
           )}
         </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Flex gap={20} justify="center">
+            <Text>Поставщик</Text>
+            <Switch onChange={changeRole} />
+            <Text>Покупатель</Text>
+          </Flex>
+        </Form.Item>
       </Form>
-    );
+    ) : null;
+
+  const errorInfoPage =
+    (registerForm == Page.FINAL && responseCode == ResponseCodeType.BADREQUEST) ||
+    (registerForm == Page.FINAL && responseCode == ResponseCodeType.SERVERERROR) ? (
+      <Flex>
+        {registerError?.map(error => {
+          return <Alert type="warning" message={error} key={error} />;
+        })}
+      </Flex>
+    ) : null;
+
+  const successInfoPage =
+    registerForm == Page.FINAL && responseCode == ResponseCodeType.SUCCESS ? (
+      <Flex gap={20} style={{ backgroundColor: '#dfd' }}>
+        <p style={{ fontSize: 16 }}>
+          Пользователь успешно зарегистрирован!
+          <br /> Для активации вашего аккаунта перейдите <br /> по ссылке в почтовом ящике{' '}
+          <span style={{ fontSize: 18, color: 'black', fontWeight: 600 }}> {email}</span>.
+        </p>
+      </Flex>
+    ) : null;
+
+  const submitForm = () => {
+    checkFinallPage();
+    register(email, password, phone, first_name, last_name, position);
+  };
+
+  const regButton =
+    registerForm == Page.Employee ? (
+      <Button onClick={submitForm} type="primary" disabled={!formIsValid}>
+        {registerAs == RegisterRole.BUYER ? 'Зарегистрироваться как покупатель' : 'Зарегистрироваться как поставщик'}
+      </Button>
+    ) : null;
 
   return (
     <AuthFormWrapper vertical gap={10}>
-      {registerError?.map(error => {
-        return <Alert type="warning" message={error} />;
-      })}
-      {registerFormContent}
-      <Button
-        onClick={() => register(email, password, phone, first_name, last_name, position)}
-        type="primary"
-        disabled={!formIsValid}
-      >
-        {registerAs == RegisterRole.BUYER ? 'Зарегистрироваться как покупатель' : 'Зарегистрироваться как поставщик'}
-      </Button>
-      <ConditionalNextButton />
-      <ConditionalBackButton />
+      {inputUserData}
+      {inputPersonalUserData}
+      {successInfoPage}
+      {errorInfoPage}
+      {regButton}
+      {nextButton}
+      {backButton}
     </AuthFormWrapper>
   );
 };
