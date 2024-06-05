@@ -6,6 +6,7 @@ import { useAuth } from '../../../contexts/authContext';
 import { styled } from 'styled-components';
 import { CustomButton } from '../../../shared/components';
 import { ResponseCodeType } from '../../../shared/types/authResponse';
+
 const { Text } = Typography;
 
 const iconRender = (visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />);
@@ -266,8 +267,8 @@ export const RegisterForm: React.FC = () => {
     registerForm == Page.FINAL && responseCode == ResponseCodeType.SUCCESS ? (
       <Flex gap={20} style={{ backgroundColor: '#dfd' }}>
         <p style={{ fontSize: 16 }}>
-          Пользователь успешно зарегистрирован!
-          <br /> Для активации вашего аккаунта перейдите <br /> по ссылке в почтовом ящике{' '}
+          Пользователь успешно зарегистрирован! Для активации вашего аккаунта <br /> перейдите по ссылке в почтовом
+          ящике{email}
           <span style={{ fontSize: 18, color: 'black', fontWeight: 600 }}> {email}</span>.
         </p>
       </Flex>
