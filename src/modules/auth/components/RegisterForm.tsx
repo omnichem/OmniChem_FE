@@ -1,5 +1,5 @@
 import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Button, Flex, Form, Input, Spin, Switch, Typography, Select } from 'antd';
+import { Alert, Button, Flex, Form, Input, Spin, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { AuthFormWrapper } from '../../../pages/authModalForm/AuthForm';
 import { useAuth } from '../../../contexts/authContext';
@@ -7,14 +7,14 @@ import { styled } from 'styled-components';
 import { CustomButton } from '../../../shared/components';
 import { ResponseCodeType } from '../../../shared/types/authResponse';
 
-const { Text } = Typography;
+// const { Text } = Typography;
 
 const iconRender = (visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />);
 
-enum RegisterRole {
-  BUYER,
-  SUPPLIER,
-}
+// enum RegisterRole {
+//   BUYER,
+//   SUPPLIER,
+// }
 
 enum Page {
   Password,
@@ -31,7 +31,7 @@ export const RegisterForm: React.FC = () => {
   const [last_name, setLast_name] = useState('');
   const [position, setPosition] = useState('');
   const [phone, setPhone] = useState('');
-  const [registerAs, setRegisterAs] = useState<RegisterRole>(RegisterRole.SUPPLIER);
+  // const [registerAs, setRegisterAs] = useState<RegisterRole>(RegisterRole.SUPPLIER);
   const [registerForm, setRegisterForm] = useState<Page>(Page.Password);
 
   console.log(email, password);
@@ -75,13 +75,13 @@ export const RegisterForm: React.FC = () => {
     setRegisterForm(Page.FINAL);
   };
 
-  const changeRole = (checked: boolean) => {
-    if (checked) {
-      setRegisterAs(RegisterRole.BUYER);
-    } else {
-      setRegisterAs(RegisterRole.SUPPLIER);
-    }
-  };
+  // const changeRole = (checked: boolean) => {
+  //   if (checked) {
+  //     setRegisterAs(RegisterRole.BUYER);
+  //   } else {
+  //     setRegisterAs(RegisterRole.SUPPLIER);
+  //   }
+  // };
 
   const nextButton =
     registerForm == Page.Password ? <CustomButton text="Далее" type="primary" onClick={checkRegNextPage} /> : null;
@@ -244,11 +244,11 @@ export const RegisterForm: React.FC = () => {
             },
           ]}
         >
-          <Flex gap={20} justify="center">
+          {/* <Flex gap={20} justify="center">
             <Text>Поставщик</Text>
             <Switch onChange={changeRole} />
             <Text>Покупатель</Text>
-          </Flex>
+          </Flex> */}
         </Form.Item>
       </Form>
     ) : null;
@@ -282,7 +282,8 @@ export const RegisterForm: React.FC = () => {
   const regButton =
     registerForm == Page.Employee ? (
       <Button onClick={submitForm} type="primary" disabled={!formIsValid}>
-        {registerAs == RegisterRole.BUYER ? 'Зарегистрироваться как покупатель' : 'Зарегистрироваться как поставщик'}
+        {/* {registerAs == RegisterRole.BUYER ? 'Зарегистрироваться как покупатель' : 'Зарегистрироваться как поставщик'} */}
+        Зарегистрироваться
       </Button>
     ) : null;
 
