@@ -29,6 +29,7 @@ const CompanyCardForm: React.FC = () => {
   const [company_name_shortened, setCompany_name_shortened] = useState('');
   const [about, setAbout] = useState('');
   const INN_REGEX = /^(\d{10}|\d{12})$/;
+  const [marketName, setMarketName] = useState('Промышленный');
 
   return (
     <div className="supplierAccountForm-wrapper">
@@ -93,6 +94,33 @@ const CompanyCardForm: React.FC = () => {
             onChange={e => setInn(e.target.value)}
             required
           />
+        </Form.Item>
+        <Form.Item
+          name="market"
+          tooltip="Укажите область рынка, в котором работает ваша компания."
+          label="Маркет"
+          required={true}
+        >
+          <Select value={marketName} onChange={value => setMarketName(value)}>
+            <Select.Option value="Industrial">Промышленный</Select.Option>
+            <Select.Option value="auto">Автомобилестроение и транспорт</Select.Option>
+            <Select.Option value="goods">Потребительские товары</Select.Option>
+            <Select.Option value="build">Здание и стройка</Select.Option>
+            <Select.Option value="food">Еда и полноценное питание</Select.Option>
+            <Select.Option value="electricity">Электротехника и электроника</Select.Option>
+            <Select.Option value="paint">Краски и покрытия</Select.Option>
+            <Select.Option value="print">Печать и упаковка</Select.Option>
+            <Select.Option value="care">Личная гигиена</Select.Option>
+            <Select.Option value="adhesives">Клеи и герметики</Select.Option>
+            <Select.Option value="household">Бытовая химия</Select.Option>
+            <Select.Option value="pharma">Здравоохранение и фармацевтика</Select.Option>
+            <Select.Option value="agriculture">Сельское хозяйство и корма</Select.Option>
+            {/* {markets.map(market => (
+              <Select.Option id={market.id} value={market.id}>
+                {market.market_name}
+              </Select.Option>
+            ))} */}
+          </Select>
         </Form.Item>
         <Form.Item label="Описание компании" name="companyDescription">
           <TextArea

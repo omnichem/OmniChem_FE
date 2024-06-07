@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined, CopyOutlined, HomeOutlined, BarChartOutlined } from '@ant-design/icons';
 import { Layout, Menu, Button, theme, Row, Col, MenuProps } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
-import AnalyticsСontent from './components/analyticsСontent/AnalyticsСontent';
+// import AnalyticsСontent from './components/analyticsСontent/AnalyticsСontent';
 import TableSupplierCatalog from './components/TableSupplierCatalog/TableSupplierCatalog';
 
 import CompanyCardForm from './components/companyCardForm/CompanyCardForm';
 
 import { http } from '../../shared/const/http';
+import { RegCompanyForm } from '../../modules/auth/components/RegCompanyForm';
 
 const { Header, Sider, Content } = Layout;
 
@@ -140,7 +141,8 @@ const SuppliersAccount: React.FC = () => {
               >
                 <Row>
                   <Col xs={20} md={20}>
-                    <AnalyticsСontent />
+                    {/* <AnalyticsСontent /> */}
+                    <RegCompanyForm />
                   </Col>
                 </Row>
               </div>
