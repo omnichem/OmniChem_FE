@@ -7,14 +7,7 @@ import { styled } from 'styled-components';
 import { CustomButton } from '../../../shared/components';
 import { ResponseCodeType } from '../../../shared/types/authResponse';
 
-// const { Text } = Typography;
-
 const iconRender = (visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />);
-
-// enum RegisterRole {
-//   BUYER,
-//   SUPPLIER,
-// }
 
 enum Page {
   Password,
@@ -31,16 +24,28 @@ export const RegisterForm: React.FC = () => {
   const [last_name, setLast_name] = useState('');
   const [position, setPosition] = useState('');
   const [phone, setPhone] = useState('');
-  // const [registerAs, setRegisterAs] = useState<RegisterRole>(RegisterRole.SUPPLIER);
+  const [formValues, setFormValues] = useState({
+    email: '',
+    password: '',
+    phone: '',
+    first_name: '',
+    last_name: '',
+    position: '',
+  });
   const [registerForm, setRegisterForm] = useState<Page>(Page.Password);
 
   console.log(email, password);
 
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
+  const [formIsFilled, setFormIsFilled] = useState<boolean>(false);
 
   useEffect(() => {
     setFormIsValid(!!email && !!password && !!confirmation && !!first_name && !!last_name && !!phone);
   }, [email, password, first_name, last_name, phone]);
+
+  useEffect(() => {
+    setFormIsFilled(!!email && !!password && !!confirmation);
+  }, [email, password, confirmation]);
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -62,6 +67,8 @@ export const RegisterForm: React.FC = () => {
   const checkRegPrevPage = () => {
     if (registerForm == Page.Employee) {
       setRegisterForm(Page.Password);
+    } else {
+      setRegisterForm(Page.Employee);
     }
   };
 
@@ -75,23 +82,34 @@ export const RegisterForm: React.FC = () => {
     setRegisterForm(Page.FINAL);
   };
 
-  // const changeRole = (checked: boolean) => {
-  //   if (checked) {
-  //     setRegisterAs(RegisterRole.BUYER);
-  //   } else {
-  //     setRegisterAs(RegisterRole.SUPPLIER);
-  //   }
-  // };
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    register(
+      formValues.email,
+      formValues.password,
+      formValues.phone,
+      formValues.first_name,
+      formValues.last_name,
+      formValues.position
+    );
+    setFormValues({
+      email: '',
+      password: '',
+      phone: '',
+      first_name: '',
+      last_name: '',
+      position: '',
+    });
+  };
 
   const nextButton =
-    registerForm == Page.Password ? <CustomButton text="Далее" type="primary" onClick={checkRegNextPage} /> : null;
-
-  const backButton =
-    registerForm == Page.Employee ? <CustomButton text="Назад" type="primary" onClick={checkRegPrevPage} /> : null;
+    registerForm == Page.Password ? (
+      <CustomButton text="Далее" type="primary" onClick={checkRegNextPage} disabled={!formIsFilled} />
+    ) : null;
 
   const inputUserData =
     registerForm == Page.Password ? (
-      <Form autoComplete="off" layout="vertical">
+      <Form onFinish={handleSubmit} autoComplete="off" layout="vertical">
         <Form.Item
           required={true}
           name="email"
@@ -178,7 +196,7 @@ export const RegisterForm: React.FC = () => {
 
   const inputPersonalUserData =
     registerForm == Page.Employee ? (
-      <Form autoComplete="off" layout="vertical">
+      <Form onFinish={handleSubmit} autoComplete="off" layout="vertical">
         <Form.Item
           label="Фамилия"
           name="last_name"
@@ -237,19 +255,19 @@ export const RegisterForm: React.FC = () => {
             <p style={{ color: '#52c41a' }}>Телефон валиден</p>
           )}
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           rules={[
             {
               required: true,
             },
           ]}
         >
-          {/* <Flex gap={20} justify="center">
+          <Flex gap={20} justify="center">
             <Text>Поставщик</Text>
             <Switch onChange={changeRole} />
             <Text>Покупатель</Text>
-          </Flex> */}
-        </Form.Item>
+          </Flex>
+        </Form.Item> */}
       </Form>
     ) : null;
 
@@ -263,26 +281,37 @@ export const RegisterForm: React.FC = () => {
       </Flex>
     ) : null;
 
+  const backButton = registerForm == Page.Employee || { errorInfoPage } ? (
+    <CustomButton text="Назад" type="primary" onClick={checkRegPrevPage} />
+  ) : null;
+
   const successInfoPage =
     registerForm == Page.FINAL && responseCode == ResponseCodeType.SUCCESS ? (
-      <Flex gap={20} style={{ backgroundColor: '#dfd' }}>
-        <p style={{ fontSize: 16 }}>
-          Пользователь успешно зарегистрирован! Для активации вашего аккаунта <br /> перейдите по ссылке в почтовом
-          ящике{email}
-          <span style={{ fontSize: 18, color: 'black', fontWeight: 600 }}> {email}</span>.
-        </p>
+      <Flex>
+        <Alert
+          type="warning"
+          message="Пользователь успешно зарегистрирован!
+          Для активации вашего аккаунта перейдите по ссылке в почтовом
+          ящике {email}."
+        />
       </Flex>
     ) : null;
 
   const submitForm = () => {
     checkFinallPage();
     register(email, password, phone, first_name, last_name, position);
+    setEmail('');
+    setPassword('');
+    setConfirmation('');
+    setFirst_name('');
+    setLast_name('');
+    setPosition('');
+    setPhone('');
   };
 
   const regButton =
     registerForm == Page.Employee ? (
       <Button onClick={submitForm} type="primary" disabled={!formIsValid}>
-        {/* {registerAs == RegisterRole.BUYER ? 'Зарегистрироваться как покупатель' : 'Зарегистрироваться как поставщик'} */}
         Зарегистрироваться
       </Button>
     ) : null;
