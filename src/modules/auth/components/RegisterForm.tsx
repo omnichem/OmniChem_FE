@@ -33,7 +33,6 @@ export const RegisterForm: React.FC = () => {
     position: '',
   });
   const [registerForm, setRegisterForm] = useState<Page>(Page.Password);
-
   console.log(email, password);
 
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
@@ -281,20 +280,26 @@ export const RegisterForm: React.FC = () => {
       </Flex>
     ) : null;
 
-  const backButton = registerForm == Page.Employee || { errorInfoPage } ? (
-    <CustomButton text="Назад" type="primary" onClick={checkRegPrevPage} />
-  ) : null;
+  const backButton =
+    registerForm == Page.Employee ||
+    (registerForm == Page.FINAL && responseCode == ResponseCodeType.BADREQUEST) ||
+    (registerForm == Page.FINAL && responseCode == ResponseCodeType.SERVERERROR) ? (
+      <CustomButton text="Назад" type="primary" onClick={checkRegPrevPage} />
+    ) : null;
 
   const successInfoPage =
     registerForm == Page.FINAL && responseCode == ResponseCodeType.SUCCESS ? (
-      <Flex>
-        <Alert
-          type="warning"
-          message="Пользователь успешно зарегистрирован!
-          Для активации вашего аккаунта перейдите по ссылке в почтовом
-          ящике {email}."
-        />
-      </Flex>
+      <Alert
+        type="success"
+        message={
+          <>
+            <span>Пользователь успешно зарегистрирован! </span>
+            <br />
+            <span> На указанный при регистрации email отправлена ссылка. </span>
+            <br /> <span>Перейдите по данной ссылке и активируйте ваш аккаунт.</span>
+          </>
+        }
+      />
     ) : null;
 
   const submitForm = () => {
