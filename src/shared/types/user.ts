@@ -5,10 +5,6 @@ export interface UserLoginResponse {
 export interface UserRegisterResponse {
   email: string;
   password: string;
-  confirmation: string;
-  lastName: string;
-  firstName: string;
-  position: string;
 }
 export interface CompanyRegisterResponse {
   email: string;

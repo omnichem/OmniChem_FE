@@ -11,15 +11,11 @@ type AuthContextType = {
   register: (
     email: string,
     password: string,
-    phone: string,
-    last_name: string,
-    first_name: string,
-    position: string
   ) => void;
   logOut: () => void;
   isLoading: boolean;
   loginError: string[] | undefined;
-  registerError: string[] | undefined;
+  registerError: { [key: string]: string[] };
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -40,7 +36,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     if (targetToken) return targetToken;
   });
   const [loginError, setLoginError] = useState();
-  const [registerError, setRegisterError] = useState();
+  const [registerError, setRegisterError] = useState<{ [key: string]: string[] }>({});
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [responseCode, setResponseCode] = useState<ResponseCodeType | undefined>(undefined);
@@ -76,18 +72,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const register = useCallback(
-    (email: string, password: string, phone: string, last_name: string, first_name: string, position: string) => {
+    (email: string, password: string) => {
       const innerRegister = async () => {
         try {
           setIsLoading(true);
           await http
-            .post<UserRegisterResponse>('/API/auth/registration/', {
+            .post<UserRegisterResponse>('/api/auth/users/', {
               email,
               password,
-              phone,
-              first_name,
-              last_name,
-              position,
             })
             .then(function (response) {
               setResponseCode(response.status);
