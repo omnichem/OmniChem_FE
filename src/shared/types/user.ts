@@ -1,5 +1,6 @@
 export interface UserLoginResponse {
-  auth_token: string;
+  access: string;
+  refresh: string;
 }
 
 export interface UserRegisterResponse {

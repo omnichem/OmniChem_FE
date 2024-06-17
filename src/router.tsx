@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
-        path: `/confirm`,
+        path: '/auth/activation/:uid/:token',
         element: <ConfirmProfile />,
         errorElement: <ErrorPage />,
       },

@@ -30,6 +30,12 @@ export const useAuth = () => {
   return context;
 };
 
+const setCookie = (name: string, value: string, days: number) => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;HttpOnly`;
+};
+
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [token, setToken] = useState<string | undefined>(() => {
     const targetToken = localStorage.getItem('token');
@@ -46,14 +52,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       try {
         setIsLoading(true);
         await http
-          .post<UserLoginResponse>('/API/v1/commerce/auth/token/login/', {
+          .post<UserLoginResponse>('/api/auth/jwt/create/', {
             email,
             password,
           })
           .then(function (response) {
-            localStorage.setItem('token', response.data.auth_token);
-            // localStorage.setItem('token', response.data.auth_token);
-            setToken(response.data.auth_token);
+            localStorage.setItem('token', response.data.access);
+            setToken(response.data.access);
+            setCookie('refreshToken', response.data.refresh, 3);
             setIsAuthorized(true);
             console.log(response, localStorage.getItem('token'));
           })
