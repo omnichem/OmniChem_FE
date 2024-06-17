@@ -14,7 +14,7 @@ type AuthContextType = {
   ) => void;
   logOut: () => void;
   isLoading: boolean;
-  loginError: string[] | undefined;
+  loginError: boolean;
   registerError: { [key: string]: string[] };
 };
 
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const targetToken = localStorage.getItem('token');
     if (targetToken) return targetToken;
   });
-  const [loginError, setLoginError] = useState();
+  const [loginError, setLoginError] = useState<boolean>(false);
   const [registerError, setRegisterError] = useState<{ [key: string]: string[] }>({});
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
           .catch(function (error) {
             setIsAuthorized(false);
             console.log(error.response.data.non_field_errors);
-            setLoginError(error.response.data.non_field_errors);
+            setLoginError(true);
           });
       } catch (error) {
         setIsAuthorized(false);
