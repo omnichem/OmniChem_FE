@@ -1,7 +1,8 @@
-import { createContext, PropsWithChildren, SetStateAction, useCallback, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, SetStateAction, useCallback, useContext, useState, useEffect } from 'react';
 import { http } from '../shared/const/http';
 import { UserLoginResponse, UserRegisterResponse } from '../shared/types/user';
 import { ResponseCodeType } from '../shared/types/authResponse';
+import { getCookie } from '../shared/utils';
 
 type AuthContextType = {
   token: string | undefined;
@@ -30,12 +31,6 @@ export const useAuth = () => {
   return context;
 };
 
-const setCookie = (name: string, value: string, days: number) => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;HttpOnly`;
-};
-
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [token, setToken] = useState<string | undefined>(() => {
     const targetToken = localStorage.getItem('token');
@@ -43,9 +38,18 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   });
   const [loginError, setLoginError] = useState<boolean>(false);
   const [registerError, setRegisterError] = useState<{ [key: string]: string[] }>({});
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(() => !!getCookie('refresh_token_present'));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [responseCode, setResponseCode] = useState<ResponseCodeType | undefined>(undefined);
+
+  useEffect(() => {
+    const refreshTokenPresent = getCookie('refresh_token_present');
+    if (refreshTokenPresent) {
+      setIsAuthorized(true);
+    } else {
+      setIsAuthorized(false);
+    }
+  }, []);
 
   const login = useCallback((email: string, password: string) => {
     const innerLogin = async () => {
@@ -59,7 +63,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
           .then(function (response) {
             localStorage.setItem('token', response.data.access);
             setToken(response.data.access);
-            setCookie('refreshToken', response.data.refresh, 3);
             setIsAuthorized(true);
             console.log(response, localStorage.getItem('token'));
           })
