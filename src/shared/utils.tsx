@@ -5,3 +5,7 @@ export const getCookie = (name: string) => {
     if (parts.length === 2) return parts.pop()?.split(';').shift();
     return null;
   };
+
+export const removeCookie = (name: string) => {
+    document.cookie = `${name}=; Max-Age=0; path=/`;
+  };

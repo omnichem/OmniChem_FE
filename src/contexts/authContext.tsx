@@ -2,7 +2,10 @@ import { createContext, PropsWithChildren, SetStateAction, useCallback, useConte
 import { http } from '../shared/const/http';
 import { UserLoginResponse, UserRegisterResponse } from '../shared/types/user';
 import { ResponseCodeType } from '../shared/types/authResponse';
-import { getCookie } from '../shared/utils';
+import { getCookie, removeCookie } from '../shared/utils';
+
+const authCoockieName = 'refresh_token_present';
+const accessTokenKey = 'token';
 
 type AuthContextType = {
   token: string | undefined;
@@ -33,17 +36,17 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [token, setToken] = useState<string | undefined>(() => {
-    const targetToken = localStorage.getItem('token');
+    const targetToken = localStorage.getItem(accessTokenKey);
     if (targetToken) return targetToken;
   });
   const [loginError, setLoginError] = useState<boolean>(false);
   const [registerError, setRegisterError] = useState<{ [key: string]: string[] }>({});
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(() => !!getCookie('refresh_token_present'));
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(() => !!getCookie(authCoockieName));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [responseCode, setResponseCode] = useState<ResponseCodeType | undefined>(undefined);
 
   useEffect(() => {
-    const refreshTokenPresent = getCookie('refresh_token_present');
+    const refreshTokenPresent = getCookie(authCoockieName);
     if (refreshTokenPresent) {
       setIsAuthorized(true);
     } else {
@@ -61,10 +64,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             password,
           })
           .then(function (response) {
-            localStorage.setItem('token', response.data.access);
+            localStorage.setItem(accessTokenKey, response.data.access);
             setToken(response.data.access);
             setIsAuthorized(true);
-            console.log(response, localStorage.getItem('token'));
+            console.log(response, localStorage.getItem(accessTokenKey));
           })
           .catch(function (error) {
             setIsAuthorized(false);
@@ -116,20 +119,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const innerLogOut = async () => {
       try {
         setIsLoading(true);
-        await http.post(
-          '/API/v1/commerce/auth/token/logout/',
-          {},
-          {
-            headers: {
-              Authorization: `Token ${localStorage.getItem('token')}`,
-            },
-          }
-        );
+        await http.post('/API/v1/commerce/auth/token/logout/', {});
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
-        localStorage.removeItem('token');
-        console.log(localStorage.getItem('token'));
+        localStorage.removeItem(accessTokenKey);
+        removeCookie(authCoockieName);
         setToken(undefined);
         setIsAuthorized(false);
         setIsLoading(false);
@@ -137,6 +132,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     };
     innerLogOut();
   }, []);
+
+  // Static method to log out the user from outside the component
+  AuthProvider.logOut = logOut;
+
   return (
     <AuthContext.Provider
       value={{ register, token, isAuthorized, isLoading, login, logOut, loginError, registerError, responseCode }}
@@ -145,3 +144,5 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     </AuthContext.Provider>
   );
 };
+
+AuthProvider.logOut = () => {};
