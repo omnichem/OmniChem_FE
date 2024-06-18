@@ -3,6 +3,7 @@ import { AuthProvider } from '../../contexts/authContext';
 
 const http = axios.create({
   baseURL: import.meta.env.APP_API_URL,
+  withCredentials: false,
 });
 
 // Request interceptor to add the access token to each request
