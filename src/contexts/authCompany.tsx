@@ -5,30 +5,26 @@ import { ResponseCodeType } from '../shared/types/authResponse';
 
 type AuthContextType = {
   registerCompany: (
+    inn: string,
     company_type: string,
     company_name: string,
-    markets: string,
     address: string,
   ) => void;
-
-  return contextCompany;
-
+  responseCode: SetStateAction<ResponseCodeType | undefined>;
 };
 
   const registerCompany = useCallback(
-    (inn: string, company_type: string, company_name: string, markets: string, address: string) => {
+    (inn: string, company_type: string, company_name: string, address: string) => {
       
       const innerRegister = async () => {
         try {
 
           await http
             .post<UserRegisterResponse>('/API/auth/registration/', {
-              email,
-              password,
-              phone,
-              first_name,
-              last_name,
-              position,
+              inn,
+              company_type,
+              company_name,
+              address
             })
             .then(function (response) {
               setResponseCode(response.status);

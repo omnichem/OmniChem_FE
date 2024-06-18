@@ -25,7 +25,9 @@ const ControlButtons: React.FC<ControlButtonsProps> = ({
   clickReturnButton,
   content,
 }) => {
-  if (!isAuthorized && location.pathname == '/auth') {
+  const returnFromPaths = ['/auth', '/profile'];
+
+  if (returnFromPaths.includes(location.pathname)) {
     return <CustomButton text="Вернуться на витрину" type="primary" onClick={clickReturnButton} />;
   }
 
