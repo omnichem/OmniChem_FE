@@ -30,7 +30,6 @@ export const useAuth = () => {
   if (!context) {
     throw Error('No auth provider');
   }
-
   return context;
 };
 
@@ -81,7 +80,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         try {
           setIsLoading(true);
           await http
-            .post<UserRegisterResponse>('/API/auth/registration/', {
+            // .post<UserRegisterResponse>('/API/auth/registration/', {
+            .post<UserRegisterResponse>('/API/buyer/auth/buyer_registration/', {
               email,
               password,
               phone,

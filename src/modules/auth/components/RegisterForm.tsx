@@ -33,7 +33,6 @@ export const RegisterForm: React.FC = () => {
     position: '',
   });
   const [registerForm, setRegisterForm] = useState<Page>(Page.Password);
-  console.log(email, password);
 
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
   const [formIsFilled, setFormIsFilled] = useState<boolean>(false);
@@ -46,14 +45,14 @@ export const RegisterForm: React.FC = () => {
     setFormIsFilled(!!email && !!password && !!confirmation);
   }, [email, password, confirmation]);
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }} defaultValue="8">
-        <Select.Option value="8">8</Select.Option>
-        <Select.Option value="+7">+7</Select.Option>
-      </Select>
-    </Form.Item>
-  );
+  // const prefixSelector = (
+  //   <Form.Item name="prefix" noStyle>
+  //     <Select style={{ width: 70 }} defaultValue="8">
+  //       <Select.Option value="8">8</Select.Option>
+  //       <Select.Option value="+7">+7</Select.Option>
+  //     </Select>
+  //   </Form.Item>
+  // );
 
   if (isLoading) {
     return (
@@ -195,7 +194,11 @@ export const RegisterForm: React.FC = () => {
 
   const inputPersonalUserData =
     registerForm == Page.Employee ? (
-      <Form onFinish={handleSubmit} autoComplete="off" layout="vertical">
+      <Form
+        onFinish={handleSubmit}
+        autoComplete="off"
+        layout="vertical"
+      >
         <Form.Item
           label="Фамилия"
           name="last_name"
@@ -240,20 +243,29 @@ export const RegisterForm: React.FC = () => {
           />
         </Form.Item>
         <Form.Item name="phone" label="Номер телефона" tooltip="Укажите контактный номер телефона для связи." required>
-          <Input
-            addonBefore={prefixSelector}
-            maxLength={10}
-            placeholder="(999) 999 99 99"
-            name="phone"
-            onChange={e => setPhone(e.target.value)}
-            value={phone}
-          />
-          {phone.length < 10 ? (
-            <p style={{ color: '#ff8800' }}>Поле номера телефона должно содержать 10 цифр</p>
-          ) : (
-            <p style={{ color: '#52c41a' }}>Телефон валиден</p>
-          )}
+          <div>
+            <Input
+              // addonBefore={prefixSelector}
+              addonBefore={
+                <Select style={{ width: 70 }} defaultValue="8">
+                  <Select.Option value="8">8</Select.Option>
+                  <Select.Option value="+7">+7</Select.Option>
+                </Select>
+              }
+              maxLength={10}
+              placeholder="(999) 999 99 99"
+              name="phone"
+              onChange={e => setPhone(e.target.value)}
+              value={phone}
+            />
+            {phone.length < 10 ? (
+              <p style={{ color: '#ff8800' }}>Поле номера телефона должно содержать 10 цифр</p>
+            ) : (
+              <p style={{ color: '#52c41a' }}>Телефон валиден</p>
+            )}
+          </div>
         </Form.Item>
+
         {/* <Form.Item
           rules={[
             {
