@@ -30,7 +30,6 @@ export const useAuth = () => {
   if (!context) {
     throw Error('No auth provider');
   }
-
   return context;
 };
 
