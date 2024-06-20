@@ -42,6 +42,7 @@ export const MaterialList = () => {
       setIsLoading(false);
       setFirstLoading(false);
       console.log(materials);
+
       // открывает страницу -) отлетает запрос -) пользователь меняет страницу (размонтирует целевой компонент) -) приходит ответ и пытаемся установить состояние
       return () => {
         materialsController.abort();
@@ -96,7 +97,7 @@ export const MaterialList = () => {
               id={material.id}
               key={`cardKey${material.id}`}
               clickButton={onCardClick}
-              name={material.name}
+              materialName={material.name}
               translated_description={material.translated_description}
               attributes={material.attributes}
             />
