@@ -12,7 +12,7 @@ export interface CardMaterial {
   id: number;
   name: string;
   translated_description: string;
-  company: Company
+  company: Company;
   is_supplier_available: boolean;
   attributes: CardAttributes[];
 }
@@ -50,16 +50,21 @@ export interface Document {
   document: string;
 }
 
+export interface CompanyTitle {
+  logo: unknown;
+  name: string;
+}
+
 export interface MaterialPageType {
   id: number;
   name: string;
   translated_description: string;
   is_supplier_available: boolean;
-  company: string;
+  company: CompanyTitle;
   brand: string;
   attributes: MaterialPageAttributes[];
   tables: MaterialTable[];
-  documents: Document[]
+  documents: Document[];
 }
 
 export interface PageSize {

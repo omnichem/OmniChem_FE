@@ -35,7 +35,7 @@ interface CardHeaderProps {
 
 const CardHeader: React.FC<CardHeaderProps> = ({
   manufacturerIcon,
-  manufacturerImage,
+  // manufacturerImage,
   isLoading,
   manufacturerName,
 }) => {
@@ -80,7 +80,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
 
 interface MaterialCard2Props {
   clickButton: (id: number) => void;
-  name: string;
+  materialName: string;
   translated_description: string;
   attributes: CardAttributes[];
   id: number;
@@ -94,13 +94,13 @@ export const MaterialCard: React.FC<MaterialCard2Props> = ({
   clickButton,
   id,
   loading,
-  name,
+  materialName,
   translated_description,
   attributes,
   company,
 }) => {
   const [activeTabKey1, setActiveTabKey1] = useState<string>('tab1');
-
+  const { name, logo } = company;
   const onClick = () => {
     clickButton(id);
   };
@@ -108,6 +108,7 @@ export const MaterialCard: React.FC<MaterialCard2Props> = ({
   const contentList: Record<string, React.ReactNode> = {
     tab1: (
       <Tab1ContentWrapper>
+        <MaterialName>{materialName}</MaterialName>
         <MaterialName>{name}</MaterialName>
         <Divider style={{ margin: 0 }} />
         {attributes.map(attribute => (
@@ -168,14 +169,7 @@ export const MaterialCard: React.FC<MaterialCard2Props> = ({
           )
         }
         loading={loading}
-        title={
-          <CardHeader
-            manufacturerName={company.name}
-            isLoading={loading}
-            manufacturerIcon={company.logo}
-            manufacturerImage=""
-          />
-        }
+        title={<CardHeader manufacturerName={name} isLoading={loading} manufacturerIcon={logo} manufacturerImage="" />}
         style={{ width: '100%' }}
         // extra={<a href="#">More</a>}
         tabList={tabList}
