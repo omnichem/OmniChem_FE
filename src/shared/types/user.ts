@@ -1,14 +1,11 @@
 export interface UserLoginResponse {
-  auth_token: string;
+  access: string;
+  refresh: string;
 }
 
 export interface UserRegisterResponse {
   email: string;
   password: string;
-  confirmation: string;
-  lastName: string;
-  firstName: string;
-  position: string;
 }
 export interface CompanyRegisterResponse {
   email: string;

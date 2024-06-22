@@ -1,5 +1,5 @@
 import { LoadingOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Button, Flex, Form, Input, Spin, Switch, Typography } from 'antd';
+import { Alert, Button, Flex, Form, Input, Spin, Typography } from 'antd';
 import { AuthFormWrapper } from '../../../pages/authModalForm/AuthForm';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../../contexts/authContext';
@@ -7,17 +7,12 @@ import styled from 'styled-components';
 import Link from 'antd/es/typography/Link';
 const { Text } = Typography;
 
-enum LoginRole {
-  BUYER,
-  SUPPLIER,
-}
 
 export const LoginForm: React.FC = () => {
   const { login, loginError, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formIsValided, setFormIsValided] = useState<boolean>(false);
-  const [loginAs, setLoginAs] = useState<LoginRole>(LoginRole.SUPPLIER);
   useEffect(() => {
     setFormIsValided(!!email && !!password); // Здесь была ошибка, теперь правильно. upd: Теперь правильно
   }, [email, password]);
@@ -30,13 +25,6 @@ export const LoginForm: React.FC = () => {
       </SpinWrapper>
     );
   }
-  const changeRole = (checked: boolean) => {
-    if (checked) {
-      setLoginAs(LoginRole.BUYER);
-    } else {
-      setLoginAs(LoginRole.SUPPLIER);
-    }
-  };
 
   return (
     <AuthFormWrapper vertical gap={10}>
@@ -81,20 +69,18 @@ export const LoginForm: React.FC = () => {
         <Form.Item>
           <Link>Забыли пароль?</Link>
         </Form.Item>
-        <Form.Item>
-          <Flex gap={20} justify="center">
-            <Text>Поставщик</Text>
-            <Switch onChange={changeRole} />
-            <Text>Покупатель</Text>
-          </Flex>
-        </Form.Item>
+      {loginError && (
+                <Alert
+                  message="Ошибка входа"
+                  description="Проверьте имя пользователя и пароль."
+                  type="error"
+                  showIcon
+                />
+              )}
       </Form>
-      {loginError?.map(error => {
-        return <Alert type="warning" message={error} />;
-      })}
 
       <Button onClick={() => login(email, password)} type="primary" disabled={!formIsValided}>
-        {loginAs == LoginRole.BUYER ? 'Войти как покупатель' : 'Войти как поставщик'}
+        {'Войти'}
       </Button>
     </AuthFormWrapper>
   );

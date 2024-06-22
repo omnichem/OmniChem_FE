@@ -3,9 +3,10 @@ import ErrorPage from './pages/errorPages/ErrorPage';
 import { MaterialDescriptionPage } from './pages/MaterialDescriptionPage';
 import { HeaderLayout } from './shared/components';
 import { MaterialsPageLayout } from './modules/materials-page-layout';
-import SuppliersAccount from './pages/personalAccountPage/SuppliersAccount.jsx';
 import { AuthLayout } from './modules/auth-layout/';
-import { ConfirmProfile } from './modules/confirm-profile/index.js';
+import { ConfirmProfile } from './modules/confirm-profile';
+import ProtectedRoute from './shared/components/ProtectedRoute';
+import AccountWithCompanyProvider from './pages/personalAccountPage/SuppliersAccount';
 
 export const router = createBrowserRouter([
   {
@@ -19,23 +20,23 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
-        path: `/material/:id`,
+        path: '/material/:id',
         element: <MaterialDescriptionPage />,
         errorElement: <ErrorPage />,
       },
       {
-        path: `/profile`,
-        element: <SuppliersAccount />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: `/auth`,
+        path: '/auth',
         element: <AuthLayout />,
         errorElement: <ErrorPage />,
       },
       {
-        path: `/confirm`,
+        path: '/auth/activation/:uid/:token',
         element: <ConfirmProfile />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: '/profile',
+        element: <ProtectedRoute element={<AccountWithCompanyProvider />} />,
         errorElement: <ErrorPage />,
       },
     ],
