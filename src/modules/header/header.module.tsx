@@ -1,5 +1,5 @@
-import { SearchOutlined, UserOutlined } from '@ant-design/icons';
-import { Flex, Popover, Avatar, Modal, Form, Input, notification } from 'antd';
+import { SearchOutlined, UserOutlined, SmileOutlined } from '@ant-design/icons';
+import { Flex, Popover, Avatar, Modal, Form, Input, notification, Button } from 'antd';
 import type { InputRef } from 'antd';
 import { CheckOutlined, CloseOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Header } from 'antd/es/layout/layout';
@@ -17,53 +17,27 @@ interface ControlButtonsProps {
   isAuthorized: boolean;
   location: any;
   clickAuthButton: () => void;
-  clickQuestionButton: () => void;
   clickReturnButton: () => void;
   content: React.ReactNode;
+}
+
+interface RunningStringProps {
+  clickQuestionButton: () => void;
 }
 
 const ControlButtons: React.FC<ControlButtonsProps> = ({
   isAuthorized,
   location,
   clickAuthButton,
-  clickQuestionButton,
   clickReturnButton,
   content,
 }) => {
   if (!isAuthorized && location.pathname == '/auth') {
-    return (
-      <>
-        <CustomButton type="text" onClick={clickQuestionButton}>
-          <div
-            style={{
-              width: '150px',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <Marquee direction="left">Сообщить об ошибке</Marquee>
-          </div>
-        </CustomButton>
-        <CustomButton text="Вернуться на витрину" type="primary" onClick={clickReturnButton} />
-      </>
-    );
+    return <CustomButton text="Вернуться на витрину" type="primary" onClick={clickReturnButton} />;
   }
 
   if (!isAuthorized) {
-    return (
-      <>
-        <CustomButton type="text" onClick={clickQuestionButton}>
-          <div
-            style={{
-              width: '150px',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <Marquee direction="left">Сообщить об ошибке</Marquee>
-          </div>
-        </CustomButton>
-        <CustomButton type="text" text="Войти в систему" onClick={clickAuthButton} />
-      </>
-    );
+    return <CustomButton type="text" text="Войти в систему" onClick={clickAuthButton} />;
   }
 
   if (isAuthorized) {
@@ -186,11 +160,53 @@ export const CustomHeader: React.FC = () => {
     showModal();
   };
 
+  const text = () => (
+    <>
+      Мы запустились совсем недавно, если вы нашли ошибку или есть предложение по улучшению — просто{' '}
+      <Button
+        type="text"
+        onClick={clickQuestionButton}
+        style={{
+          paddingRight: '4px',
+          padding: '0',
+        }}
+      >
+        <span
+        style={{
+          fontSize: '18px',
+          textDecoration: 'underline',
+          paddingLeft: '10px',
+          paddingRight: '4px',
+        }}
+        >оставьте комментарий</span>
+      </Button>
+    </>
+  );
+
+  const RunningString: React.FC<RunningStringProps> = () => {
+    return (
+      <div
+        style={{
+          width: '100vw',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <Marquee direction="left" speed="0.1">
+          {text()}&emsp;&emsp;
+          <SmileOutlined />
+          &emsp;&emsp;
+          {text()}&emsp;&nbsp;
+          <SmileOutlined />
+        </Marquee>
+      </div>
+    );
+  };
+
   return (
     <>
       <Modal
         open={open}
-        title="Сообщить об ошибке"
+        title="МЫ ХОТИМ БЫТЬ ЛУЧШЕ"
         okText="Отправить"
         cancelText="Отмена"
         okButtonProps={{ htmlType: 'submit' }}
@@ -208,11 +224,14 @@ export const CustomHeader: React.FC = () => {
           </Form>
         )}
       >
+        <p>Ваши замечания / наблюдения / рекомендации сделают Omnichem лучшим  ресурсом!</p>
+        <br/>
+        <p>Если Вам нужна обратная связь, оставьте свой Email</p>
         <Form.Item
           name="email"
           label="Email"
           tooltip="Введите адрес электронной почты"
-          rules={[{ type: 'email', required: true, message: 'Укажите корректный email!' }]}
+          rules={[{ type: 'email', required: false, message: 'Укажите корректный email!' }]}
           hasFeedback
         >
           <Input
@@ -228,32 +247,34 @@ export const CustomHeader: React.FC = () => {
         </Form.Item>
       </Modal>
 
-      <StyledHeader>
-        <CustomModal isModalOpen={isAuthModalOpen} handleModalCancel={() => setIsRegModalOpen(false)}>
-          <AuthForm />
-        </CustomModal>
+      <Flex vertical>
+        <StyledHeader>
+          <CustomModal isModalOpen={isAuthModalOpen} handleModalCancel={() => setIsRegModalOpen(false)}>
+            <AuthForm />
+          </CustomModal>
 
-        <Logo height={36} width={170} />
-        <CustomInput
-          size="large"
-          style={{ maxWidth: '600px' }}
-          name="searchMaterialInput"
-          placeholder="Введите то, что вы хотите найти"
-          onChange={setSearchMaterial}
-          value={searchMaterial}
-          addonBefore={<SearchOutlined />}
-        />
-        <Flex>
-          <ControlButtons
-            isAuthorized={isAuthorized}
-            content={content}
-            clickAuthButton={clickAuthButton}
-            clickQuestionButton={clickQuestionButton}
-            clickReturnButton={clickReturnButton}
-            location={location}
+          <Logo height={36} width={170} />
+          <CustomInput
+            size="large"
+            style={{ maxWidth: '600px' }}
+            name="searchMaterialInput"
+            placeholder="Введите то, что вы хотите найти"
+            onChange={setSearchMaterial}
+            value={searchMaterial}
+            addonBefore={<SearchOutlined />}
           />
-        </Flex>
-      </StyledHeader>
+          <Flex>
+            <ControlButtons
+              isAuthorized={isAuthorized}
+              content={content}
+              clickAuthButton={clickAuthButton}
+              clickReturnButton={clickReturnButton}
+              location={location}
+            />
+          </Flex>
+        </StyledHeader>
+        <RunningString clickQuestionButton={clickQuestionButton} />
+      </Flex>
     </>
   );
 };
@@ -265,7 +286,8 @@ const StyledHeader = styled(Header)`
   display: flex;
   gap: 20px;
   justify-content: space-around;
-  align-items: center;
+  // align-items: center;
+  align-items: top;
   position: sticky;
   top: 0;
   z-index: 10;
