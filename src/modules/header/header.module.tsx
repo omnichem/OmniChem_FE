@@ -2,8 +2,11 @@ import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { Flex, Popover, Avatar, Modal, Form, Input, notification } from 'antd';
 import type { InputRef } from 'antd';
 import { CheckOutlined, CloseOutlined, QuestionOutlined } from '@ant-design/icons';
+import { Flex, Popover, Avatar, Modal, Form, Input, notification } from 'antd';
+import type { InputRef } from 'antd';
+import { CheckOutlined, CloseOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Header } from 'antd/es/layout/layout';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/authContext';
 import { useGlobalSearch } from '../../contexts/globalSearchContext';
@@ -12,11 +15,13 @@ import { CustomButton, Logo, CustomInput } from '../../shared/components';
 import { CustomModal } from '../../shared/components/CustomModal';
 import styled from 'styled-components';
 import Marquee from 'react-double-marquee';
+import Marquee from 'react-double-marquee';
 
 interface ControlButtonsProps {
   isAuthorized: boolean;
   location: any;
   clickAuthButton: () => void;
+  clickQuestionButton: () => void;
   clickQuestionButton: () => void;
   clickReturnButton: () => void;
   content: React.ReactNode;
@@ -26,6 +31,7 @@ const ControlButtons: React.FC<ControlButtonsProps> = ({
   isAuthorized,
   location,
   clickAuthButton,
+  clickQuestionButton,
   clickQuestionButton,
   clickReturnButton,
   content,
@@ -37,7 +43,21 @@ const ControlButtons: React.FC<ControlButtonsProps> = ({
   }
 
   if (!isAuthorized) {
-    return <CustomButton type="text" text="Войти в систему" onClick={clickAuthButton} />;
+    return (
+      <>
+        <CustomButton type="text" onClick={clickQuestionButton}>
+          <div
+            style={{
+              width: '150px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <Marquee direction="left">Сообщить об ошибке</Marquee>
+          </div>
+        </CustomButton>
+        <CustomButton type="text" text="Войти в систему" onClick={clickAuthButton} />
+      </>
+    );
   }
 
   if (isAuthorized) {
@@ -50,7 +70,7 @@ const ControlButtons: React.FC<ControlButtonsProps> = ({
 };
 
 
-export const CustomHeader: React.FC = () => {
+export const CustomHeader: React.FC: React.FC = () => {
   const { isAuthorized, logOut } = useAuth();
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
@@ -161,6 +181,10 @@ export const CustomHeader: React.FC = () => {
     showModal();
   };
 
+  const clickQuestionButton = () => {
+    showModal();
+  };
+
   return (
     <>
       <Modal
@@ -203,32 +227,75 @@ export const CustomHeader: React.FC = () => {
         </Form.Item>
       </Modal>
 
-      <StyledHeader>
-        <CustomModal isModalOpen={isAuthModalOpen} handleModalCancel={() => setIsRegModalOpen(false)}>
-          <AuthForm />
-        </CustomModal>
-
-        <Logo height={36} width={170} />
-        <CustomInput
-          size="large"
-          style={{ maxWidth: '600px' }}
-          name="searchMaterialInput"
-          placeholder="Введите то, что вы хотите найти"
-          onChange={setSearchMaterial}
-          value={searchMaterial}
-          addonBefore={<SearchOutlined />}
-        />
-        <Flex>
-          <ControlButtons
-            isAuthorized={isAuthorized}
-            content={content}
-            clickAuthButton={clickAuthButton}
-            clickQuestionButton={clickQuestionButton}
-            clickReturnButton={clickReturnButton}
-            location={location}
+      <>
+      <Modal
+        open={open}
+        title="Сообщить об ошибке"
+        okText="Отправить"
+        cancelText="Отмена"
+        okButtonProps={{ htmlType: 'submit' }}
+        onCancel={handleCancel}
+        destroyOnClose
+        modalRender={dom => (
+          <Form
+            layout="vertical"
+            form={form}
+            initialValues={{ modifier: 'public' }}
+            onFinish={() => onCreateQuestion()}
+            autoComplete="off"
+          >
+            {dom}
+          </Form>
+        )}
+      >
+        <Form.Item
+          name="email"
+          label="Email"
+          tooltip="Введите адрес электронной почты"
+          rules={[{ type: 'email', required: true, message: 'Укажите корректный email!' }]}
+          hasFeedback
+        >
+          <Input
+            name="from_email"
+            ref={inputRef}
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Email"
+            onChange={e => setEmail(e.target.value)}
           />
-        </Flex>
-      </StyledHeader>
+        </Form.Item>
+        <Form.Item name="textarea" rules={[{ required: true, message: 'А где же сообщение?' }]}>
+          <TextArea name="textarea" onChange={e => setMessage(e.target.value)} value={message} rows={5} />
+        </Form.Item>
+      </Modal>
+
+      <StyledHeader>
+          <CustomModal isModalOpen={isAuthModalOpen} handleModalCancel={() => setIsRegModalOpen(false)}>
+            <AuthForm />
+          </CustomModal>
+
+          <Logo height={36} width={170} />
+          <CustomInput
+            size="large"
+            style={{ maxWidth: '600px' }}
+            name="searchMaterialInput"
+            placeholder="Введите то, что вы хотите найти"
+            onChange={setSearchMaterial}
+            value={searchMaterial}
+            addonBefore={<SearchOutlined />}
+          />
+          <Flex>
+            <ControlButtons
+              isAuthorized={isAuthorized}
+              content={content}
+              clickAuthButton={clickAuthButton}
+            clickQuestionButton={clickQuestionButton}
+              clickQuestionButton={clickQuestionButton}
+            clickReturnButton={clickReturnButton}
+              location={location}
+            />
+          </Flex>
+        </StyledHeader>
+    </>
     </>
   );
 };
