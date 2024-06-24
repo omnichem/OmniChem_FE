@@ -7,7 +7,7 @@ import TableSupplierCatalog from './components/TableSupplierCatalog/TableSupplie
 import CompanyCardForm from './components/companyCardForm/CompanyCardForm';
 import { http } from '../../shared/const/http';
 import { RegCompanyForm } from '../../modules/auth/components/RegCompanyForm';
-import { CompanyProvider } from '../../contexts/companyContext'; // Ensure you import the CompanyProvider
+import { CompanyProvider } from '../../contexts/companyContext';
 
 const { Header, Sider, Content } = Layout;
 

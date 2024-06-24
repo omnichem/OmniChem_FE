@@ -66,7 +66,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             localStorage.setItem(accessTokenKey, response.data.access);
             setToken(response.data.access);
             setIsAuthorized(true);
-            console.log(response, localStorage.getItem(accessTokenKey));
           })
           .catch(function (error) {
             setIsAuthorized(false);
@@ -118,7 +117,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const innerLogOut = async () => {
       try {
         setIsLoading(true);
-        await http.post('/API/v1/commerce/auth/token/logout/', {});
+        await http.post('/api/auth/logout/', {});
       } catch (error) {
         console.error(error);
       } finally {
