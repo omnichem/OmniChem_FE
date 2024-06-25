@@ -4,6 +4,7 @@ import { AuthProvider } from '../../contexts/authContext';
 const http = axios.create({
   baseURL: import.meta.env.APP_API_URL,
   withCredentials: false,
+  headers: {'Content-Type': "application/json"},
 });
 
 // Request interceptor to add the access token to each request
@@ -22,8 +23,8 @@ http.interceptors.request.use(
 
 const refreshToken = async () => {
   try {
-    const response = await axios.post(
-      `${import.meta.env.APP_API_URL}/api/auth/jwt/refresh/`,
+    const response = await http.post(
+      `/api/auth/jwt/refresh/`,
       {},
       { withCredentials: true }
     );
@@ -56,5 +57,6 @@ http.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 
 export { http };
