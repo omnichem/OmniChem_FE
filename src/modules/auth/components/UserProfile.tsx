@@ -4,6 +4,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { http } from '../../../shared/const/http';
 import { useAuth } from '../../../contexts/authContext';
+import { PHONE_REGEX } from '../../../shared/utils';
 
 const { Title } = Typography;
 
@@ -89,7 +90,17 @@ export const UserProfile: React.FC = () => {
     <Form.Item
       label="Телефон"
       name="phoneNumber"
-      rules={[{ required: true, message: 'Укажите номер телефона' }]}
+      rules={[
+        { required: true, message: 'Укажите номер телефона' },
+        {
+          pattern: PHONE_REGEX,
+          message: 'Введите действительный номер телефона',
+        },
+        {
+          max: 15,
+          message: 'Номер телефона не должен превышать 15 символов',
+        },
+      ]}
     >
       <Input />
     </Form.Item>
