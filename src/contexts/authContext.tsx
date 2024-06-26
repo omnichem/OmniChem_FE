@@ -18,6 +18,7 @@ type AuthContextType = {
   ) => void;
   logOut: () => void;
   isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   loginError: boolean;
   registerError: { [key: string]: string[] };
 };
@@ -136,7 +137,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <AuthContext.Provider
-      value={{ register, token, isAuthorized, isLoading, login, logOut, loginError, registerError, responseCode }}
+      value={{ register, token, isAuthorized, isLoading, setIsLoading, login, logOut, loginError, registerError, responseCode }}
     >
       {children}
     </AuthContext.Provider>

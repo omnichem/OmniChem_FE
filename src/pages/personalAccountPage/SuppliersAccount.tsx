@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { MenuFoldOutlined, MenuUnfoldOutlined, CopyOutlined, HomeOutlined, BarChartOutlined } from '@ant-design/icons';
-import { Layout, Menu, Button, theme, Row, Col, MenuProps } from 'antd';
+import { MenuFoldOutlined, MenuUnfoldOutlined, CopyOutlined, HomeOutlined, BarChartOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, Menu, Button, Row, Col, MenuProps, theme } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
-// import AnalyticsСontent from './components/analyticsСontent/AnalyticsСontent';
+// import AnalyticsContent from './components/analyticsContent/AnalyticsContent';
 import TableSupplierCatalog from './components/TableSupplierCatalog/TableSupplierCatalog';
-import CompanyCardForm from './components/companyCardForm/CompanyCardForm';
-import { http } from '../../shared/const/http';
 import { RegCompanyForm } from '../../modules/auth/components/RegCompanyForm';
 import { CompanyProvider } from '../../contexts/companyContext';
+import { UserProfile } from '../../modules/auth/components/UserProfile';
+import { http } from '../../shared/const/http';
 
 const { Header, Sider, Content } = Layout;
 
@@ -33,15 +33,6 @@ interface ComparisonTableResponse {
 
 const Account: React.FC = () => {
   const [comparisonTable, setComparisonTable] = useState<ComparisonTableResponse>();
-
-  useEffect(() => {
-    const fetchComparisonTable = async () => {
-      const response = await http.get<ComparisonTableResponse>('/API/v1/commerce/products/');
-      setComparisonTable(response.data);
-    };
-    fetchComparisonTable();
-  }, []);
-
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -52,16 +43,23 @@ const Account: React.FC = () => {
 
   const [current, setCurrent]: [ContentType, SetterType] = useState('1');
 
-  const navName = ['Компания', 'Аналитика', 'Каталог'];
-
   const items = [
-    { key: '1', icon: <HomeOutlined />, label: navName[0] },
-    { key: '2', icon: <BarChartOutlined />, label: navName[1] },
-    { key: '3', icon: <CopyOutlined />, label: navName[2] },
+    { key: '1', icon: <UserOutlined />, label: 'Профиль'},
+    { key: '2', icon: <HomeOutlined />, label: 'Компания' },
+    { key: '3', icon: <BarChartOutlined />, label: 'Аналитика' },
+    { key: '4', icon: <CopyOutlined />, label: 'Каталог' },
+    
   ];
 
+  useEffect(() => {
+    const fetchComparisonTable = async () => {
+      const response = await http.get<ComparisonTableResponse>('/API/v1/commerce/products/');
+      setComparisonTable(response.data);
+    };
+    fetchComparisonTable();
+  }, []);
+
   const onClick: MenuProps['onClick'] = e => {
-    console.log('click ', e);
     setCurrent(e.key);
   };
 
@@ -98,8 +96,8 @@ const Account: React.FC = () => {
               width: 64,
               height: 64,
             }}
-          />{' '}
-          {navName[parseInt(current) - 1]}
+          />
+          {items[parseInt(current) - 1].label}
         </Header>
         <Content
           style={{
@@ -108,7 +106,7 @@ const Account: React.FC = () => {
             height: '100vh',
           }}
         >
-          {current == '1' ? (
+          {current === '2' && (
             <div
               style={{
                 background: colorBgContainer,
@@ -124,7 +122,8 @@ const Account: React.FC = () => {
                 </Col>
               </Row>
             </div>
-          ) : current == '2' ? (
+          )}
+          {current === '3' && (
             <div
               style={{
                 background: colorBgContainer,
@@ -135,12 +134,12 @@ const Account: React.FC = () => {
             >
               <Row>
                 <Col xs={20} md={20}>
-                  {/* <AnalyticsСontent /> */}
-                  {/* Remove RegCompanyForm from here */}
+                  {/* <AnalyticsContent /> */}
                 </Col>
               </Row>
             </div>
-          ) : current == '3' ? (
+          )}
+          {current === '4' && (
             <div
               style={{
                 background: colorBgContainer,
@@ -170,7 +169,24 @@ const Account: React.FC = () => {
                 </Col>
               </Row>
             </div>
-          ) : null}
+          )}
+          {current === '1' && (
+            <div
+              style={{
+                background: colorBgContainer,
+                minHeight: 280,
+                maxHeight: '100vh',
+                padding: 24,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              <Row>
+                <Col xs={20} md={20}>
+                  <UserProfile />
+                </Col>
+              </Row>
+            </div>
+          )}
         </Content>
         <Footer style={{ textAlign: 'right' }}>omnichem.ru 2024. All rights reserved.</Footer>
       </Layout>
@@ -178,7 +194,6 @@ const Account: React.FC = () => {
   );
 };
 
-// Ensure Account is wrapped with CompanyProvider
 const AccountWithCompanyProvider: React.FC = () => (
   <CompanyProvider>
     <Account />
