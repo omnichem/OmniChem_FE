@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { RegCompanyForm } from '../../modules/auth/components/RegCompanyForm';
+import { RegCompanyForm } from '../../modules/auth/components/CompanyForm';
 import { http } from '../../shared/const/http';
 import { CompanyRegisterResponse } from '../../shared/types/user';
 

@@ -76,7 +76,6 @@ export const UserProfile: React.FC = () => {
     <Form.Item
       label="Email"
       name="email"
-      rules={[{ type: 'email', message: 'Please enter a valid email' }]}
     >
       <ReadOnlyInput readOnly />
     </Form.Item>
@@ -102,7 +101,9 @@ export const UserProfile: React.FC = () => {
         },
       ]}
     >
-      <Input />
+      <Input 
+        placeholder="+79992223322"
+      />
     </Form.Item>
     <Form.Item>
       <Button type="primary" htmlType="submit">

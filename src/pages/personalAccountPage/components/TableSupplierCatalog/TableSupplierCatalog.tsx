@@ -3,7 +3,7 @@ import { Table } from 'antd';
 import './TableSupplierCatalog.css';
 
 import { Key } from 'antd/lib/table/interface';
-import { Card } from '../../SuppliersAccount';
+import { Card } from '../../Account';
 import { columns } from '../accountData';
 
 interface Props {

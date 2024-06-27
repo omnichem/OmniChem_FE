@@ -6,7 +6,7 @@ import { MaterialsPageLayout } from './modules/materials-page-layout';
 import { AuthLayout } from './modules/auth-layout/';
 import { ConfirmProfile } from './modules/confirm-profile';
 import ProtectedRoute from './shared/components/ProtectedRoute';
-import AccountWithCompanyProvider from './pages/personalAccountPage/SuppliersAccount';
+import AccountWithCompanyProvider from './pages/personalAccountPage/Account';
 
 export const router = createBrowserRouter([
   {
