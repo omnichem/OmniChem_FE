@@ -1,35 +1,63 @@
 import { LoadingOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Button, Flex, Form, Input, Spin, Select } from 'antd';
+import { Alert, Button, Form, Input, Spin, Select, Flex } from 'antd';
 import { useEffect, useState } from 'react';
 import { AuthFormWrapper } from '../../../pages/authModalForm/AuthForm';
 import styled from 'styled-components';
 import { useCompany } from '../../../contexts/companyContext';
 
 const orgStructure = [
-  { structure: 'ООО' },
-  { structure: 'ОАО' },
-  { structure: 'ЗАО' },
-  { structure: 'ПАО' },
-  { structure: 'ИП' },
+  { id: 1, structure: 'ООО' },
+  { id: 2, structure: 'ОАО' },
+  { id: 3, structure: 'ЗАО' },
+  { id: 4, structure: 'ПАО' },
+  { id: 5, structure: 'ИП' },
 ];
 
-
 export const RegCompanyForm: React.FC = () => {
-  const { registerCompany, registerError, isLoading } = useCompany();
-  const [inn, setInn] = useState('');
-  const [companyType, setCompanyType] = useState('ООО');
-  const [companyName, setCompanyName] = useState('');
-  const [address, setAddress] = useState('');
+  const { registerCompany, updateCompany, companyContextError, isLoading, fetchUserData, userCompanies } = useCompany();
+  const [form] = Form.useForm();
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [companyId, setCompanyId] = useState<number | null>(null);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
 
   useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
+
+  useEffect(() => {
+    if (userCompanies.length > 0) {
+      const lastCompany = userCompanies[userCompanies.length - 1];
+      const companyType = orgStructure.find(item => item.id === lastCompany.company_type)?.structure;
+      form.setFieldsValue({
+        inn: lastCompany.inn,
+        companyType: companyType,
+        companyName: lastCompany.company_name,
+        address: lastCompany.address,
+        position: lastCompany.administrators[0].position,
+      });
+      setIsEdit(true);
+      setCompanyId(lastCompany.id);
+    } else {
+      form.resetFields();
+    }
+  }, [userCompanies, form]);
+
+  const handleFormChange = () => {
+    const { inn, companyType, companyName, address } = form.getFieldsValue();
     setFormIsValid(!!inn && !!companyType && !!companyName && !!address);
-  }, [inn, companyType, companyName, address]);
+  };
 
   const handleSubmit = async () => {
+    const values = form.getFieldsValue();
+    const companyType = orgStructure.find(item => item.structure === values.companyType)?.id;
+    const data = { ...values, companyType };
     if (formIsValid) {
-      await registerCompany({ inn, companyType, companyName, address });
+      if (isEdit && companyId) {
+        await updateCompany(companyId, data);
+      } else {
+        await registerCompany(data);
+      }
     }
   };
 
@@ -44,10 +72,9 @@ export const RegCompanyForm: React.FC = () => {
 
   return (
     <AuthFormWrapper vertical gap={10}>
-      {registerError && Object.keys(registerError).map((key) => (
-        <Alert type="warning" message={registerError[key].join(', ')} key={key} />
-      ))}
-      <Form className="supplierDetailForm" layout="vertical" onFinish={handleSubmit}>
+      {companyContextError &&
+        <Alert type="warning" message='Ошибка' key='Не удалось сохранить' />}
+      <Form form={form} className="supplierDetailForm" layout="vertical" onValuesChange={handleFormChange} onFinish={handleSubmit}>
         <Form.Item
           label="Краткое наименование"
           name="companyName"
@@ -59,17 +86,12 @@ export const RegCompanyForm: React.FC = () => {
             prefix={<UserOutlined className="site-form-item-icon" />}
             className="companyNameInput"
             placeholder="Введите краткое наименование компании"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            required
           />
         </Form.Item>
-        <Form.Item label="Организационная форма" name="organizationForm" required={true} hasFeedback>
+        <Form.Item label="Организационная форма" name="companyType" required={true} hasFeedback>
           <Select
             className="companyNameInput"
             placeholder="Например ООО"
-            value={companyType}
-            onChange={(value) => setCompanyType(value)}
           >
             {orgStructure.map((item) => (
               <Select.Option value={item.structure} key={item.structure}>
@@ -80,7 +102,7 @@ export const RegCompanyForm: React.FC = () => {
         </Form.Item>
         <Form.Item
           label="ИНН"
-          name="INN"
+          name="inn"
           tooltip="ИНН содержит 10 или 12 цифр в зависимости от организационной формы ЮЛ"
           required={true}
           rules={[
@@ -103,8 +125,6 @@ export const RegCompanyForm: React.FC = () => {
             type="text"
             pattern="[0-9]*"
             title="Пожалуйста, введите только цифры"
-            value={inn}
-            onChange={(e) => setInn(e.target.value)}
           />
         </Form.Item>
         <Form.Item
@@ -117,14 +137,23 @@ export const RegCompanyForm: React.FC = () => {
           <Input
             className="companyNameInput"
             placeholder="Введите юридический адрес компании"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            required
+          />
+        </Form.Item>
+        <Form.Item
+          label="Ваша должность"
+          name="position"
+          required={true}
+          tooltip="Укажите вашу должность в компании"
+          hasFeedback
+        >
+          <Input
+            className="detailsInput"
+            placeholder="Ваша должность в компании"
           />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" disabled={!formIsValid}>
-            Зарегистрировать
+            {isEdit ? 'Сохранить' : 'Зарегистрировать'}
           </Button>
         </Form.Item>
       </Form>
