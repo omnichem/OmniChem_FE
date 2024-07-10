@@ -13,8 +13,10 @@ export const MaterialsPageLayout = () => {
       </PaginationWrapper>
 
       <Flex gap={20} style={{ boxSizing: 'border-box', padding: '0 20px' }}>
-        <FilterListWrapper>
-          <FilterList />
+        <FilterListWrapper vertical>
+          <div style={{ zIndex: '15' }}>
+            <FilterList />
+          </div>
         </FilterListWrapper>
         <ListWrapper>
           <MaterialList />
@@ -31,10 +33,22 @@ const MaterialsPageWrapper = styled(Flex)`
   box-sizing: border-box;
 `;
 
-const FilterListWrapper = styled.div`
+const FilterListWrapper = styled(Flex)`
   position: sticky;
   z-index: 11;
   top: 153;
+  flex: 1;
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
+const SortListWrapper = styled.div`
+  position: relative;
+  height: 100%;
+  z-index: 11;
+  margin-top: 20px;
+  top: 10px;
   flex: 1;
   @media (max-width: 700px) {
     display: none;

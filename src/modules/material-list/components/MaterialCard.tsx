@@ -1,9 +1,11 @@
-import { Divider, Popover, Card, Skeleton } from 'antd';
+import { Divider, Popover, Card, Skeleton, Flex, Button, Tooltip } from 'antd';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { CustomButton } from '../../../shared/components';
 import { CardLogo } from '../../../shared/components/MaterialCard/CardLogo';
 import { CardAttributes, Company } from '../../../shared/types/pagesTypes';
+import { CardShare } from '../../../shared/components/MaterialCard/CardShare';
+import share from '../../../shared/components/MaterialCard/icons/free-icon-share-link.png';
 
 const tabList = [
   {
@@ -100,11 +102,21 @@ export const MaterialCard: React.FC<MaterialCard2Props> = ({
   company,
 }) => {
   const [activeTabKey1, setActiveTabKey1] = useState<string>('tab1');
+  const [open, setOpen] = useState<boolean>(false);
+  const [materialId, setMaterialId] = useState<number>();
+
   const { name, logo } = company;
   const onClick = () => {
     clickButton(id);
   };
-
+  const openShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpen(true);
+    setMaterialId(id);
+  };
+  const closeShare = () => {
+    setOpen(false);
+  };
   const contentList: Record<string, React.ReactNode> = {
     tab1: (
       <Tab1ContentWrapper>
@@ -179,17 +191,28 @@ export const MaterialCard: React.FC<MaterialCard2Props> = ({
       >
         <CardContentWrapper>
           {contentList[activeTabKey1]}
-          <CustomButton type="default" text={'Подробнее'} onClick={onClick} style={{ width: '100%' }} />
+          <Flex gap="small">
+            <CustomButton type="default" text={'Подробнее'} onClick={onClick} style={{ width: '85%' }} />
+            <Tooltip title="Поделиться">
+              <Button type="default" onClick={openShare} style={{ width: '15%' }}>
+                <StyledImg src={share} />
+              </Button>
+            </Tooltip>
+          </Flex>
         </CardContentWrapper>
       </StyledCard>
+      <CardShare value={{ open, closeShare, materialId }} />
     </>
   );
 };
 
+const StyledImg = styled.img`
+  width: 20px;
+`;
+
 const CardContentWrapper = styled.div`
   height: 100%;
   width: 100%;
-
   display: flex;
   flex-direction: column;
   gap: 10px;

@@ -1,7 +1,13 @@
-import { SearchOutlined, UserOutlined, SmileOutlined } from '@ant-design/icons';
+import {
+  SearchOutlined,
+  UserOutlined,
+  SmileOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  QuestionOutlined,
+} from '@ant-design/icons';
 import { Flex, Popover, Avatar, Modal, Form, Input, notification, Button } from 'antd';
 import type { InputRef } from 'antd';
-import { CheckOutlined, CloseOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Header } from 'antd/es/layout/layout';
 import React, { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
@@ -174,13 +180,15 @@ export const CustomHeader: React.FC = () => {
         }}
       >
         <span
-        style={{
-          fontSize: '18px',
-          textDecoration: 'underline',
-          paddingLeft: '10px',
-          paddingRight: '4px',
-        }}
-        >оставьте комментарий</span>
+          style={{
+            fontSize: '18px',
+            textDecoration: 'underline',
+            paddingLeft: '10px',
+            paddingRight: '4px',
+          }}
+        >
+          оставьте комментарий
+        </span>
       </Button>
     </>
   );
@@ -226,8 +234,8 @@ export const CustomHeader: React.FC = () => {
           </Form>
         )}
       >
-        <p>Ваши замечания / наблюдения / рекомендации сделают Omnichem лучшим  ресурсом!</p>
-        <br/>
+        <p>Ваши замечания / наблюдения / рекомендации сделают Omnichem лучшим ресурсом!</p>
+        <br />
         <p>Если Вам нужна обратная связь, оставьте свой Email</p>
         <Form.Item
           name="email"
