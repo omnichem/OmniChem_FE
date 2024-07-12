@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { AuthFormWrapper } from '../../../pages/authModalForm/AuthForm';
 import styled from 'styled-components';
 import { useCompany } from '../../../contexts/companyContext';
+import { http } from '../../../shared/const/http';
 
 const orgStructure = [
   { id: 1, structure: 'ООО' },
@@ -20,10 +21,26 @@ export const RegCompanyForm: React.FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<number | null>(null);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
+  const [showBtn, setShowBtn] = useState('none');
 
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);
+
+  const getData = async () => {
+    const { data } = await http.get('http://212.233.79.177/api/auth/users/me/');
+    return data.admin_companies;
+  };
+  getData()
+    .then(data => {
+      // if (!data[0].is_supplier) {
+      if (!data[0].address) {
+        setShowBtn('inline-block');
+      } else {
+        setShowBtn('none');
+      }
+    })
+    .catch(() => console.log('Что-то не так'));
 
   useEffect(() => {
     if (userCompanies.length > 0) {
@@ -72,9 +89,14 @@ export const RegCompanyForm: React.FC = () => {
 
   return (
     <AuthFormWrapper vertical gap={10}>
-      {companyContextError &&
-        <Alert type="warning" message='Ошибка' key='Не удалось сохранить' />}
-      <Form form={form} className="supplierDetailForm" layout="vertical" onValuesChange={handleFormChange} onFinish={handleSubmit}>
+      {companyContextError && <Alert type="warning" message="Ошибка" key="Не удалось сохранить" />}
+      <Form
+        form={form}
+        className="supplierDetailForm"
+        layout="vertical"
+        onValuesChange={handleFormChange}
+        onFinish={handleSubmit}
+      >
         <Form.Item
           label="Краткое наименование"
           name="companyName"
@@ -89,11 +111,8 @@ export const RegCompanyForm: React.FC = () => {
           />
         </Form.Item>
         <Form.Item label="Организационная форма" name="companyType" required={true} hasFeedback>
-          <Select
-            className="companyNameInput"
-            placeholder="Например ООО"
-          >
-            {orgStructure.map((item) => (
+          <Select className="companyNameInput" placeholder="Например ООО">
+            {orgStructure.map(item => (
               <Select.Option value={item.structure} key={item.structure}>
                 {item.structure}
               </Select.Option>
@@ -134,10 +153,7 @@ export const RegCompanyForm: React.FC = () => {
           tooltip="Юридический адрес по которому зарегистрировано юридическое лицо"
           hasFeedback
         >
-          <Input
-            className="companyNameInput"
-            placeholder="Введите юридический адрес компании"
-          />
+          <Input className="companyNameInput" placeholder="Введите юридический адрес компании" />
         </Form.Item>
         <Form.Item
           label="Ваша должность"
@@ -146,14 +162,14 @@ export const RegCompanyForm: React.FC = () => {
           tooltip="Укажите вашу должность в компании"
           hasFeedback
         >
-          <Input
-            className="detailsInput"
-            placeholder="Ваша должность в компании"
-          />
+          <Input className="detailsInput" placeholder="Ваша должность в компании" />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" disabled={!formIsValid}>
             {isEdit ? 'Сохранить' : 'Зарегистрировать'}
+          </Button>
+          <Button type="primary" htmlType="button" style={{ marginLeft: '10px', display: showBtn }}>
+            Стать поставщиком
           </Button>
         </Form.Item>
       </Form>
