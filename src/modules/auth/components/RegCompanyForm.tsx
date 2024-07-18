@@ -20,6 +20,7 @@ export const RegCompanyForm: React.FC = () => {
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<number | null>(null);
+  const [profileId, setProfileId] = useState<number | null>(null);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
   const [showBtn, setShowBtn] = useState('none');
 
@@ -29,12 +30,12 @@ export const RegCompanyForm: React.FC = () => {
 
   const getData = async () => {
     const { data } = await http.get('http://212.233.79.177/api/auth/users/me/');
-    return data.admin_companies;
+    return data;
   };
   getData()
     .then(data => {
-      // if (!data[0].is_supplier) {
-      if (!data[0].address) {
+      if (!data.admin_companies[0].is_supplier) {
+        setProfileId(data.id);
         setShowBtn('inline-block');
       } else {
         setShowBtn('none');
@@ -77,6 +78,25 @@ export const RegCompanyForm: React.FC = () => {
       }
     }
   };
+
+  const becomeSupplier = async () => {
+    const data = {
+      "id": profileId,
+    };
+    try {
+      const response = await fetch('http://212.233.79.177/api/suppliers/registration/', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      await response;
+      console.log('Успех______:', response);
+    } catch (error) {
+      console.error('Упс! Что-то пошло не так. Попробуйте ещё раз', error);
+    }
+  }
 
   if (isLoading) {
     return (
@@ -168,7 +188,7 @@ export const RegCompanyForm: React.FC = () => {
           <Button type="primary" htmlType="submit" disabled={!formIsValid}>
             {isEdit ? 'Сохранить' : 'Зарегистрировать'}
           </Button>
-          <Button type="primary" htmlType="button" style={{ marginLeft: '10px', display: showBtn }}>
+          <Button type="primary" htmlType="button" style={{ marginLeft: '10px', display: showBtn }} onClick={becomeSupplier}>
             Стать поставщиком
           </Button>
         </Form.Item>
