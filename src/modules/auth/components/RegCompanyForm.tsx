@@ -1,10 +1,11 @@
-import { LoadingOutlined, UserOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UserOutlined, SmileOutlined, FrownOutlined, MehOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input, Spin, Select, Flex } from 'antd';
 import { useEffect, useState } from 'react';
 import { AuthFormWrapper } from '../../../pages/authModalForm/AuthForm';
 import styled from 'styled-components';
 import { useCompany } from '../../../contexts/companyContext';
 import { http } from '../../../shared/const/http';
+import { notification } from 'antd';
 
 const orgStructure = [
   { id: 1, structure: 'ООО' },
@@ -20,7 +21,6 @@ export const RegCompanyForm: React.FC = () => {
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<number | null>(null);
-  const [profileId, setProfileId] = useState<number | null>(null);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
   const [showBtn, setShowBtn] = useState('none');
 
@@ -29,13 +29,12 @@ export const RegCompanyForm: React.FC = () => {
   }, [fetchUserData]);
 
   const getData = async () => {
-    const { data } = await http.get('http://212.233.79.177/api/auth/users/me/');
+    const { data } = await http.get('/api/auth/users/me/');
     return data;
   };
   getData()
     .then(data => {
       if (!data.admin_companies[0].is_supplier) {
-        setProfileId(data.id);
         setShowBtn('inline-block');
       } else {
         setShowBtn('none');
@@ -79,24 +78,52 @@ export const RegCompanyForm: React.FC = () => {
     }
   };
 
+  const [api, contextHolder] = notification.useNotification();
+
+  const openBadNotification = () => {
+    api.open({
+      message: 'Ваш запрос уже принят. Пожалуйста, подождите и мы с вами свяжемся',
+      description: '',
+      icon: <MehOutlined style={{ color: '#108ee9' }} />,
+    });
+  };
+
+  const openErrorNotification = () => {
+    api.open({
+      message: 'Неизвестная ошибка',
+      description: '',
+      icon: <FrownOutlined style={{ color: '#222' }} />,
+    });
+  };
+
+  const openSuccessNotification = () => {
+    api.open({
+      message: 'Ваш запрос успешно отправлен',
+      description: '',
+      icon: <SmileOutlined style={{ color: '#1DB5A6' }} />,
+    });
+  };
+
   const becomeSupplier = async () => {
-    const data = {
-      "id": profileId,
-    };
     try {
-      const response = await fetch('http://212.233.79.177/api/suppliers/registration/', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      });
-      await response;
-      console.log('Успех______:', response);
-    } catch (error) {
-      console.error('Упс! Что-то пошло не так. Попробуйте ещё раз', error);
+      console.log('id===', companyId)
+      await http
+        .post('/api/suppliers/registration/', {
+          id: companyId,
+        })
+        .then(response => {
+          console.log('Успех:', response);
+          openSuccessNotification();
+        });
+    } catch (err: any) {
+      console.error('Упс! Что-то пошло не так. Попробуйте ещё раз', err);
+      if (`${err.response.status}` === '400') {
+        openBadNotification();
+      } else {
+        openErrorNotification();
+      }
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -109,6 +136,7 @@ export const RegCompanyForm: React.FC = () => {
 
   return (
     <AuthFormWrapper vertical gap={10}>
+      {contextHolder}
       {companyContextError && <Alert type="warning" message="Ошибка" key="Не удалось сохранить" />}
       <Form
         form={form}
@@ -188,7 +216,12 @@ export const RegCompanyForm: React.FC = () => {
           <Button type="primary" htmlType="submit" disabled={!formIsValid}>
             {isEdit ? 'Сохранить' : 'Зарегистрировать'}
           </Button>
-          <Button type="primary" htmlType="button" style={{ marginLeft: '10px', display: showBtn }} onClick={becomeSupplier}>
+          <Button
+            type="primary"
+            htmlType="button"
+            style={{ marginLeft: '10px', display: showBtn }}
+            onClick={becomeSupplier}
+          >
             Стать поставщиком
           </Button>
         </Form.Item>
