@@ -21,6 +21,7 @@ export const RegCompanyForm: React.FC = () => {
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<number | null>(null);
+  const [newCompanyId, setNewCompanyId] = useState<number | null>(null);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
   const [showBtn, setShowBtn] = useState('none');
 
@@ -34,6 +35,7 @@ export const RegCompanyForm: React.FC = () => {
   };
   getData()
     .then(data => {
+      setNewCompanyId(data.admin_companies[0].id)
       if (!data.admin_companies[0].is_supplier) {
         setShowBtn('inline-block');
       } else {
@@ -109,7 +111,7 @@ export const RegCompanyForm: React.FC = () => {
       console.log('id===', companyId)
       await http
         .post('/api/suppliers/registration/', {
-          id: companyId,
+          id: newCompanyId,
         })
         .then(response => {
           console.log('Успех:', response);
