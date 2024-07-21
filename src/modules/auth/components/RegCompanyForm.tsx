@@ -22,6 +22,7 @@ export const RegCompanyForm: React.FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<number | null>(null);
   const [newCompanyId, setNewCompanyId] = useState<number | null>(null);
+  const [requestIsSend, setRequestIsSend] = useState(false);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
   const [showBtn, setShowBtn] = useState('none');
 
@@ -35,6 +36,7 @@ export const RegCompanyForm: React.FC = () => {
   };
   getData()
     .then(data => {
+      console.log('*****',data.admin_companies[0] )
       setNewCompanyId(data.admin_companies[0].id)
       if (!data.admin_companies[0].is_supplier) {
         setShowBtn('inline-block');
@@ -125,6 +127,7 @@ export const RegCompanyForm: React.FC = () => {
         openErrorNotification();
       }
     }
+    setRequestIsSend(true);
   };
 
   if (isLoading) {
@@ -223,6 +226,7 @@ export const RegCompanyForm: React.FC = () => {
             htmlType="button"
             style={{ marginLeft: '10px', display: showBtn }}
             onClick={becomeSupplier}
+            disabled={requestIsSend}
           >
             Стать поставщиком
           </Button>
