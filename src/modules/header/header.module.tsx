@@ -201,7 +201,7 @@ export const CustomHeader: React.FC = () => {
           whiteSpace: 'nowrap',
         }}
       >
-        <Marquee direction="left" speed="0.1">
+        <Marquee direction="left" speed={0.1}>
           {text()}&emsp;&emsp;
           <SmileOutlined />
           &emsp;&emsp;

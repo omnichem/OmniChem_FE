@@ -1,9 +1,11 @@
-import { LoadingOutlined, UserOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UserOutlined, SmileOutlined, FrownOutlined, MehOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input, Spin, Select, Flex } from 'antd';
 import { useEffect, useState } from 'react';
 import { AuthFormWrapper } from '../../../pages/authModalForm/AuthForm';
 import styled from 'styled-components';
 import { useCompany } from '../../../contexts/companyContext';
+import { http } from '../../../shared/const/http';
+import { notification } from 'antd';
 
 const orgStructure = [
   { id: 1, structure: 'ООО' },
@@ -17,13 +19,32 @@ export const RegCompanyForm: React.FC = () => {
   const { registerCompany, updateCompany, companyContextError, isLoading, fetchUserData, userCompanies } = useCompany();
   const [form] = Form.useForm();
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<number | null>(null);
+  const [newCompanyId, setNewCompanyId] = useState<number | null>(null);
+  const [requestIsSend, setRequestIsSend] = useState(false);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
+  const [showBtn, setShowBtn] = useState('none');
 
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);
+
+  const getData = async () => {
+    const { data } = await http.get('/api/auth/users/me/');
+    return data;
+  };
+  getData()
+    .then(data => {
+      setNewCompanyId(data.admin_companies[0].id)
+      if (!data.admin_companies[0].is_supplier) {
+        setShowBtn('inline-block');
+      } else {
+        setShowBtn('none');
+      }
+    })
+    .catch(() => console.log('Что-то не так'));
 
   useEffect(() => {
     if (userCompanies.length > 0) {
@@ -40,12 +61,14 @@ export const RegCompanyForm: React.FC = () => {
       setCompanyId(lastCompany.id);
     } else {
       form.resetFields();
+      setIsRegistered(false);
     }
   }, [userCompanies, form]);
 
   const handleFormChange = () => {
     const { inn, companyType, companyName, address } = form.getFieldsValue();
     setFormIsValid(!!inn && !!companyType && !!companyName && !!address);
+    setIsRegistered(!!inn && !!companyType && !!companyName && !!address);
   };
 
   const handleSubmit = async () => {
@@ -57,8 +80,56 @@ export const RegCompanyForm: React.FC = () => {
         await updateCompany(companyId, data);
       } else {
         await registerCompany(data);
+        setIsRegistered(false);
       }
     }
+  };
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openBadNotification = () => {
+    api.open({
+      message: 'Ваш запрос уже принят. Пожалуйста, подождите и мы с вами свяжемся',
+      description: '',
+      icon: <MehOutlined style={{ color: '#108ee9' }} />,
+    });
+  };
+
+  const openErrorNotification = () => {
+    api.open({
+      message: 'Неизвестная ошибка',
+      description: '',
+      icon: <FrownOutlined style={{ color: '#222' }} />,
+    });
+  };
+
+  const openSuccessNotification = () => {
+    api.open({
+      message: 'Ваш запрос успешно отправлен',
+      description: '',
+      icon: <SmileOutlined style={{ color: '#1DB5A6' }} />,
+    });
+  };
+
+  const becomeSupplier = async () => {
+    try {
+      await http
+        .post('/api/suppliers/registration/', {
+          id: newCompanyId,
+        })
+        .then(response => {
+          console.log('Успех:', response);
+          openSuccessNotification();
+        });
+    } catch (err: any) {
+      console.error('Упс! Что-то пошло не так. Попробуйте ещё раз', err);
+      if (`${err.response.status}` === '400') {
+        openBadNotification();
+      } else {
+        openErrorNotification();
+      }
+    }
+    setRequestIsSend(true);
   };
 
   if (isLoading) {
@@ -72,9 +143,15 @@ export const RegCompanyForm: React.FC = () => {
 
   return (
     <AuthFormWrapper vertical gap={10}>
-      {companyContextError &&
-        <Alert type="warning" message='Ошибка' key='Не удалось сохранить' />}
-      <Form form={form} className="supplierDetailForm" layout="vertical" onValuesChange={handleFormChange} onFinish={handleSubmit}>
+      {contextHolder}
+      {companyContextError && <Alert type="warning" message="Ошибка" key="Не удалось сохранить" />}
+      <Form
+        form={form}
+        className="supplierDetailForm"
+        layout="vertical"
+        onValuesChange={handleFormChange}
+        onFinish={handleSubmit}
+      >
         <Form.Item
           label="Краткое наименование"
           name="companyName"
@@ -89,11 +166,8 @@ export const RegCompanyForm: React.FC = () => {
           />
         </Form.Item>
         <Form.Item label="Организационная форма" name="companyType" required={true} hasFeedback>
-          <Select
-            className="companyNameInput"
-            placeholder="Например ООО"
-          >
-            {orgStructure.map((item) => (
+          <Select className="companyNameInput" placeholder="Например ООО">
+            {orgStructure.map(item => (
               <Select.Option value={item.structure} key={item.structure}>
                 {item.structure}
               </Select.Option>
@@ -134,10 +208,7 @@ export const RegCompanyForm: React.FC = () => {
           tooltip="Юридический адрес по которому зарегистрировано юридическое лицо"
           hasFeedback
         >
-          <Input
-            className="companyNameInput"
-            placeholder="Введите юридический адрес компании"
-          />
+          <Input className="companyNameInput" placeholder="Введите юридический адрес компании" />
         </Form.Item>
         <Form.Item
           label="Ваша должность"
@@ -146,14 +217,20 @@ export const RegCompanyForm: React.FC = () => {
           tooltip="Укажите вашу должность в компании"
           hasFeedback
         >
-          <Input
-            className="detailsInput"
-            placeholder="Ваша должность в компании"
-          />
+          <Input className="detailsInput" placeholder="Ваша должность в компании" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={!formIsValid}>
+          <Button type="primary" htmlType="submit" disabled={(!isRegistered)}>
             {isEdit ? 'Сохранить' : 'Зарегистрировать'}
+          </Button>
+          <Button
+            type="primary"
+            htmlType="button"
+            style={{ marginLeft: '10px', display: showBtn }}
+            onClick={becomeSupplier}
+            disabled={requestIsSend}
+          >
+            Стать поставщиком
           </Button>
         </Form.Item>
       </Form>
