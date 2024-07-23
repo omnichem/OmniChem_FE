@@ -19,6 +19,7 @@ export const RegCompanyForm: React.FC = () => {
   const { registerCompany, updateCompany, companyContextError, isLoading, fetchUserData, userCompanies } = useCompany();
   const [form] = Form.useForm();
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<number | null>(null);
   const [newCompanyId, setNewCompanyId] = useState<number | null>(null);
@@ -36,7 +37,6 @@ export const RegCompanyForm: React.FC = () => {
   };
   getData()
     .then(data => {
-      console.log('*****',data.admin_companies[0] )
       setNewCompanyId(data.admin_companies[0].id)
       if (!data.admin_companies[0].is_supplier) {
         setShowBtn('inline-block');
@@ -61,12 +61,14 @@ export const RegCompanyForm: React.FC = () => {
       setCompanyId(lastCompany.id);
     } else {
       form.resetFields();
+      setIsRegistered(false);
     }
   }, [userCompanies, form]);
 
   const handleFormChange = () => {
     const { inn, companyType, companyName, address } = form.getFieldsValue();
     setFormIsValid(!!inn && !!companyType && !!companyName && !!address);
+    setIsRegistered(!!inn && !!companyType && !!companyName && !!address);
   };
 
   const handleSubmit = async () => {
@@ -78,6 +80,7 @@ export const RegCompanyForm: React.FC = () => {
         await updateCompany(companyId, data);
       } else {
         await registerCompany(data);
+        setIsRegistered(false);
       }
     }
   };
@@ -110,7 +113,6 @@ export const RegCompanyForm: React.FC = () => {
 
   const becomeSupplier = async () => {
     try {
-      console.log('id===', companyId)
       await http
         .post('/api/suppliers/registration/', {
           id: newCompanyId,
@@ -218,7 +220,7 @@ export const RegCompanyForm: React.FC = () => {
           <Input className="detailsInput" placeholder="Ваша должность в компании" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={!formIsValid}>
+          <Button type="primary" htmlType="submit" disabled={(!isRegistered)}>
             {isEdit ? 'Сохранить' : 'Зарегистрировать'}
           </Button>
           <Button
