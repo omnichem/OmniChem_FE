@@ -26,6 +26,7 @@ export const RegCompanyForm: React.FC = () => {
   const [requestIsSend, setRequestIsSend] = useState(false);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
   const [showBtn, setShowBtn] = useState('none');
+  const [orgForm, setOrgForm] = useState<string | undefined>('');
 
   useEffect(() => {
     fetchUserData();
@@ -51,6 +52,7 @@ export const RegCompanyForm: React.FC = () => {
     if (userCompanies.length > 0) {
       // const lastCompany = userCompanies[userCompanies.length - 1];
       const companyType = orgStructure.find(item => item.id === lastCompany.company_type)?.structure;
+      setOrgForm(companyType);
       form.setFieldsValue({
         inn: lastCompany.inn,
         companyType: companyType,
@@ -72,8 +74,8 @@ export const RegCompanyForm: React.FC = () => {
     let isChanged = !isEdit;
     if (lastCompany) {
       isChanged =
-        (inn !== lastCompany.inn ||
-          companyName !== lastCompany.company_name ||
+        (companyType !== orgForm ||
+        companyName !== lastCompany.company_name ||
           address !== lastCompany.address ||
           position !== lastCompany.administrators[0].position);
         }
@@ -214,6 +216,7 @@ export const RegCompanyForm: React.FC = () => {
             type="text"
             pattern="[0-9]*"
             title="Пожалуйста, введите только цифры"
+            disabled={isEdit}
           />
         </Form.Item>
         <Form.Item
