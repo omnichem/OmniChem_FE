@@ -26,6 +26,7 @@ export const RegCompanyForm: React.FC = () => {
   const [requestIsSend, setRequestIsSend] = useState(false);
   const INN_REGEX = /^(\d{10}|\d{12})$/;
   const [showBtn, setShowBtn] = useState('none');
+  const [orgForm, setOrgForm] = useState<string | undefined>('');
 
   useEffect(() => {
     fetchUserData();
@@ -37,7 +38,7 @@ export const RegCompanyForm: React.FC = () => {
   };
   getData()
     .then(data => {
-      setNewCompanyId(data.admin_companies[0].id)
+      setNewCompanyId(data.admin_companies[0].id);
       if (!data.admin_companies[0].is_supplier) {
         setShowBtn('inline-block');
       } else {
@@ -46,10 +47,12 @@ export const RegCompanyForm: React.FC = () => {
     })
     .catch(() => console.log('Что-то не так'));
 
+  const lastCompany = userCompanies[userCompanies.length - 1];
   useEffect(() => {
     if (userCompanies.length > 0) {
-      const lastCompany = userCompanies[userCompanies.length - 1];
+      // const lastCompany = userCompanies[userCompanies.length - 1];
       const companyType = orgStructure.find(item => item.id === lastCompany.company_type)?.structure;
+      setOrgForm(companyType);
       form.setFieldsValue({
         inn: lastCompany.inn,
         companyType: companyType,
@@ -65,10 +68,24 @@ export const RegCompanyForm: React.FC = () => {
     }
   }, [userCompanies, form]);
 
+  let isInnOk = false;
   const handleFormChange = () => {
-    const { inn, companyType, companyName, address } = form.getFieldsValue();
-    setFormIsValid(!!inn && !!companyType && !!companyName && !!address);
-    setIsRegistered(!!inn && !!companyType && !!companyName && !!address);
+    const { inn, companyType, companyName, address, position } = form.getFieldsValue();
+    let isChanged = !isEdit;
+    if (lastCompany) {
+      isChanged =
+        (companyType !== orgForm ||
+        companyName !== lastCompany.company_name ||
+          address !== lastCompany.address ||
+          position !== lastCompany.administrators[0].position);
+        }
+    if (inn?.length >= 10) {
+      isInnOk = true;
+    } else {
+      isInnOk = false;
+    }
+    setFormIsValid(isInnOk && !!companyType && !!companyName && !!address);
+    setIsRegistered(isInnOk && isChanged && !!companyType && !!companyName && !!address);
   };
 
   const handleSubmit = async () => {
@@ -199,6 +216,7 @@ export const RegCompanyForm: React.FC = () => {
             type="text"
             pattern="[0-9]*"
             title="Пожалуйста, введите только цифры"
+            disabled={isEdit}
           />
         </Form.Item>
         <Form.Item
@@ -220,7 +238,7 @@ export const RegCompanyForm: React.FC = () => {
           <Input className="detailsInput" placeholder="Ваша должность в компании" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={(!isRegistered)}>
+          <Button type="primary" htmlType="submit" disabled={!isRegistered}>
             {isEdit ? 'Сохранить' : 'Зарегистрировать'}
           </Button>
           <Button
