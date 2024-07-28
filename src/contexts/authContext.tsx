@@ -4,7 +4,7 @@ import { UserLoginResponse, UserRegisterResponse } from '../shared/types/user';
 import { ResponseCodeType } from '../shared/types/authResponse';
 import { getCookie, removeCookie } from '../shared/utils';
 
-const authCoockieName = 'refresh_token_present';
+const authCookieName = 'refresh_token_present';
 const accessTokenKey = 'token';
 
 type AuthContextType = {
@@ -41,18 +41,22 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   });
   const [loginError, setLoginError] = useState<boolean>(false);
   const [registerError, setRegisterError] = useState<{ [key: string]: string[] }>({});
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(() => !!getCookie(authCoockieName));
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(() => !!getCookie(authCookieName));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [responseCode, setResponseCode] = useState<ResponseCodeType | undefined>(undefined);
 
-  useEffect(() => {
-    const refreshTokenPresent = getCookie(authCoockieName);
-    if (refreshTokenPresent) {
-      setIsAuthorized(true);
-    } else {
-      setIsAuthorized(false);
+  const checkAuthorization = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      const targetToken = localStorage.getItem(accessTokenKey);
+      setToken(targetToken ?? undefined);
+      const refreshTokenPresent = getCookie(authCookieName);
+      setIsAuthorized(!!refreshTokenPresent);
     }
   }, []);
+
+  useEffect(() => {
+    checkAuthorization();
+  }, [checkAuthorization]);
 
   const login = useCallback((email: string, password: string) => {
     const innerLogin = async () => {
@@ -123,7 +127,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         console.error(error);
       } finally {
         localStorage.removeItem(accessTokenKey);
-        removeCookie(authCoockieName);
+        removeCookie(authCookieName);
         setToken(undefined);
         setIsAuthorized(false);
         setIsLoading(false);
@@ -144,4 +148,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-AuthProvider.logOut = () => {};
+AuthProvider.logOut = () => {
+  removeCookie(authCookieName);
+};
